@@ -9,7 +9,6 @@ public class GameLoop extends JPanel implements Runnable {
     private Thread thread; // Thread for the game loop
     private boolean open; // Flag to start adn stop the game loop
     private final int FPS = 60; // Frames per second (Editable as needed)
-    private final long TIME_TICK = 1000000000 / this.FPS; // Running at n FPS (change the FPS prop)
     private KeyHandler keyHandler; // Delcaring keyhandler
     
     private float characterX = 100;
