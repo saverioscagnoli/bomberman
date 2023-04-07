@@ -10,8 +10,16 @@ public class GameLoop extends JPanel implements Runnable {
     private boolean open; // Flag to start adn stop the game loop
     private final int FPS = 60; // Frames per second (Editable as needed)
     private final long TIME_TICK = 1000000000 / this.FPS; // Running at n FPS (change the FPS prop)
+    private KeyHandler keyHandler; // Delcaring keyhandler
+    
+    private float characterX = 100;
+    private float characterY = 100;
 
     public GameLoop() {
+        keyHandler = new KeyHandler(); // Create an instance of KeyHandler
+        this.addKeyListener(keyHandler); // Add KeyHandler as a key listener
+        this.setFocusable(true); // Make the GameLoop focusable
+        this.requestFocusInWindow(); // Request focus for the GameLoop
         this.start();
     }
 
@@ -32,28 +40,43 @@ public class GameLoop extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        double last = System.nanoTime(); // Time of last update
-        double dt = 0; // Delta time (time since last update)
-
+        double last = System.nanoTime();
+        double dt = 0;
+        double rate = 1.0 / this.FPS; // Fixed update rate (1 / FPS)
+    
         while (this.open) {
             double now = System.nanoTime();
-            dt += (now - last) / this.TIME_TICK; // Add the time since the last update to the accumulator
-            if (dt >= 1) { // If the accumulator is greater than 1, update the game
-                this.update(dt);
-                dt--;
+            dt += (now - last) / 1000000000.0; // Convert from nanoseconds to seconds
+            last = now;
+    
+            if (dt >= rate) {
+                this.update(rate); // Update with the fixed rate
+                dt -= rate;
+            }
+    
+    
+            // Sleep for a short duration to avoid high CPU usage
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
+    
 
     public void update(double dt) {
-        // Update the game's logic here
+        float speed = 120.0f;
+        characterX += keyHandler.playerX * speed * dt;
+        characterY += keyHandler.playerY * speed * dt;
+        this.repaint();
     }
 
     @Override
-    public void paintComponent(Graphics g) { // Drawing functon (draws a red rectangle for now)
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.RED);
-        g2d.fillRect(100, 100, 50, 50);
+        g2d.fillRect((int) characterX, (int) characterY, 50, 50);
     }
 }
