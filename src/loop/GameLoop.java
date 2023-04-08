@@ -4,6 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
+import java.util.ArrayList;
+import java.util.List;
+
+import entities.Entity;
 
 public class GameLoop extends JPanel implements Runnable {
     private Thread thread; // Thread for the game loop
@@ -11,8 +15,11 @@ public class GameLoop extends JPanel implements Runnable {
     private final int FPS = 60; // Frames per second (Editable as needed)
     private KeyHandler keyHandler; // Delcaring keyhandler
     
-    private float characterX = 100;
-    private float characterY = 100;
+    public static float characterX = 100;
+    public static float characterY = 100;
+
+    public static List<Entity> entities = new ArrayList<Entity>();
+
 
     public GameLoop() {
         keyHandler = new KeyHandler(); // Create an instance of KeyHandler
@@ -77,5 +84,11 @@ public class GameLoop extends JPanel implements Runnable {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.RED);
         g2d.fillRect((int) characterX, (int) characterY, 50, 50);
+
+        for (Entity e : entities) {
+            e.update();
+            g2d.setColor(Color.BLUE);
+            g2d.fillRect((int)e.posX, (int)e.posY, e.width, e.height);
+        }
     }
 }
