@@ -8,24 +8,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entities.Entity;
+import entities.GameCharacter;
 
 public class GameLoop extends JPanel implements Runnable {
     private Thread thread; // Thread for the game loop
     private boolean open; // Flag to start adn stop the game loop
     private final int FPS = 60; // Frames per second (Editable as needed)
-    private KeyHandler keyHandler; // Delcaring keyhandler
     
     public static float characterX = 100;
     public static float characterY = 100;
-
+    
     public static List<Entity> entities = new ArrayList<Entity>();
+    
+    public KeyHandler keyHandler; // Delcaring keyhandler
+    GameCharacter character;
+
+    public float dt = 0;
 
 
     public GameLoop() {
-        keyHandler = new KeyHandler(); // Create an instance of KeyHandler
+        keyHandler = new KeyHandler(this); // Create an instance of KeyHandler and passes the gameloop to it
+        character = new GameCharacter(characterX, characterY, 10, 10, 5, keyHandler, this); // Initialize character after keyHandler
         this.addKeyListener(keyHandler); // Add KeyHandler as a key listener
         this.setFocusable(true); // Make the GameLoop focusable
-        this.requestFocusInWindow(); // Request focus for the GameLoop
+        setDoubleBuffered(true);
         this.start();
     }
 
@@ -47,7 +53,7 @@ public class GameLoop extends JPanel implements Runnable {
     @Override
     public void run() {
         double last = System.nanoTime();
-        double dt = 0;
+        dt = 0;
         double rate = 1.0 / this.FPS; // Fixed update rate (1 / FPS)
     
         while (this.open) {
@@ -72,9 +78,7 @@ public class GameLoop extends JPanel implements Runnable {
     
 
     public void update(double dt) {
-        float speed = 120.0f;
-        characterX += keyHandler.playerX * speed * dt;
-        characterY += keyHandler.playerY * speed * dt;
+        character.update();
         this.repaint();
     }
 
@@ -83,12 +87,13 @@ public class GameLoop extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.RED);
-        g2d.fillRect((int) characterX, (int) characterY, 50, 50);
+        System.out.println("Rendering character at (" + character.posX + ", " + character.posY + ")");
+        g2d.fillRect((int) character.posX,(int) character.posY, 50, 50);
 
         for (Entity e : entities) {
-            e.update();
-            g2d.setColor(Color.BLUE);
-            g2d.fillRect((int)e.posX, (int)e.posY, e.width, e.height);
+            System.out.println("Rendering entity at (" + e.posX + ", " + e.posY + ")");
+            e.update(); // TODO spostarlo fuori dalla paintcomponent dato che è un update e non un render
+            e.render(g2d);
         }
     }
 }

@@ -12,5 +12,7 @@ class Main {
         win.add(loop);
         win.pack();
         win.setVisible(true);
+
+        loop.requestFocus();
     }
 }

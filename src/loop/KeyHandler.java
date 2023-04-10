@@ -20,13 +20,15 @@ public class KeyHandler implements KeyListener {
     private boolean dPressed = false;
 
     // variables for determining the latest key pressed for each direction
-    private String latestHorizontalKey;
-    private String latestVerticalKey;
+    public String latestHorizontalKey;
+    public String latestVerticalKey;
+    private GameLoop gameLoop;
 
-    // variables for the direction of the player
-    // TODO make this properties of the player itself
-    public float playerX = 0;
-    public float playerY = 0;
+
+    public KeyHandler(GameLoop gameLoop) {
+        this.gameLoop = gameLoop;
+    }
+
 
     // Method to update the variables based on the current key presses
     // TODO make all these ifs a switch statement
@@ -38,6 +40,7 @@ public class KeyHandler implements KeyListener {
         case KeyEvent.VK_W: {
             wPressed = true;
             latestVerticalKey = "W";
+            System.out.println("W pressed");
             break;
         }
 
@@ -62,7 +65,9 @@ public class KeyHandler implements KeyListener {
         case KeyEvent.VK_SPACE : {
             // TODO : Change keybind for the bomb placement
             // TODO : Make the bomb place at the center of the player location
-            GameLoop.entities.add(new Entity(GameLoop.characterX, GameLoop.characterY, 10, 10, 0, 0));
+            System.out.println("Space pressed");
+            GameLoop.entities.add(new Entity(gameLoop.character.posX,gameLoop.character.posY, 30, 30, 0));
+            System.out.println(GameLoop.entities.size());
             break;
         }
 
@@ -76,9 +81,6 @@ public class KeyHandler implements KeyListener {
             break;
         }
         }
-
-
-        updateDirection();
     }
 
 
@@ -118,7 +120,6 @@ public class KeyHandler implements KeyListener {
             }
         }
 
-        updateDirection();
     }
 
     @Override
@@ -126,25 +127,5 @@ public class KeyHandler implements KeyListener {
         // Not used in this example
     }
 
-    private void updateDirection() {
-        playerX = 0;
-        playerY = 0;
-    
-        switch(latestHorizontalKey) {
-            case "A":
-                playerX = -1;
-                break;
-            case "D":
-                playerX = 1;
-                break;
-        }
-        switch(latestVerticalKey) {
-            case "W":
-                playerY = -1;
-                break;
-            case "S":
-                playerY = 1;
-                break;
-        }
-    }
+
 }

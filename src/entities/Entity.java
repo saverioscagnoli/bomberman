@@ -1,21 +1,26 @@
 package entities;
 
-public class Entity{
-    public float posX,posY;
-    public int width,height;
-    public int speedX,speedY;
+import java.awt.Color;
+import java.awt.Graphics2D;
 
-    public Entity(float posX, float posY, int width, int height, int speedX, int speedY) {
+public class Entity{
+    public  float posX,posY;
+    public int width,height;
+    public int speed;
+
+    public Entity(float posX, float posY, int width, int height, int speed) {
         this.posX = posX;
         this.posY = posY;
         this.width = width;
         this.height = height;
-        this.speedX = speedX;
-        this.speedY = speedY;
+        this.speed = speed;
     }
 
     public void update(){
-        posX += speedX;
-        posY += speedY;
+    }
+
+    public void render(Graphics2D g2d){
+        g2d.setColor(Color.BLUE);
+        g2d.fillRect((int) posX, (int) posY, width, height);
     }
 }
