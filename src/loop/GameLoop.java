@@ -1,6 +1,5 @@
 package loop;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
@@ -21,7 +20,7 @@ public class GameLoop extends JPanel implements Runnable {
     public static List<Entity> entities = new ArrayList<Entity>();
     
     public KeyHandler keyHandler; // Delcaring keyhandler
-    GameCharacter character;
+    public GameCharacter character;
 
     public float dt = 0;
 
@@ -86,13 +85,12 @@ public class GameLoop extends JPanel implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.RED);
-        System.out.println("Rendering character at (" + character.posX + ", " + character.posY + ")");
-        g2d.fillRect((int) character.posX,(int) character.posY, 50, 50);
+        System.out.println("Rendering character at (" + character.posX + ", " + character.posY + ")"); // Debugging
+        character.render(g2d);
 
-        for (Entity e : entities) {
-            System.out.println("Rendering entity at (" + e.posX + ", " + e.posY + ")");
-            e.update(); // TODO spostarlo fuori dalla paintcomponent dato che è un update e non un render
+        for (Entity e : entities) {  // Render and update all entities
+            System.out.println("Rendering entity at (" + e.posX + ", " + e.posY + ")"); // Debugging
+            e.update();
             e.render(g2d);
         }
     }
