@@ -78,6 +78,10 @@ public class GameLoop extends JPanel implements Runnable {
 
     public void update(double dt) {
         character.update();
+
+		  for (Entity e : entities) {  // Update all entities
+				e.update();
+		  }
         this.repaint();
     }
 
@@ -89,8 +93,6 @@ public class GameLoop extends JPanel implements Runnable {
         character.render(g2d);
 
         for (Entity e : entities) {  // Render and update all entities
-            System.out.println("Rendering entity at (" + e.posX + ", " + e.posY + ")"); // Debugging
-            e.update();
             e.render(g2d);
         }
     }
