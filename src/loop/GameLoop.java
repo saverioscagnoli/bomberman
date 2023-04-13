@@ -1,33 +1,44 @@
 package loop;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.util.ArrayList;
 import java.util.List;
 
 import entities.Entity;
 import entities.GameCharacter;
+import menu.Button;
 
 public class GameLoop extends JPanel implements Runnable {
+    private JFrame win;
     private Thread thread; // Thread for the game loop
     private boolean open; // Flag to start adn stop the game loop
     private final int FPS = 60; // Frames per second (Editable as needed)
-    
+
+    public int gameState = 1; // 1 - Menu 2 - In game 3 - Editor 4 - Pause
+
+    public ArrayList<Button> buttons;
+
     public static float characterX = 100;
     public static float characterY = 100;
-    
+
     public static List<Entity> entities = new ArrayList<Entity>();
-    
+
     public KeyHandler keyHandler; // Delcaring keyhandler
     public GameCharacter character;
 
     public float dt = 0;
 
-
-    public GameLoop() {
+    public GameLoop(JFrame win) {
+        this.win = win;
+        this.buttons = new ArrayList<Button>();
         keyHandler = new KeyHandler(this); // Create an instance of KeyHandler and passes the gameloop to it
-        character = new GameCharacter(characterX, characterY, 10, 10, 5, keyHandler, this); // Initialize character after keyHandler
+        character = new GameCharacter(characterX, characterY, 10, 10, 5, keyHandler, this); // Initialize character
+                                                                                            // after keyHandler
         this.addKeyListener(keyHandler); // Add KeyHandler as a key listener
         this.setFocusable(true); // Make the GameLoop focusable
         setDoubleBuffered(true);
@@ -54,18 +65,17 @@ public class GameLoop extends JPanel implements Runnable {
         double last = System.nanoTime();
         dt = 0;
         double rate = 1.0 / this.FPS; // Fixed update rate (1 / FPS)
-    
+
         while (this.open) {
             double now = System.nanoTime();
             dt += (now - last) / 1000000000.0; // Convert from nanoseconds to seconds
             last = now;
-    
+
             if (dt >= rate) {
                 this.update(rate); // Update with the fixed rate
                 dt -= rate;
             }
-    
-    
+
             // Sleep for a short duration to avoid high CPU usage
             try {
                 Thread.sleep(1);
@@ -74,10 +84,15 @@ public class GameLoop extends JPanel implements Runnable {
             }
         }
     }
-    
 
     public void update(double dt) {
-        character.update();
+        switch (this.gameState) {
+            case 1: // Menu
+                break;
+            case 2: // In game
+                character.update();
+                break;
+        }
         this.repaint();
     }
 
@@ -85,13 +100,28 @@ public class GameLoop extends JPanel implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        System.out.println("Rendering character at (" + character.posX + ", " + character.posY + ")"); // Debugging
-        character.render(g2d);
+        g2d.setFont(new Font(getFont().getName(), Font.PLAIN, 20));
 
-        for (Entity e : entities) {  // Render and update all entities
-            System.out.println("Rendering entity at (" + e.posX + ", " + e.posY + ")"); // Debugging
-            e.update();
-            e.render(g2d);
+        switch (this.gameState) {
+            case 1:
+                int w = 150;
+                int h = 50;
+                int x = (int) (this.win.getWidth() * 0.5 - w * 0.5);
+                int y = (int) (this.win.getHeight() * 0.5 - h * 0.5);
+                String label = "Start Game";
+                this.buttons.add(new Button(label, true, x, y, w, h));
+                g2d.setFont(new Font(getFont().getName(), Font.PLAIN, 18));
+                g2d.drawRect(x, y, w, h);
+                break;
+            case 2:
+                System.out.println(character.posX + ", " + character.posY); // Debugging
+                character.render(g2d);
+
+                for (Entity e : entities) { // Render and update all entities
+                    e.update();
+                    e.render(g2d);
+                }
+                break;
         }
     }
 }

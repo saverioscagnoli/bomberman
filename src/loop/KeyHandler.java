@@ -2,8 +2,11 @@ package loop;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import entities.*;
+import menu.Button;
 
 /**
  * This class handles the key events for the game.
@@ -11,7 +14,7 @@ import entities.*;
  * It also determines the direction of the player.
  */
 
-public class KeyHandler implements KeyListener {
+public class KeyHandler extends MouseAdapter  implements KeyListener {
 
     // variables for keys taht are currently pressed
     private boolean wPressed = false;
@@ -24,65 +27,69 @@ public class KeyHandler implements KeyListener {
     public String latestVerticalKey;
     private GameLoop gameLoop;
 
-
     public KeyHandler(GameLoop gameLoop) {
         this.gameLoop = gameLoop;
+        gameLoop.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                for (Button btn : gameLoop.buttons) {
+                    int x = e.getX();
+                    int y = e.getY();
+                    if ((x >= btn.x && x <= btn.x + btn.width) && (y >= btn.y && y <= btn.y + btn.height)) {
+                        gameLoop.gameState = 2;
+                    }
+                }
+            }
+        });
     }
 
-
     // Method to update the variables based on the current key presses
-    // TODO make all these ifs a switch statement
     @Override
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
 
-        switch (keyCode){
-        case KeyEvent.VK_W: {
-            wPressed = true;
-            latestVerticalKey = "W";
-            System.out.println("W pressed");
-            break;
-        }
 
-        case KeyEvent.VK_A : {
-            aPressed = true;
-            latestHorizontalKey = "A";
-            break;
-        }
+        switch (keyCode) {
+            case KeyEvent.VK_W: {
+                wPressed = true;
+                latestVerticalKey = "W";
+                System.out.println("W pressed");
+                break;
+            }
 
-        case KeyEvent.VK_S : {
-            latestVerticalKey = "S";
-            sPressed = true;
-            break;
-        }
+            case KeyEvent.VK_A: {
+                aPressed = true;
+                latestHorizontalKey = "A";
+                break;
+            }
 
-        case KeyEvent.VK_D : {
-            latestHorizontalKey = "D";
-            dPressed = true;
-            break;
-        }
+            case KeyEvent.VK_S: {
+                latestVerticalKey = "S";
+                sPressed = true;
+                break;
+            }
 
-        case KeyEvent.VK_SPACE : {
-            // TODO : Change keybind for the bomb placement
-            // TODO : Make the bomb place at the center of the player location
-            System.out.println("Space pressed");
-            GameLoop.entities.add(new Entity(gameLoop.character.posX,gameLoop.character.posY, 30, 30, 0));
-            System.out.println(GameLoop.entities.size());
-            break;
-        }
+            case KeyEvent.VK_D: {
+                latestHorizontalKey = "D";
+                dPressed = true;
+                break;
+            }
 
-        case KeyEvent.VK_ESCAPE : {
-            System.exit(0);
-            break;
-        }
+            case KeyEvent.VK_SPACE: {
+                // TODO : Change keybind for the bomb placement
+                // TODO : Make the bomb place at the center of the player location
+                System.out.println("Space pressed");
+                GameLoop.entities.add(new Entity(gameLoop.character.posX, gameLoop.character.posY, 30, 30, 0));
+                System.out.println(GameLoop.entities.size());
+                break;
+            }
 
-        default: {
-            System.out.println("Key not recognized");
-            break;
-        }
+            case KeyEvent.VK_ESCAPE: {
+                System.exit(0);
+                break;
+            }
         }
     }
-
 
     // Method to update the variables based on the current key releases
     // TODO make all these ifs a switch statement
@@ -126,6 +133,5 @@ public class KeyHandler implements KeyListener {
     public void keyTyped(KeyEvent e) {
         // Not used in this example
     }
-
 
 }
