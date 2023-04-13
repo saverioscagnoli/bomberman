@@ -14,7 +14,7 @@ import menu.Button;
  * It also determines the direction of the player.
  */
 
-public class KeyHandler extends MouseAdapter  implements KeyListener {
+public class KeyHandler extends MouseAdapter implements KeyListener {
 
     // variables for keys taht are currently pressed
     private boolean wPressed = false;
@@ -48,12 +48,10 @@ public class KeyHandler extends MouseAdapter  implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
 
-
         switch (keyCode) {
             case KeyEvent.VK_W: {
                 wPressed = true;
                 latestVerticalKey = "W";
-                System.out.println("W pressed");
                 break;
             }
 
@@ -76,11 +74,8 @@ public class KeyHandler extends MouseAdapter  implements KeyListener {
             }
 
             case KeyEvent.VK_SPACE: {
-                // TODO : Change keybind for the bomb placement
-                // TODO : Make the bomb place at the center of the player location
-                System.out.println("Space pressed");
-                GameLoop.entities.add(new Entity(gameLoop.character.posX, gameLoop.character.posY, 30, 30, 0));
-                System.out.println(GameLoop.entities.size());
+                GameLoop.entities.add(new Entity((float) (gameLoop.character.posX + gameLoop.character.width * 0.5),
+                        (float) (gameLoop.character.posY + gameLoop.character.height * 0.5), 30, 30, 0));
                 break;
             }
 
@@ -92,7 +87,6 @@ public class KeyHandler extends MouseAdapter  implements KeyListener {
     }
 
     // Method to update the variables based on the current key releases
-    // TODO make all these ifs a switch statement
     @Override
     public void keyReleased(KeyEvent e) {
         int keyCode = e.getKeyCode();
@@ -131,7 +125,6 @@ public class KeyHandler extends MouseAdapter  implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        // Not used in this example
+        // ...
     }
-
 }
