@@ -30,6 +30,7 @@ public class GameLoop extends JPanel implements Runnable {
 
     public KeyHandler keyHandler; // Delcaring keyhandler
     public GameCharacter character;
+    public GameCharacter character2;
 
     public float dt = 0;
 
@@ -37,8 +38,9 @@ public class GameLoop extends JPanel implements Runnable {
         this.win = win;
         this.buttons = new ArrayList<Button>();
         keyHandler = new KeyHandler(this); // Create an instance of KeyHandler and passes the gameloop to it
-        character = new GameCharacter(characterX, characterY, 10, 10, 5, keyHandler, this); // Initialize character
-                                                                                            // after keyHandler
+        character = new GameCharacter(characterX, characterY, 50, 50, 5, keyHandler, this); // Initialize character
+        character2 = new GameCharacter(characterX, characterY, 100, 100, 10, keyHandler, this); 
+        // after keyHandler
         this.addKeyListener(keyHandler); // Add KeyHandler as a key listener
         this.setFocusable(true); // Make the GameLoop focusable
         setDoubleBuffered(true);
@@ -91,6 +93,7 @@ public class GameLoop extends JPanel implements Runnable {
                 break;
             case 2: // In game
                 character.update();
+                character2.update();
                 break;
         }
         this.repaint();
@@ -116,6 +119,7 @@ public class GameLoop extends JPanel implements Runnable {
             case 2:
                 System.out.println(character.posX + ", " + character.posY); // Debugging
                 character.render(g2d);
+                character2.render(g2d);
 
                 for (Entity e : entities) { // Render and update all entities
                     e.update();
