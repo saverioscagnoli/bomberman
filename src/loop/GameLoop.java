@@ -118,12 +118,12 @@ public class GameLoop extends JPanel implements Runnable {
                 // System.out.println(character.posX + ", " + character.posY); // Debugging
                 character.render(g2d);
 
-                for (int i = 0; i < 1280; i += this.tileDims) {
-                    g2d.drawLine(i, 0, i, 720);
+                for (int i = 0; i <= 1296; i += this.tileDims) {
+                    g2d.drawLine(i, 0, i, 768);
                 }
 
-                for (int i = 0; i < 720; i += this.tileDims) {
-                    g2d.drawLine(0, i, 1280, i);
+                for (int i = 0; i <= 768; i += this.tileDims) {
+                    g2d.drawLine(0, i, 1296, i);
                 }
 
                 for (Entity e : entities) { // Render and update all entities
