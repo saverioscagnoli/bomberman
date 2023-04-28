@@ -18,7 +18,7 @@ public class GameCharacter extends Entity {
     }
     
     public void update() {
-        // Semi-works 
+        /* // Semi-works 
         if (this.posX + this.width >= 800) {
             this.posX = 800 - this.width;
         }
@@ -31,7 +31,7 @@ public class GameCharacter extends Entity {
         }
         if (this.posY <= 0) {
             this.posY = 0;
-        }
+        } */
 
         if (keyHandler.latestHorizontalKey != null) {
             switch (keyHandler.latestHorizontalKey) {

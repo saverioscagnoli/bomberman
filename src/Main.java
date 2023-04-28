@@ -7,7 +7,8 @@ class Main {
         System.setProperty("sun.java2d.opengl", "true"); // Enabling OpenGL Drivers. Only tested on my machine, but
                                                          // incredible performance gain!
         JFrame win = new JFrame("bomberman");
-        win.setPreferredSize(new Dimension(800, 600));
+        win.setPreferredSize(new Dimension(1280, 720));
+        win.setResizable(false);
         win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         GameLoop loop = new GameLoop(win);
         win.add(loop);

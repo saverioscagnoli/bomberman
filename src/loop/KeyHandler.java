@@ -25,7 +25,9 @@ public class KeyHandler extends MouseAdapter implements KeyListener {
     // variables for determining the latest key pressed for each direction
     public String latestHorizontalKey;
     public String latestVerticalKey;
+
     private GameLoop gameLoop;
+    private final int tileDims = 48;
 
     public KeyHandler(GameLoop gameLoop) {
         this.gameLoop = gameLoop;
@@ -74,8 +76,10 @@ public class KeyHandler extends MouseAdapter implements KeyListener {
             }
 
             case KeyEvent.VK_SPACE: {
-                GameLoop.entities.add(new Entity((float) (gameLoop.character.posX + gameLoop.character.width * 0.5),
-                        (float) (gameLoop.character.posY + gameLoop.character.height * 0.5), 30, 30, 0));
+                double pX = gameLoop.character.posX + gameLoop.character.width * 0.5;
+                double pY = gameLoop.character.posY + gameLoop.character.height * 0.5;
+                GameLoop.entities.add(new Entity((float) (pX - (pX % this.tileDims)),
+                        (float) (pY - (pY % this.tileDims)), this.tileDims, this.tileDims, 0));
                 break;
             }
 
