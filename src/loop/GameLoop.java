@@ -1,9 +1,11 @@
 package loop;
 
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import javax.sound.midi.Soundbank;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.List;
 import entities.Entity;
 import entities.GameCharacter;
 import menu.Button;
+import menu.Menu;
 
 public class GameLoop extends JPanel implements Runnable {
     private JFrame win;
@@ -95,7 +98,6 @@ public class GameLoop extends JPanel implements Runnable {
                 character.update();
                 break;
         }
-        this.repaint();
     }
 
     @Override
@@ -106,14 +108,8 @@ public class GameLoop extends JPanel implements Runnable {
 
         switch (this.gameState) {
             case 1:
-                int w = 150;
-                int h = 50;
-                int x = (int) (this.win.getWidth() * 0.5 - w * 0.5);
-                int y = (int) (this.win.getHeight() * 0.5 - h * 0.5);
-                String label = "Start Game";
-                this.buttons.add(new Button(label, true, x, y, w, h));
-                g2d.setFont(new Font(getFont().getName(), Font.PLAIN, 18));
-                g2d.drawRect(x, y, w, h);
+                Menu mainMenu = new Menu(this);
+                mainMenu.draw(g2d);
                 break;
             case 2:
                 // System.out.println(character.posX + ", " + character.posY); // Debugging
@@ -135,4 +131,3 @@ public class GameLoop extends JPanel implements Runnable {
         }
     }
 }
-

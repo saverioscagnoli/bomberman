@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import loop.GameLoop;
+import utils.Consts;
 
 public class Obstacle extends Entity {
   private static final int dims = 48;
@@ -17,8 +18,8 @@ public class Obstacle extends Entity {
     // Fixing the obstacle's position in tiles
     double pX = this.posX + this.width * 0.5;
     double pY = this.posY + this.height * 0.5;
-    this.posX = (float) (pX - (pX % dims));
-    this.posY = (float) (pY - (pY % dims));
+    this.posX = (float) (pX - (pX % Consts.tileDims));
+    this.posY = (float) (pY - (pY % Consts.tileDims));
   }
 
  public void update() {

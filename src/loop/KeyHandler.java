@@ -1,12 +1,15 @@
 package loop;
 
+import java.awt.Cursor;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 import entities.*;
 import menu.Button;
+import menu.Menu;
 
 /**
  * This class handles the key events for the game.
@@ -34,11 +37,18 @@ public class KeyHandler extends MouseAdapter implements KeyListener {
         gameLoop.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                for (Button btn : gameLoop.buttons) {
-                    int x = e.getX();
-                    int y = e.getY();
+                int x = e.getX();
+                int y = e.getY();
+                for (Button btn : Menu.buttons) {
                     if ((x >= btn.x && x <= btn.x + btn.width) && (y >= btn.y && y <= btn.y + btn.height)) {
-                        gameLoop.gameState = 2;
+                        switch (btn.uuid) {
+                            case "s":
+                                gameLoop.gameState = 2;
+                                break;
+                            case "q":
+                                System.exit(0);
+                                break;
+                        }
                     }
                 }
             }
