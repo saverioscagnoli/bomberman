@@ -19,6 +19,7 @@ public class GameLoop extends JPanel implements Runnable {
     private boolean open; // Flag to start adn stop the game loop
     private final int FPS = 60; // Frames per second (Editable as needed)
     private final int tileDims = 48;
+    private final double conversionToSec = 1000000000.0;
 
     public int gameState = 1; // 1 - Menu 2 - In game 3 - Editor 4 - Pause
 
@@ -69,7 +70,7 @@ public class GameLoop extends JPanel implements Runnable {
 
         while (this.open) {
             double now = System.nanoTime();
-            dt += (now - last) / 1000000000.0; // Convert from nanoseconds to seconds
+            dt += (now - last) / this.conversionToSec; // Convert from nanoseconds to seconds
             last = now;
 
             if (dt >= rate) {
