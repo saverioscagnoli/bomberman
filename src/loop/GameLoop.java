@@ -1,12 +1,9 @@
 package loop;
 
-import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import javax.sound.midi.Soundbank;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +14,6 @@ import menu.Button;
 import menu.Menu;
 
 public class GameLoop extends JPanel implements Runnable {
-    private JFrame win;
     private Thread thread; // Thread for the game loop
     private boolean open; // Flag to start adn stop the game loop
     private final int FPS = 60; // Frames per second (Editable as needed)
@@ -38,8 +34,7 @@ public class GameLoop extends JPanel implements Runnable {
 
     public float dt = 0;
 
-    public GameLoop(JFrame win) {
-        this.win = win;
+    public GameLoop() {
         this.buttons = new ArrayList<Button>();
         keyHandler = new KeyHandler(this); // Create an instance of KeyHandler and passes the gameloop to it
         character = new GameCharacter(characterX, characterY, 50, 50, 5, keyHandler, this); // Initialize character
@@ -98,6 +93,7 @@ public class GameLoop extends JPanel implements Runnable {
                 character.update();
                 break;
         }
+        this.repaint();
     }
 
     @Override
@@ -112,7 +108,7 @@ public class GameLoop extends JPanel implements Runnable {
                 mainMenu.draw(g2d);
                 break;
             case 2:
-                // System.out.println(character.posX + ", " + character.posY); // Debugging
+                //System.out.println(character.posX + ", " + character.posY); // Debugging
                 character.render(g2d);
 
                 for (int i = 0; i <= 1296; i += this.tileDims) {

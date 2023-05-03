@@ -17,7 +17,7 @@ class Main {
         win.setPreferredSize(new Dimension(Consts.screenWidth, Consts.screenHeight));
         win.setResizable(false);
         win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        GameLoop loop = new GameLoop(win);
+        GameLoop loop = new GameLoop();
         generateObstacles(10);
         win.add(loop);
         win.pack();
