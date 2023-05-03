@@ -18,34 +18,15 @@ public class GameCharacter extends Entity {
     }
     
     public void update() {
-        /* // Semi-works 
-        if (this.posX + this.width >= 800) {
-            this.posX = 800 - this.width;
-        }
-        if (this.posX <= 0) {
-            this.posX = 0;
-        }
-        // Semi-works 
-        if (this.posY + this.height >= 600) {
-            this.posY = 600 - this.height;
-        }
-        if (this.posY <= 0) {
-            this.posY = 0;
-        } */
 
-        if (keyHandler.latestHorizontalKey != null) {
-            switch (keyHandler.latestHorizontalKey) {
+        if (keyHandler.buttonPriorities.isEmpty()==false) {
+            switch (keyHandler.buttonPriorities.get(0)) {
                 case "A":
                     posX -= speed;
                     break;
                 case "D":
                     posX += speed;
                     break;
-            }
-        }
-        
-        if (keyHandler.latestVerticalKey != null) {
-            switch (keyHandler.latestVerticalKey) {
                 case "W":
                     posY -= speed;
                     break;

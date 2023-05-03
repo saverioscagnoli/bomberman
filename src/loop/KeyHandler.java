@@ -1,5 +1,7 @@
 package loop;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -8,6 +10,7 @@ import java.awt.event.MouseEvent;
 import entities.*;
 import menu.Button;
 import menu.Menu;
+import utils.Consts;
 
 /**
  * This class handles the key events for the game.
@@ -22,13 +25,13 @@ public class KeyHandler extends MouseAdapter implements KeyListener {
     private boolean aPressed = false;
     private boolean sPressed = false;
     private boolean dPressed = false;
+	 public List<String> buttonPriorities = new LinkedList<>()	;
 
     // variables for determining the latest key pressed for each direction
     public String latestHorizontalKey;
     public String latestVerticalKey;
 
     private GameLoop gameLoop;
-    private final int tileDims = 48;
 
     public KeyHandler(GameLoop gameLoop) {
         this.gameLoop = gameLoop;
@@ -62,32 +65,40 @@ public class KeyHandler extends MouseAdapter implements KeyListener {
             case KeyEvent.VK_W: {
                 wPressed = true;
                 latestVerticalKey = "W";
+					 if(buttonPriorities.contains("W")) break;
+					 buttonPriorities.add(0,"W");
                 break;
             }
 
             case KeyEvent.VK_A: {
                 aPressed = true;
                 latestHorizontalKey = "A";
+					 if (buttonPriorities.contains("A")) break;
+					 buttonPriorities.add(0,"A");
                 break;
             }
 
             case KeyEvent.VK_S: {
                 latestVerticalKey = "S";
                 sPressed = true;
+					 if (buttonPriorities.contains("S")) break;
+					 buttonPriorities.add(0,"S");
                 break;
             }
 
             case KeyEvent.VK_D: {
                 latestHorizontalKey = "D";
                 dPressed = true;
+					 if (buttonPriorities.contains("D")) break;
+					 buttonPriorities.add(0,"D");
                 break;
             }
 
             case KeyEvent.VK_SPACE: {
                 double pX = gameLoop.character.posX + gameLoop.character.width * 0.5;
                 double pY = gameLoop.character.posY + gameLoop.character.height * 0.5;
-                GameLoop.entities.add(new Entity((float) (pX - (pX % this.tileDims)),
-                        (float) (pY - (pY % this.tileDims)), this.tileDims, this.tileDims, 0));
+                GameLoop.entities.add(new Entity((float) (pX - (pX % Consts.tileDims)),
+                        (float) (pY - (pY % Consts.tileDims)), Consts.tileDims, Consts.tileDims, 0));
                 break;
             }
 
@@ -105,6 +116,7 @@ public class KeyHandler extends MouseAdapter implements KeyListener {
 
         if (keyCode == KeyEvent.VK_W) {
             wPressed = false;
+				buttonPriorities.remove("W");
             if (sPressed) {
                 latestVerticalKey = "S";
             } else {
@@ -112,6 +124,7 @@ public class KeyHandler extends MouseAdapter implements KeyListener {
             }
         } else if (keyCode == KeyEvent.VK_A) {
             aPressed = false;
+				buttonPriorities.remove("A");
             if (dPressed) {
                 latestHorizontalKey = "D";
             } else {
@@ -119,6 +132,7 @@ public class KeyHandler extends MouseAdapter implements KeyListener {
             }
         } else if (keyCode == KeyEvent.VK_S) {
             sPressed = false;
+				buttonPriorities.remove("S");
             if (wPressed) {
                 latestVerticalKey = "W";
             } else {
@@ -126,6 +140,7 @@ public class KeyHandler extends MouseAdapter implements KeyListener {
             }
         } else if (keyCode == KeyEvent.VK_D) {
             dPressed = false;
+				buttonPriorities.remove("D");
             if (aPressed) {
                 latestHorizontalKey = "A";
             } else {

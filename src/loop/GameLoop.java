@@ -12,6 +12,7 @@ import entities.Entity;
 import entities.GameCharacter;
 import menu.Button;
 import menu.Menu;
+import utils.Consts;
 
 public class GameLoop extends JPanel implements Runnable {
     private Thread thread; // Thread for the game loop
@@ -31,13 +32,15 @@ public class GameLoop extends JPanel implements Runnable {
 
     public KeyHandler keyHandler; // Delcaring keyhandler
     public GameCharacter character;
+	 public CollisionHandler collisionHandler;
 
     public float dt = 0;
 
     public GameLoop() {
         this.buttons = new ArrayList<Button>();
         keyHandler = new KeyHandler(this); // Create an instance of KeyHandler and passes the gameloop to it
-        character = new GameCharacter(characterX, characterY, 50, 50, 5, keyHandler, this); // Initialize character
+        character = new GameCharacter(characterX, characterY, 50, 50, 1, keyHandler, this); // Initialize character
+		  collisionHandler = new CollisionHandler(this, character);
         // after keyHandler
         this.addKeyListener(keyHandler); // Add KeyHandler as a key listener
         this.setFocusable(true); // Make the GameLoop focusable
@@ -90,6 +93,10 @@ public class GameLoop extends JPanel implements Runnable {
             case 1: // Menu
                 break;
             case 2: // In game
+				    collisionHandler.CheckCollisions(entities);
+					 double pX = this.character.posX + this.character.width * 0.5;
+                double pY = this.character.posY + this.character.height * 0.5;
+					 System.out.println((pX % Consts.tileDims));
                 character.update();
                 break;
         }
@@ -108,7 +115,6 @@ public class GameLoop extends JPanel implements Runnable {
                 mainMenu.draw(g2d);
                 break;
             case 2:
-                //System.out.println(character.posX + ", " + character.posY); // Debugging
                 character.render(g2d);
 
                 for (int i = 0; i <= 1296; i += this.tileDims) {
