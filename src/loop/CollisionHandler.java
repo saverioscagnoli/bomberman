@@ -16,6 +16,7 @@ public class CollisionHandler {
 	public List<int[]> tileToCheck = new ArrayList<int[]>();
 	private double pX, pY;
 	private String direction;
+	private int tile1,tile2;
 
 
 	public CollisionHandler(GameLoop gameLoop, GameCharacter character) {
@@ -29,23 +30,26 @@ public class CollisionHandler {
 		pY = gameLoop.character.posY + gameLoop.character.height * 0.5;  // TODO - levare sta cosa e metterlo su utils
 		this.entities = entities;
 		// First, we need to check for the character's direction.
-		if(!gameLoop.keyHandler.buttonPriorities.isEmpty()){
+		if(gameLoop.keyHandler.buttonPriorities.isEmpty()){} else {
 			this.direction = gameLoop.keyHandler.buttonPriorities.get(0); // gets direction from keyHandler
 		// Then, based on the direction, we need to check for the two grid squares that the character occupies in the given direction.
+
 		if(this.direction=="W" || this.direction=="S"){ // if the direction was vertical, we need to check the left and right grid squares.
-			if(pX % Consts.tileDims==0){ // if the division remainder is zero, it means it is centered, so we just need to check a single tile.
 				// if the direction is up, we need to check the tile above the character, else the one below.
-				if(this.direction=="W"){
-					int[] currentTile = {(int) (pX - (pX % Consts.tileDims)),(int) (pY - (pY % Consts.tileDims))-1};
-					tileToCheck.clear();
-					System.out.println(Arrays.toString(currentTile));
-					tileToCheck.add(currentTile);
-				}
+					tile1 = (int) (pX - (pX % Consts.tileDims));  // TODO - levare sta cosa e metterlo su utils .  // Considers the centermost tile as the first one
+					if (pX % Consts.tileDims<=24) // chooses the left or right tile based on the character's sub-grid position in the centermost tile
+						{tile2 = tile1 - Consts.tileDims;} 
+						else{tile2 = tile1 + Consts.tileDims;}
+					System.out.println(tile1 + " " + tile2);
 			}
+
+		else if(this.direction=="A" || this.direction=="D"){
+			// if the direction is left, we need to check the tile to the left of the character, else the one to the right.
+				tile1 = (int) (pY - (pY % Consts.tileDims));  // TODO - levare sta cosa e metterlo su utils .  // Considers the centermost tile as the first one
+				if (pY % Consts.tileDims<=24) // chooses the left or right tile based on the character's sub-grid position in the centermost tile
+					{tile2 = tile1 - Consts.tileDims;} 
+					else{tile2 = tile1 + Consts.tileDims;}
+				System.out.println(tile1 + " " + tile2);
 		}
 
-		else if(this.direction=="A" || this.direction=="D"){}
-
-		}
-	}
-}
+		}}}

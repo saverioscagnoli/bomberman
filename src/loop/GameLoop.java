@@ -96,7 +96,7 @@ public class GameLoop extends JPanel implements Runnable {
 				    collisionHandler.CheckCollisions(entities);
 					 double pX = this.character.posX + this.character.width * 0.5;
                 double pY = this.character.posY + this.character.height * 0.5;
-					 System.out.println((pX % Consts.tileDims));
+					//  System.out.println((pX % Consts.tileDims) + ", " + (pX - (pX % Consts.tileDims)));
                 character.update();
                 break;
         }
