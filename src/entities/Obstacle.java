@@ -8,6 +8,7 @@ import utils.Consts;
 
 public class Obstacle extends Entity {
   private static final int dims = 48;
+  public boolean isSolid = true;
 
   public Obstacle(float posX, float posY) {
     super(posX, posY, dims, dims, 0);

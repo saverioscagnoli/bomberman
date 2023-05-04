@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent;
 import entities.*;
 import menu.Button;
 import menu.Menu;
-import utils.Consts;
+import utils.*;
 
 /**
  * This class handles the key events for the game.
@@ -95,10 +95,8 @@ public class KeyHandler extends MouseAdapter implements KeyListener {
             }
 
             case KeyEvent.VK_SPACE: {
-                double pX = gameLoop.character.posX + gameLoop.character.width * 0.5;
-                double pY = gameLoop.character.posY + gameLoop.character.height * 0.5;
-                GameLoop.entities.add(new Entity((float) (pX - (pX % Consts.tileDims)),
-                        (float) (pY - (pY % Consts.tileDims)), Consts.tileDims, Consts.tileDims, 0));
+                int[] gridPos = Tools.getGridPos(gameLoop.character);
+                GameLoop.entities.add(new Entity(gridPos[0],gridPos[1],Consts.tileDims,Consts.tileDims,0));
                 break;
             }
 

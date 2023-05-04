@@ -39,6 +39,6 @@ public class GameCharacter extends Entity {
 
     public void render(Graphics2D g2d) {
         g2d.setColor(Color.GREEN); // Set the color to red for character
-        g2d.fillRect((int) gameLoop.character.posX,(int) gameLoop.character.posY, 50, 50); // Draw the character
+        g2d.fillRect((int) this.posX,(int) this.posY, this.width, this.height); // Draw the character
     }
 }

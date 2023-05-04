@@ -39,7 +39,7 @@ public class GameLoop extends JPanel implements Runnable {
     public GameLoop() {
         this.buttons = new ArrayList<Button>();
         keyHandler = new KeyHandler(this); // Create an instance of KeyHandler and passes the gameloop to it
-        character = new GameCharacter(characterX, characterY, 50, 50, 1, keyHandler, this); // Initialize character
+        character = new GameCharacter(characterX, characterY, 30, 30, 5, keyHandler, this); // Initialize character
 		  collisionHandler = new CollisionHandler(this, character);
         // after keyHandler
         this.addKeyListener(keyHandler); // Add KeyHandler as a key listener
@@ -93,10 +93,7 @@ public class GameLoop extends JPanel implements Runnable {
             case 1: // Menu
                 break;
             case 2: // In game
-				    collisionHandler.CheckCollisions(entities);
-					 double pX = this.character.posX + this.character.width * 0.5;
-                double pY = this.character.posY + this.character.height * 0.5;
-					//  System.out.println((pX % Consts.tileDims) + ", " + (pX - (pX % Consts.tileDims)));
+				collisionHandler.CheckCollisions(entities);
                 character.update();
                 break;
         }
