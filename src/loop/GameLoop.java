@@ -12,7 +12,6 @@ import entities.Entity;
 import entities.GameCharacter;
 import menu.Button;
 import menu.Menu;
-import utils.Consts;
 
 public class GameLoop extends JPanel implements Runnable {
     private Thread thread; // Thread for the game loop

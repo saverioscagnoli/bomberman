@@ -8,5 +8,6 @@ package utils;
 public class Consts {
   public static final int screenWidth = 1296;
   public static final int screenHeight = 768;
-  public static final int tileDims = 48;  
+  public static final int tileDims = 48;
+  public static final String progressPath = "data/progress.bmb";
 }
