@@ -1,6 +1,5 @@
 package menu;
 
-
 public class Button {
   public String label;
   public boolean visible;
@@ -9,7 +8,7 @@ public class Button {
   public final int width;
   public final int height;
   public String uuid;
-  
+
   public Button(String uuid, String label, boolean visible, int x, int y, int w, int h) {
     this.uuid = uuid;
     this.visible = visible;

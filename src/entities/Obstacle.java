@@ -23,13 +23,13 @@ public class Obstacle extends Entity {
     this.posY = (float) (pY - (pY % Consts.tileDims));
   }
 
- public void update() {
-  // If the obstacle is hit by a bomb, delete itself
+  public void update() {
+    // If the obstacle is hit by a bomb, delete itself
 
-  if (/* TODO collision with bomb check */ false) {
-    GameLoop.entities.remove(GameLoop.entities.indexOf(this));
+    if (/* TODO collision with bomb check */ false) {
+      GameLoop.entities.remove(GameLoop.entities.indexOf(this));
+    }
   }
- }
 
   public void render(Graphics2D g2d) {
     g2d.setColor(Color.RED);

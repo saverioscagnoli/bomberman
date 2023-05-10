@@ -32,11 +32,11 @@ public class SaveManager {
   }
 
   public static void incrementLevel() {
-      ArrayList<ArrayList<String>> kv = SaveManager.readProgress();
-      ArrayList<String> v = kv.get(1);
-      int lvl = Integer.parseInt(v.get(0));
-      v.set(0, "" + (lvl + 1));
-      SaveManager.writeProgressFromKV(kv);
+    ArrayList<ArrayList<String>> kv = SaveManager.readProgress();
+    ArrayList<String> v = kv.get(1);
+    int lvl = Integer.parseInt(v.get(0));
+    v.set(0, "" + (lvl + 1));
+    SaveManager.writeProgressFromKV(kv);
   }
 
   private static ArrayList<ArrayList<String>> getProgressStats(BufferedReader br, FileInputStream fs) {

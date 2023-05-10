@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class Entity {
-    public  float posX, posY;
+    public float posX, posY;
     public int width, height;
     public int speed;
 
@@ -16,10 +16,10 @@ public class Entity {
         this.speed = speed;
     }
 
-    public void update(){
+    public void update() {
     }
 
-    public void render(Graphics2D g2d){
+    public void render(Graphics2D g2d) {
         g2d.setColor(Color.BLUE);
         g2d.fillRect((int) posX, (int) posY, width, height);
     }

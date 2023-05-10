@@ -15,8 +15,6 @@ class Main {
     public static void main(String[] args) throws IOException {
         System.setProperty("sun.java2d.opengl", "true"); // Enabling OpenGL Drivers. Only tested on my machine, but
         // incredible performance gain!
-
-        SaveManager.incrementLevel();
         JFrame win = new JFrame("bomberman");
         win.setPreferredSize(new Dimension(Consts.screenWidth, Consts.screenHeight));
         win.setResizable(false);

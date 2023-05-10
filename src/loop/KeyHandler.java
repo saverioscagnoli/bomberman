@@ -25,7 +25,7 @@ public class KeyHandler extends MouseAdapter implements KeyListener {
     private boolean aPressed = false;
     private boolean sPressed = false;
     private boolean dPressed = false;
-	 public List<String> buttonPriorities = new LinkedList<>()	;
+    public List<String> buttonPriorities = new LinkedList<>();
 
     // variables for determining the latest key pressed for each direction
     public String latestHorizontalKey;
@@ -65,38 +65,42 @@ public class KeyHandler extends MouseAdapter implements KeyListener {
             case KeyEvent.VK_W: {
                 wPressed = true;
                 latestVerticalKey = "W";
-					 if(buttonPriorities.contains("W")) break;
-					 buttonPriorities.add(0,"W");
+                if (buttonPriorities.contains("W"))
+                    break;
+                buttonPriorities.add(0, "W");
                 break;
             }
 
             case KeyEvent.VK_A: {
                 aPressed = true;
                 latestHorizontalKey = "A";
-					 if (buttonPriorities.contains("A")) break;
-					 buttonPriorities.add(0,"A");
+                if (buttonPriorities.contains("A"))
+                    break;
+                buttonPriorities.add(0, "A");
                 break;
             }
 
             case KeyEvent.VK_S: {
                 latestVerticalKey = "S";
                 sPressed = true;
-					 if (buttonPriorities.contains("S")) break;
-					 buttonPriorities.add(0,"S");
+                if (buttonPriorities.contains("S"))
+                    break;
+                buttonPriorities.add(0, "S");
                 break;
             }
 
             case KeyEvent.VK_D: {
                 latestHorizontalKey = "D";
                 dPressed = true;
-					 if (buttonPriorities.contains("D")) break;
-					 buttonPriorities.add(0,"D");
+                if (buttonPriorities.contains("D"))
+                    break;
+                buttonPriorities.add(0, "D");
                 break;
             }
 
             case KeyEvent.VK_SPACE: {
                 int[] gridPos = Tools.getGridPos(gameLoop.character);
-                GameLoop.entities.add(new Entity(gridPos[0],gridPos[1],Consts.tileDims,Consts.tileDims,0));
+                GameLoop.entities.add(new Entity(gridPos[0], gridPos[1], Consts.tileDims, Consts.tileDims, 0));
                 break;
             }
 
@@ -114,7 +118,7 @@ public class KeyHandler extends MouseAdapter implements KeyListener {
 
         if (keyCode == KeyEvent.VK_W) {
             wPressed = false;
-				buttonPriorities.remove("W");
+            buttonPriorities.remove("W");
             if (sPressed) {
                 latestVerticalKey = "S";
             } else {
@@ -122,7 +126,7 @@ public class KeyHandler extends MouseAdapter implements KeyListener {
             }
         } else if (keyCode == KeyEvent.VK_A) {
             aPressed = false;
-				buttonPriorities.remove("A");
+            buttonPriorities.remove("A");
             if (dPressed) {
                 latestHorizontalKey = "D";
             } else {
@@ -130,7 +134,7 @@ public class KeyHandler extends MouseAdapter implements KeyListener {
             }
         } else if (keyCode == KeyEvent.VK_S) {
             sPressed = false;
-				buttonPriorities.remove("S");
+            buttonPriorities.remove("S");
             if (wPressed) {
                 latestVerticalKey = "W";
             } else {
@@ -138,7 +142,7 @@ public class KeyHandler extends MouseAdapter implements KeyListener {
             }
         } else if (keyCode == KeyEvent.VK_D) {
             dPressed = false;
-				buttonPriorities.remove("D");
+            buttonPriorities.remove("D");
             if (aPressed) {
                 latestHorizontalKey = "A";
             } else {

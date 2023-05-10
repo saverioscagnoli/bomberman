@@ -31,7 +31,7 @@ public class GameLoop extends JPanel implements Runnable {
 
     public KeyHandler keyHandler; // Delcaring keyhandler
     public GameCharacter character;
-	 public CollisionHandler collisionHandler;
+    public CollisionHandler collisionHandler;
 
     public float dt = 0;
 
@@ -39,7 +39,7 @@ public class GameLoop extends JPanel implements Runnable {
         this.buttons = new ArrayList<Button>();
         keyHandler = new KeyHandler(this); // Create an instance of KeyHandler and passes the gameloop to it
         character = new GameCharacter(characterX, characterY, 30, 30, 5, keyHandler, this); // Initialize character
-		  collisionHandler = new CollisionHandler(this, character);
+        collisionHandler = new CollisionHandler(this, character);
         // after keyHandler
         this.addKeyListener(keyHandler); // Add KeyHandler as a key listener
         this.setFocusable(true); // Make the GameLoop focusable
@@ -92,7 +92,7 @@ public class GameLoop extends JPanel implements Runnable {
             case 1: // Menu
                 break;
             case 2: // In game
-				collisionHandler.CheckCollisions(entities);
+                collisionHandler.CheckCollisions(entities);
                 character.update();
                 break;
         }
