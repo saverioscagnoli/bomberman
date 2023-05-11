@@ -2,8 +2,6 @@ package entities;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-
-import loop.GameLoop;
 import utils.Consts;
 
 public class Obstacle extends Entity {
@@ -26,9 +24,9 @@ public class Obstacle extends Entity {
   public void update() {
     // If the obstacle is hit by a bomb, delete itself
 
-    if (/* TODO collision with bomb check */ false) {
+    /* if (collision with bomb) {
       GameLoop.entities.remove(GameLoop.entities.indexOf(this));
-    }
+    } */
   }
 
   public void render(Graphics2D g2d) {

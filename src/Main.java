@@ -4,7 +4,6 @@ import javax.swing.JFrame;
 import entities.Obstacle;
 import loop.GameLoop;
 import utils.Consts;
-import utils.SaveManager;
 
 import java.util.ArrayList;
 import java.util.Random;
