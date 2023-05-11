@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import entities.Obstacle;
 import loop.GameLoop;
 import utils.Consts;
+import utils.SaveManager;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,6 +16,7 @@ class Main {
         System.setProperty("sun.java2d.opengl", "true"); // Enabling OpenGL Drivers. Only tested on my machine, but
         // incredible performance gain!
         JFrame win = new JFrame("bomberman");
+        SaveManager.incrementLevel();
         win.setPreferredSize(new Dimension(Consts.screenWidth, Consts.screenHeight));
         win.setResizable(false);
         win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
