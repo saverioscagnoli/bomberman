@@ -40,7 +40,7 @@ public class CollisionHandler {
 																														// and right grid squares.
 				// if the direction is up, we need to check the tile above the character, else
 				// the one below.
-				int[] currentPos = Utils.getGridPos(character); // get nearest grid position for the first tile
+				int[] currentPos = Utils.normalizeCharacterPos(character); // get nearest grid position for the first tile
 				int tile1 = currentPos[0];
 				if (pX % Consts.tileDims <= 24) // chooses the left or right tile based on the character's sub-grid position in
 																				// the centermost tile

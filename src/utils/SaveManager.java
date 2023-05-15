@@ -7,7 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class SaveManager {
+public abstract class SaveManager {
   public static HashMap<String, String> readProgress() {
     HashMap<String, String> data = new HashMap<String, String>();
     try {

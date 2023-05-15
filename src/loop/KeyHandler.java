@@ -113,7 +113,7 @@ public class KeyHandler extends MouseAdapter implements KeyListener {
             }
 
             case KeyEvent.VK_SPACE: {
-                int[] gridPos = Utils.getGridPos(gameLoop.character);
+                int[] gridPos = Utils.normalizeCharacterPos(gameLoop.character);
                 GameLoop.entities.add(new Entity(gridPos[0], gridPos[1], Consts.tileDims, Consts.tileDims, 0));
                 break;
             }
