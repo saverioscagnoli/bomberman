@@ -10,8 +10,8 @@ import java.util.List;
 
 import entities.Entity;
 import entities.GameCharacter;
-import menu.Button;
-import menu.Menu;
+import ui.Button;
+import ui.Menus;
 
 public class GameLoop extends JPanel implements Runnable {
     private Thread thread; // Thread for the game loop
@@ -107,8 +107,7 @@ public class GameLoop extends JPanel implements Runnable {
 
         switch (this.gameState) {
             case 1:
-                Menu mainMenu = new Menu(this);
-                mainMenu.draw(g2d);
+                Menus.mainMenu.draw(g2d);
                 break;
             case 2:
                 character.render(g2d);
@@ -126,6 +125,10 @@ public class GameLoop extends JPanel implements Runnable {
                     e.render(g2d);
                 }
                 break;
+            case 4: {
+                Menus.pauseMenu.draw(g2d);
+                break;
+            }
         }
     }
 }

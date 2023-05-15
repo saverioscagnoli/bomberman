@@ -3,6 +3,9 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import entities.Obstacle;
 import loop.GameLoop;
+import ui.MainMenu;
+import ui.Menus;
+import ui.PauseMenu;
 import utils.Consts;
 
 import java.util.ArrayList;
@@ -19,6 +22,9 @@ class Main {
         win.setResizable(false);
         win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         GameLoop loop = new GameLoop();
+        Menus.mainMenu = new MainMenu(loop);
+        Menus.pauseMenu = new PauseMenu(loop);
+
         generateObstacles(10);
         win.add(loop);
         win.pack();

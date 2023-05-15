@@ -8,8 +8,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import entities.*;
-import menu.Button;
-import menu.Menu;
+import ui.Button;
+import ui.Menus;
 import utils.*;
 
 /**
@@ -40,15 +40,29 @@ public class KeyHandler extends MouseAdapter implements KeyListener {
             public void mousePressed(MouseEvent e) {
                 int x = e.getX();
                 int y = e.getY();
-                for (Button btn : Menu.buttons) {
-                    if ((x >= btn.x && x <= btn.x + btn.width) && (y >= btn.y && y <= btn.y + btn.height)) {
-                        switch (btn.uuid) {
-                            case "s":
-                                gameLoop.gameState = 2;
-                                break;
-                            case "q":
-                                System.exit(0);
-                                break;
+                if (gameLoop.gameState == 1) {
+                    for (Button btn : Menus.mainMenu.buttons) {
+                        if (Utils.buttonClick(x, y, btn)) {
+                            switch (btn.uuid) {
+                                case "s":
+                                    gameLoop.gameState = 2;
+                                    break;
+                                case "q":
+                                        System.exit(0);
+                                    break;
+    
+                            }
+                        }
+                    }
+                }
+                if (gameLoop.gameState == 4) {
+                    for (Button btn : Menus.pauseMenu.buttons) {
+                        if (Utils.buttonClick(x, y, btn)) {
+                            switch (btn.uuid) {
+                                case "r": {
+                                    gameLoop.gameState = 2;
+                                }
+                            }
                         }
                     }
                 }
@@ -99,13 +113,17 @@ public class KeyHandler extends MouseAdapter implements KeyListener {
             }
 
             case KeyEvent.VK_SPACE: {
-                int[] gridPos = Tools.getGridPos(gameLoop.character);
+                int[] gridPos = Utils.getGridPos(gameLoop.character);
                 GameLoop.entities.add(new Entity(gridPos[0], gridPos[1], Consts.tileDims, Consts.tileDims, 0));
                 break;
             }
 
             case KeyEvent.VK_ESCAPE: {
-                System.exit(0);
+                if (this.gameLoop.gameState == 2) {
+                    this.gameLoop.gameState = 4;
+                } else if (this.gameLoop.gameState == 4) {
+                    this.gameLoop.gameState = 2;
+                }
                 break;
             }
         }

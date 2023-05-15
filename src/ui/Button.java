@@ -1,20 +1,20 @@
-package menu;
+package ui;
 
 public class Button {
-  public String label;
-  public boolean visible;
+  public final String label;
   public final int x;
   public final int y;
+  public final int offsetY;
   public final int width;
   public final int height;
-  public String uuid;
+  public final String uuid;
 
-  public Button(String uuid, String label, boolean visible, int x, int y, int w, int h) {
+  public Button(String uuid, String label, int x, int y, int offsetY, int w, int h) {
     this.uuid = uuid;
-    this.visible = visible;
     this.label = label;
     this.x = x;
     this.y = y;
+    this.offsetY = offsetY;
     this.width = w;
     this.height = h;
   }
