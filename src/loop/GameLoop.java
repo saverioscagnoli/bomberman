@@ -29,7 +29,7 @@ public class GameLoop extends JPanel implements Runnable {
 
     public static List<Entity> entities = new ArrayList<Entity>();
 
-    public KeyHandler keyHandler; // Delcaring keyhandler
+    public Controller keyHandler; // Delcaring keyhandler
     public GameCharacter character;
     public CollisionHandler collisionHandler;
 
@@ -37,7 +37,7 @@ public class GameLoop extends JPanel implements Runnable {
 
     public GameLoop() {
         this.buttons = new ArrayList<Button>();
-        keyHandler = new KeyHandler(this); // Create an instance of KeyHandler and passes the gameloop to it
+        keyHandler = new Controller(this); // Create an instance of KeyHandler and passes the gameloop to it
         character = new GameCharacter(characterX, characterY, 30, 30, 5, keyHandler, this); // Initialize character
         collisionHandler = new CollisionHandler(this, character);
         // after keyHandler

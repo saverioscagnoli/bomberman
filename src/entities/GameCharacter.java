@@ -4,14 +4,14 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import loop.GameLoop;
-import loop.KeyHandler;
+import loop.Controller;
 
 public class GameCharacter extends Entity {
 
-    KeyHandler keyHandler;
+    Controller keyHandler;
     GameLoop gameLoop;
 
-    public GameCharacter(float posX, float posY, int width, int height, int speed, KeyHandler keyHandler,
+    public GameCharacter(float posX, float posY, int width, int height, int speed, Controller keyHandler,
             GameLoop gameLoop) {
         super(posX, posY, width, height, speed);
         this.gameLoop = gameLoop;

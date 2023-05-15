@@ -18,7 +18,7 @@ import utils.*;
  * It also determines the direction of the player.
  */
 
-public class KeyHandler extends MouseAdapter implements KeyListener {
+public class Controller extends MouseAdapter implements KeyListener {
 
     // variables for keys taht are currently pressed
     private boolean wPressed = false;
@@ -31,21 +31,21 @@ public class KeyHandler extends MouseAdapter implements KeyListener {
     public String latestHorizontalKey;
     public String latestVerticalKey;
 
-    private GameLoop gameLoop;
+    private GameLoop loop;
 
-    public KeyHandler(GameLoop gameLoop) {
-        this.gameLoop = gameLoop;
-        gameLoop.addMouseListener(new MouseAdapter() {
+    public Controller(GameLoop loop) {
+        this.loop = loop;
+        loop.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 int x = e.getX();
                 int y = e.getY();
-                if (gameLoop.gameState == 1) {
+                if (loop.gameState == 1) {
                     for (Button btn : Menus.mainMenu.buttons) {
                         if (Utils.buttonClick(x, y, btn)) {
                             switch (btn.uuid) {
                                 case "s":
-                                    gameLoop.gameState = 2;
+                                    loop.gameState = 2;
                                     break;
                                 case "q":
                                         System.exit(0);
@@ -55,12 +55,12 @@ public class KeyHandler extends MouseAdapter implements KeyListener {
                         }
                     }
                 }
-                if (gameLoop.gameState == 4) {
+                if (loop.gameState == 4) {
                     for (Button btn : Menus.pauseMenu.buttons) {
                         if (Utils.buttonClick(x, y, btn)) {
                             switch (btn.uuid) {
                                 case "r": {
-                                    gameLoop.gameState = 2;
+                                    loop.gameState = 2;
                                 }
                             }
                         }
@@ -113,16 +113,16 @@ public class KeyHandler extends MouseAdapter implements KeyListener {
             }
 
             case KeyEvent.VK_SPACE: {
-                int[] gridPos = Utils.normalizeCharacterPos(gameLoop.character);
+                int[] gridPos = Utils.normalizeCharacterPos(loop.character);
                 GameLoop.entities.add(new Entity(gridPos[0], gridPos[1], Consts.tileDims, Consts.tileDims, 0));
                 break;
             }
 
             case KeyEvent.VK_ESCAPE: {
-                if (this.gameLoop.gameState == 2) {
-                    this.gameLoop.gameState = 4;
-                } else if (this.gameLoop.gameState == 4) {
-                    this.gameLoop.gameState = 2;
+                if (this.loop.gameState == 2) {
+                    this.loop.gameState = 4;
+                } else if (this.loop.gameState == 4) {
+                    this.loop.gameState = 2;
                 }
                 break;
             }
