@@ -2,12 +2,11 @@ package entities;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-
-import loop.GameLoop;
 import utils.Consts;
 
 public class Obstacle extends Entity {
   private static final int dims = 48;
+  public boolean isSolid = true;
 
   public Obstacle(float posX, float posY) {
     super(posX, posY, dims, dims, 0);
@@ -22,13 +21,13 @@ public class Obstacle extends Entity {
     this.posY = (float) (pY - (pY % Consts.tileDims));
   }
 
- public void update() {
-  // If the obstacle is hit by a bomb, delete itself
+  public void update() {
+    // If the obstacle is hit by a bomb, delete itself
 
-  if (/* TODO collision with bomb check */ false) {
-    GameLoop.entities.remove(GameLoop.entities.indexOf(this));
+    /* if (collision with bomb) {
+      GameLoop.entities.remove(GameLoop.entities.indexOf(this));
+    } */
   }
- }
 
   public void render(Graphics2D g2d) {
     g2d.setColor(Color.RED);

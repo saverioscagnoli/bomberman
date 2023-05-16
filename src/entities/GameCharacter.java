@@ -4,22 +4,23 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import loop.GameLoop;
-import loop.KeyHandler;
+import loop.Controller;
 
 public class GameCharacter extends Entity {
 
-    KeyHandler keyHandler;
+    Controller keyHandler;
     GameLoop gameLoop;
 
-    public GameCharacter(float posX, float posY, int width, int height, int speed, KeyHandler keyHandler, GameLoop gameLoop) {
+    public GameCharacter(float posX, float posY, int width, int height, int speed, Controller keyHandler,
+            GameLoop gameLoop) {
         super(posX, posY, width, height, speed);
         this.gameLoop = gameLoop;
         this.keyHandler = keyHandler;
     }
-    
+
     public void update() {
 
-        if (keyHandler.buttonPriorities.isEmpty()==false) {
+        if (keyHandler.buttonPriorities.isEmpty() == false) {
             switch (keyHandler.buttonPriorities.get(0)) {
                 case "A":
                     posX -= speed;
@@ -39,6 +40,6 @@ public class GameCharacter extends Entity {
 
     public void render(Graphics2D g2d) {
         g2d.setColor(Color.GREEN); // Set the color to red for character
-        g2d.fillRect((int) gameLoop.character.posX,(int) gameLoop.character.posY, 50, 50); // Draw the character
+        g2d.fillRect((int) this.posX, (int) this.posY, this.width, this.height); // Draw the character
     }
 }
