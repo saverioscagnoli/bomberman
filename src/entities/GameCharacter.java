@@ -102,7 +102,7 @@ public class GameCharacter extends Entity {
             if (spriteNum==7) {image=left7;}
             break;
         }
-        g2d.drawImage(image, (int) posX, (int) posY, width*2, height*2, null);
+        g2d.drawImage(image, (int) posX, (int) posY, (width/3)*5, (height/3)*5, null);
     }
 
     public void playerSprite(){
