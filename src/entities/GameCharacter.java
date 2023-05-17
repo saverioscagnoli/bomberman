@@ -47,7 +47,7 @@ public class GameCharacter extends Entity {
                     break;
             }
             spriteCounter++;
-            if (spriteCounter>2){
+            if (spriteCounter>3){
                 if (spriteNum==1){spriteNum=2;}
                 else if (spriteNum==2){spriteNum=3;}
                 else if (spriteNum==3){spriteNum=4;}
@@ -102,7 +102,7 @@ public class GameCharacter extends Entity {
             if (spriteNum==7) {image=left7;}
             break;
         }
-        g2d.drawImage(image, (int) posX, (int) posY, width*2, height*2, null);
+        g2d.drawImage(image, (int) posX, (int) posY, (width/3)*5, (height/3)*5, null);
     }
 
     public void playerSprite(){
