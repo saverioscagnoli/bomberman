@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 
 import loop.GameLoop;
 import loop.Controller;
+import utils.CollisionChecker;
 
 public class GameCharacter extends Entity {
 
@@ -30,18 +31,50 @@ public class GameCharacter extends Entity {
         if (keyHandler.buttonPriorities.isEmpty() == false) {
             switch (keyHandler.buttonPriorities.get(0)) {
                 case "A":
+                    for(Entity entity : CollisionChecker.adjacentEntities){
+                        if (entity==null){continue;}
+                        if(CollisionChecker.checkCollision(entity,(int) posX-speed,(int) posY, width, height)){
+                            posX=entity.posX+entity.width+2;
+                            posX+=speed;
+                            break;
+                        }
+                    }
                     posX -= speed;
                     direction="left";
                     break;
                 case "D":
+                    for(Entity entity : CollisionChecker.adjacentEntities){
+                        if (entity==null){continue;}
+                        if(CollisionChecker.checkCollision(entity,(int) posX+speed,(int) posY, width, height)){
+                               posX=entity.posX-width-1;
+                               posX-=speed;
+                               break;
+                        }
+                    }
                     posX += speed;
                     direction="right";
                     break;
                 case "W":
+                    for(Entity entity : CollisionChecker.adjacentEntities){
+                        if (entity==null){continue;}
+                        if(CollisionChecker.checkCollision(entity,(int) posX,(int) posY-speed, width, height)){
+                            posY=entity.posY+entity.height+2;
+                            posY+=speed;
+                            break;
+                        }
+                    }
                     posY -= speed;
                     direction="up";
                     break;
                 case "S":
+                    for(Entity entity : CollisionChecker.adjacentEntities){
+                        if (entity==null){continue;}
+                        if(CollisionChecker.checkCollision(entity,(int) posX,(int) posY+speed, width, height)){
+                            posY=entity.posY-height-1;
+                            posY-=speed;
+                            break;
+                        }
+                    }
                     posY += speed;
                     direction="down";
                     break;
@@ -102,7 +135,7 @@ public class GameCharacter extends Entity {
             if (spriteNum==7) {image=left7;}
             break;
         }
-        g2d.drawImage(image, (int) posX, (int) posY, (width/3)*5, (height/3)*5, null);
+        g2d.drawImage(image, (int) posX-15, (int) posY-20, width*2, height*2, null);
     }
 
     public void playerSprite(){
