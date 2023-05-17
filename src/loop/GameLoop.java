@@ -12,6 +12,7 @@ import entities.Entity;
 import entities.GameCharacter;
 import ui.Button;
 import ui.Menus;
+import utils.CollisionChecker;
 
 public class GameLoop extends JPanel implements Runnable {
     private Thread thread; // Thread for the game loop
@@ -31,7 +32,6 @@ public class GameLoop extends JPanel implements Runnable {
 
     public Controller keyHandler; // Delcaring keyhandler
     public GameCharacter character;
-    public CollisionHandler collisionHandler;
 
     public float dt = 0;
 
@@ -39,7 +39,6 @@ public class GameLoop extends JPanel implements Runnable {
         this.buttons = new ArrayList<Button>();
         keyHandler = new Controller(this); // Create an instance of KeyHandler and passes the gameloop to it
         character = new GameCharacter(characterX, characterY, 30, 30, 5, keyHandler, this); // Initialize character
-        collisionHandler = new CollisionHandler(this, character);
         // after keyHandler
         this.addKeyListener(keyHandler); // Add KeyHandler as a key listener
         this.setFocusable(true); // Make the GameLoop focusable
@@ -92,7 +91,7 @@ public class GameLoop extends JPanel implements Runnable {
             case 1: // Menu
                 break;
             case 2: // In game
-                collisionHandler.CheckCollisions(entities);
+                CollisionChecker.updateAdjacentEntities(character, entities);
                 character.update();
                 break;
         }
@@ -111,6 +110,7 @@ public class GameLoop extends JPanel implements Runnable {
                 break;
             case 2:
                 character.render(g2d);
+                g2d.fillRect((int)character.posX, (int)character.posY, (int)character.width,(int) character.height);
 
                 for (int i = 0; i <= 1296; i += this.tileDims) {
                     g2d.drawLine(i, 0, i, 768);
