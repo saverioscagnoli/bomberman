@@ -32,7 +32,7 @@ public class GameCharacter extends Entity {
             switch (keyHandler.buttonPriorities.get(0)) {
                 case "A":
                     for(Entity entity : CollisionChecker.adjacentEntities){
-                        if (entity==null){continue;}
+							if (entity==null || entity.isSolid==false) continue;
                         if(CollisionChecker.checkCollision(entity,(int) posX-speed,(int) posY, width, height)){
                             posX=entity.posX+entity.width+2;
                             posX+=speed;
@@ -44,7 +44,7 @@ public class GameCharacter extends Entity {
                     break;
                 case "D":
                     for(Entity entity : CollisionChecker.adjacentEntities){
-                        if (entity==null){continue;}
+							if (entity==null || entity.isSolid==false) continue;
                         if(CollisionChecker.checkCollision(entity,(int) posX+speed,(int) posY, width, height)){
                                posX=entity.posX-width-1;
                                posX-=speed;
@@ -56,7 +56,8 @@ public class GameCharacter extends Entity {
                     break;
                 case "W":
                     for(Entity entity : CollisionChecker.adjacentEntities){
-                        if (entity==null){continue;}
+                        if (entity==null || entity.isSolid==false) continue;
+								System.out.println(entity.isSolid);
                         if(CollisionChecker.checkCollision(entity,(int) posX,(int) posY-speed, width, height)){
                             posY=entity.posY+entity.height+2;
                             posY+=speed;
@@ -68,7 +69,7 @@ public class GameCharacter extends Entity {
                     break;
                 case "S":
                     for(Entity entity : CollisionChecker.adjacentEntities){
-                        if (entity==null){continue;}
+							if (entity==null || entity.isSolid==false) continue;
                         if(CollisionChecker.checkCollision(entity,(int) posX,(int) posY+speed, width, height)){
                             posY=entity.posY-height-1;
                             posY-=speed;

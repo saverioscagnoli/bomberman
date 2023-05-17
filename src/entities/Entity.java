@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 public class Entity {
+	 public boolean isSolid = false;
     public float posX, posY;
     public int width, height;
     public int speed;

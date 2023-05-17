@@ -12,6 +12,7 @@ import java.io.IOException;
 public class Bomb extends Entity {
     public Bomb(float posX, float posY, int width, int height, int speed) {
         super(posX, posY, width, height, speed);
+		  this.isSolid = false;
         //bombSprite();
         //update();
         //direction="up";
