@@ -13,6 +13,8 @@ public class Bomb extends Entity {
     public Bomb(float posX, float posY, int width, int height, int speed) {
         super(posX, posY, width, height, speed);
 		  this.isSolid = false;
+          try {bombSprite=ImageIO.read(getClass().getResourceAsStream("/spritesheet/bombs.png"));}
+          catch (IOException e){e.printStackTrace();}
         //bombSprite();
         //update();
         //direction="up";
@@ -34,8 +36,7 @@ public class Bomb extends Entity {
     public void render(Graphics2D g2d) {
         //g2d.setColor(Color.BLUE);
         //g2d.fillRect((int) posX, (int) posY, width, height);
-        try {bombSprite=ImageIO.read(getClass().getResourceAsStream("/spritesheet/bombs.png"));}
-        catch (IOException e){e.printStackTrace();}
+
         //BufferedImage bombSprite=null;
         //switch (direction){
         //    case "right":{imageb=rightb;}
