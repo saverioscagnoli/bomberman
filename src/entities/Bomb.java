@@ -44,6 +44,6 @@ public class Bomb extends Entity {
         //    case "up":{imageb=rightb;}
         //    case "down":{imageb=leftb;}
         //}
-        g2d.drawImage(bombSprite, (int) posX, (int) posY, width, height, null);
+        g2d.drawImage(bombSprite, (int) posX-25, (int) posY-25, width*2, height*2, null);
     }
 }
