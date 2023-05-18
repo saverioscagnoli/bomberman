@@ -10,6 +10,7 @@ import java.util.List;
 
 import entities.Entity;
 import entities.GameCharacter;
+import entities.PowerUp;
 import ui.Button;
 import ui.Menus;
 import utils.CollisionChecker;
@@ -40,6 +41,11 @@ public class GameLoop extends JPanel implements Runnable {
         keyHandler = new Controller(this); // Create an instance of KeyHandler and passes the gameloop to it
         character = new GameCharacter(characterX, characterY, 30, 30, 5, keyHandler, this); // Initialize character
         // after keyHandler
+
+		  //create a powerup in a random location aligned to grid tiles
+		  entities.add(new PowerUp((int)(Math.random()*10)*tileDims,(int)(Math.random()*10)*tileDims, tileDims, tileDims, 0));
+
+
         this.addKeyListener(keyHandler); // Add KeyHandler as a key listener
         this.setFocusable(true); // Make the GameLoop focusable
         setDoubleBuffered(true);

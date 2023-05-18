@@ -32,8 +32,8 @@ public class GameCharacter extends Entity {
             switch (keyHandler.buttonPriorities.get(0)) {
                 case "A":
                     for(Entity entity : CollisionChecker.adjacentEntities){
-							if (entity==null || entity.isSolid==false) continue;
-                        if(CollisionChecker.checkCollision(entity,(int) posX-speed,(int) posY, width, height)){
+							if (entity==null) continue;
+                        if(CollisionChecker.checkCollision(entity,this,	"left")){
                             posX=entity.posX+entity.width+2;
                             posX+=speed;
                             break;
@@ -44,8 +44,8 @@ public class GameCharacter extends Entity {
                     break;
                 case "D":
                     for(Entity entity : CollisionChecker.adjacentEntities){
-							if (entity==null || entity.isSolid==false) continue;
-                        if(CollisionChecker.checkCollision(entity,(int) posX+speed,(int) posY, width, height)){
+							if (entity==null) continue;
+                        if(CollisionChecker.checkCollision(entity,this,"right")){
                                posX=entity.posX-width-1;
                                posX-=speed;
                                break;
@@ -56,21 +56,20 @@ public class GameCharacter extends Entity {
                     break;
                 case "W":
                     for(Entity entity : CollisionChecker.adjacentEntities){
-                        if (entity==null || entity.isSolid==false) continue;
-								System.out.println(entity.isSolid);
-                        if(CollisionChecker.checkCollision(entity,(int) posX,(int) posY-speed, width, height)){
-                            posY=entity.posY+entity.height+2;
-                            posY+=speed;
+                        if (entity==null) continue;
+                        if(CollisionChecker.checkCollision(entity,this,"up")){
+									 posY=entity.posY+entity.height+2;
+									 posY+=speed;
                             break;
                         }
                     }
-                    posY -= speed;
+                   	posY -= speed;
                     direction="up";
                     break;
                 case "S":
                     for(Entity entity : CollisionChecker.adjacentEntities){
-							if (entity==null || entity.isSolid==false) continue;
-                        if(CollisionChecker.checkCollision(entity,(int) posX,(int) posY+speed, width, height)){
+							if (entity==null) continue;
+                        if(CollisionChecker.checkCollision(entity,this,"down")){
                             posY=entity.posY-height-1;
                             posY-=speed;
                             break;
