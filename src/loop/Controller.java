@@ -40,27 +40,27 @@ public class Controller extends MouseAdapter implements KeyListener {
             public void mousePressed(MouseEvent e) {
                 int x = e.getX();
                 int y = e.getY();
-                if (loop.gameState == 1) {
+                if (loop.gameState == Consts.MENU) {
                     for (Button btn : Menus.mainMenu.buttons) {
                         if (Utils.buttonClick(x, y, btn)) {
                             switch (btn.uuid) {
                                 case "s":
-                                    loop.gameState = 2;
+                                    loop.gameState = Consts.IN_GAME;
                                     break;
                                 case "q":
-                                        System.exit(0);
+                                    System.exit(0);
                                     break;
-    
+
                             }
                         }
                     }
                 }
-                if (loop.gameState == 4) {
+                if (loop.gameState == Consts.PAUSE) {
                     for (Button btn : Menus.pauseMenu.buttons) {
                         if (Utils.buttonClick(x, y, btn)) {
                             switch (btn.uuid) {
                                 case "r": {
-                                    loop.gameState = 2;
+                                    loop.gameState = Consts.IN_GAME;
                                 }
                             }
                         }
@@ -119,10 +119,10 @@ public class Controller extends MouseAdapter implements KeyListener {
             }
 
             case KeyEvent.VK_ESCAPE: {
-                if (this.loop.gameState == 2) {
-                    this.loop.gameState = 4;
-                } else if (this.loop.gameState == 4) {
-                    this.loop.gameState = 2;
+                if (this.loop.gameState == Consts.IN_GAME) {
+                    this.loop.gameState = Consts.PAUSE;
+                } else if (this.loop.gameState == Consts.PAUSE) {
+                    this.loop.gameState = Consts.IN_GAME;
                 }
                 break;
             }

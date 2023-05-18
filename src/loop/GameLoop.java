@@ -14,6 +14,7 @@ import entities.PowerUp;
 import ui.Button;
 import ui.Menus;
 import utils.CollisionChecker;
+import utils.Consts;
 
 public class GameLoop extends JPanel implements Runnable {
     private Thread thread; // Thread for the game loop
@@ -22,7 +23,7 @@ public class GameLoop extends JPanel implements Runnable {
     private final int tileDims = 48;
     private final double conversionToSec = 1000000000.0;
 
-    public int gameState = 1; // 1 - Menu 2 - In game 3 - Editor 4 - Pause
+    public int gameState = Consts.MENU;
 
     public ArrayList<Button> buttons;
 
@@ -94,9 +95,9 @@ public class GameLoop extends JPanel implements Runnable {
 
     public void update(double dt) {
         switch (this.gameState) {
-            case 1: // Menu
+            case Consts.MENU:
                 break;
-            case 2: // In game
+            case Consts.IN_GAME: // In game
                 CollisionChecker.updateAdjacentEntities(character, entities);
                 character.update();
                 break;
@@ -111,10 +112,10 @@ public class GameLoop extends JPanel implements Runnable {
         g2d.setFont(new Font(getFont().getName(), Font.PLAIN, 20));
 
         switch (this.gameState) {
-            case 1:
+            case Consts.MENU:
                 Menus.mainMenu.draw(g2d);
                 break;
-            case 2:
+            case Consts.IN_GAME:
                 character.render(g2d);
                 g2d.fillRect((int)character.posX, (int)character.posY, (int)character.width,(int) character.height);
 
@@ -131,7 +132,7 @@ public class GameLoop extends JPanel implements Runnable {
                     e.render(g2d);
                 }
                 break;
-            case 4: {
+            case Consts.PAUSE: {
                 Menus.pauseMenu.draw(g2d);
                 break;
             }
