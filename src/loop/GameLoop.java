@@ -43,9 +43,9 @@ public class GameLoop extends JPanel implements Runnable {
         character = new GameCharacter(characterX, characterY, 30, 30, 5, keyHandler, this); // Initialize character
         // after keyHandler
 
-		  //create a powerup in a random location aligned to grid tiles
-		  entities.add(new PowerUp((int)(Math.random()*10)*tileDims,(int)(Math.random()*10)*tileDims, tileDims, tileDims, 0));
-
+        // create a powerup in a random location aligned to grid tiles
+        entities.add(new PowerUp((int) (Math.random() * 10) * tileDims, (int) (Math.random() * 10) * tileDims, tileDims,
+                tileDims, 0, "speed"));
 
         this.addKeyListener(keyHandler); // Add KeyHandler as a key listener
         this.setFocusable(true); // Make the GameLoop focusable
@@ -117,7 +117,7 @@ public class GameLoop extends JPanel implements Runnable {
                 break;
             case Consts.IN_GAME:
                 character.render(g2d);
-                g2d.fillRect((int)character.posX, (int)character.posY, (int)character.width,(int) character.height);
+                g2d.fillRect((int) character.posX, (int) character.posY, (int) character.width, (int) character.height);
 
                 for (int i = 0; i <= 1296; i += this.tileDims) {
                     g2d.drawLine(i, 0, i, 768);
