@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent;
 import entities.*;
 import ui.Button;
 import ui.Menus;
-import utils.*;
+import util.*;
 
 /**
  * This class handles the key events for the game.

@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import loop.GameLoop;
-import utils.Consts;
+import util.Consts;
 
 public class Page {
   public final ArrayList<Button> buttons;

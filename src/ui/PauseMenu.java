@@ -1,7 +1,7 @@
 package ui;
 
 import loop.GameLoop;
-import utils.Consts;
+import util.Consts;
 
 public class PauseMenu extends Page {
   public PauseMenu(GameLoop loop) {

@@ -1,4 +1,4 @@
-package utils;
+package util;
 
 import java.util.List;
 
@@ -57,7 +57,7 @@ public class CollisionChecker {
 
 		// if the player's normalized position is on top of a powerup square, the powerup is collected, activate the onpickup function
 		if (entity instanceof PowerUp) {
-			if(utils.Utils.normalizeCharacterPos(character)[0] == entity.posX && utils.Utils.normalizeCharacterPos(character)[1] == entity.posY){
+			if(Utils.normalizeCharacterPos(character)[0] == entity.posX && Utils.normalizeCharacterPos(character)[1] == entity.posY){
 				System.out.println("PowerUp collected!");
 				((PowerUp) entity).onPickup(character);
 			}

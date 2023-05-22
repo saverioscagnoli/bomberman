@@ -2,7 +2,7 @@ package entities;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import utils.Consts;
+import util.Consts;
 
 public class Obstacle extends Entity {
   private static final int dims = 48;
