@@ -1,11 +1,9 @@
 package entities;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 
 import loop.GameLoop;
-import utils.Utils;
+import util.Utils;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 

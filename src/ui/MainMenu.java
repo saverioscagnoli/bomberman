@@ -1,6 +1,6 @@
 package ui;
 import loop.GameLoop;
-import utils.Consts;
+import util.Consts;
 
 
 public class MainMenu extends Page {

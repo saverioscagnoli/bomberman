@@ -1,4 +1,4 @@
-package utils;
+package util;
 
 /*
  * If you have to define global variables / constats DEFINE THEM HERE

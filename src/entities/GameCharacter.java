@@ -1,8 +1,6 @@
 package entities;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -10,7 +8,7 @@ import javax.imageio.ImageIO;
 
 import loop.GameLoop;
 import loop.Controller;
-import utils.CollisionChecker;
+import util.CollisionChecker;
 
 public class GameCharacter extends Entity {
 

@@ -4,13 +4,9 @@ import loop.GameLoop;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 
-import loop.GameLoop;
-import utils.Consts;
-import utils.Utils;
-import javax.imageio.ImageIO;
-import java.io.IOException;
+import util.Consts;
+import util.Utils;
 
 public class PowerUp extends Entity {
 	public PowerUp(float posX, float posY, int width, int height, int speed) {
@@ -19,7 +15,10 @@ public class PowerUp extends Entity {
 
 	public void onPickup(GameCharacter character) {
 		GameLoop.entities.remove(this);
-		character.speed +=5;
+		character.speed += 5;
+		Utils.setTimeout(() -> {
+			character.speed -= 5;
+		}, 5000);
 	}
 
 	public void render(Graphics2D g2d){

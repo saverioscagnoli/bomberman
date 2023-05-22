@@ -1,19 +1,14 @@
 import java.awt.Dimension;
 import java.io.IOException;
 import javax.swing.JFrame;
-import entities.Obstacle;
 import loop.GameLoop;
+import lvl.LevelManager;
 import ui.MainMenu;
 import ui.Menus;
 import ui.PauseMenu;
-import utils.Consts;
-
-import java.util.ArrayList;
-import java.util.Random;
+import util.Consts;
 
 class Main {
-    private static ArrayList<String> obstacleCoords = new ArrayList<String>();
-
     public static void main(String[] args) throws IOException {
         System.setProperty("sun.java2d.opengl", "true"); // Enabling OpenGL Drivers. Only tested on my machine, but
         // incredible performance gain!
@@ -25,28 +20,11 @@ class Main {
         Menus.mainMenu = new MainMenu(loop);
         Menus.pauseMenu = new PauseMenu(loop);
 
-        generateObstacles(10);
+        LevelManager.genLevel(10);
+
         win.add(loop);
         win.pack();
         win.setVisible(true);
         loop.requestFocus();
-    }
-
-    public static void generateObstacles(int n) {
-        // Generate n random red squares in tiles
-        Random rand = new Random();
-        for (int i = 0; i < n; i++) {
-            int x = rand.nextInt(Consts.screenWidth) + 1;
-            int y = rand.nextInt(Consts.screenHeight) + 1;
-            while (obstacleCoords.contains(x + "" + y)) {
-                // To prevent stacking obstacles
-                x = rand.nextInt(Consts.screenWidth) + 1;
-                y = rand.nextInt(Consts.screenHeight) + 1;
-            }
-            obstacleCoords.add(x + "" + y);
-            Obstacle ob = new Obstacle(x, y);
-            ob.normalizePos();
-            GameLoop.entities.add(ob);
-        }
     }
 }

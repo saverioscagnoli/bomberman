@@ -13,8 +13,8 @@ import entities.GameCharacter;
 import entities.PowerUp;
 import ui.Button;
 import ui.Menus;
-import utils.CollisionChecker;
-import utils.Consts;
+import util.CollisionChecker;
+import util.Consts;
 
 public class GameLoop extends JPanel implements Runnable {
     private Thread thread; // Thread for the game loop
