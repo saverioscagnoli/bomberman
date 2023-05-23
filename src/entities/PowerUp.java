@@ -1,6 +1,7 @@
 package entities;
 
 import loop.GameLoop;
+import loop.PowerupManager;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -25,8 +26,6 @@ public class PowerUp extends Entity {
 	}
 
 	public void render(Graphics2D g2d){
-		// draw an orange rectangle for the powerup
-		g2d.setColor(Color.ORANGE);
-		g2d.fillRect((int) posX, (int) posY, width, height);
+		PowerupManager.RenderPowerup(this, g2d);
 	}
 }
