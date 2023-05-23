@@ -5,6 +5,7 @@ import java.util.List;
 import entities.Entity;
 import entities.GameCharacter;
 import entities.PowerUp;
+import loop.PowerupManager;
 
 public class CollisionChecker {
 	// array for the 3x3 grid around the character
@@ -60,17 +61,7 @@ public class CollisionChecker {
 			if (Utils.normalizeCharacterPos(character)[0] == entity.posX
 					&& Utils.normalizeCharacterPos(character)[1] == entity.posY) {
 				PowerUp powerup = (PowerUp) entity;
-				switch (powerup.name) {
-					case "speed": {
-						Runnable onPickup = () -> {
-							character.speed += 5;
-						};
-						Runnable onExpire = () -> {
-							character.speed -= 5;
-						};
-						powerup.onPickup(5000, onPickup, onExpire);
-					}
-				}
+				PowerupManager.HandlePowerup(powerup, character);
 			}
 		}
 

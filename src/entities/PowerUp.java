@@ -28,6 +28,5 @@ public class PowerUp extends Entity {
 		// draw an orange rectangle for the powerup
 		g2d.setColor(Color.ORANGE);
 		g2d.fillRect((int) posX, (int) posY, width, height);
-
 	}
 }
