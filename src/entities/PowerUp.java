@@ -1,9 +1,7 @@
 package entities;
 
-import loop.GameLoop;
 import loop.PowerupManager;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 
 import util.Consts;
@@ -20,7 +18,7 @@ public class PowerUp extends Entity {
 	public void onPickup(int time, Runnable buff, Runnable expire) {
 		// buff and expire are 2 lambda functions that will be executed when the powerup gets picked up and expires
 		// time is the expiration time in milliseconds
-		GameLoop.entities.remove(this);
+		this.die();
 		buff.run();
 		Utils.setTimeout(() -> expire.run(), time);
 	}
