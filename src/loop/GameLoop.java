@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import entities.Entity;
@@ -127,10 +128,18 @@ public class GameLoop extends JPanel implements Runnable {
                     g2d.drawLine(0, i, 1296, i);
                 }
 
-                for (Entity e : entities) { // Render and update all entities
-                    e.update();
-                    e.render(g2d);
+                Iterator<Entity> iterator = entities.iterator();
+
+                while (iterator.hasNext()) {
+                    Entity e = iterator.next();
+                    if (e.dead) {
+                        iterator.remove();
+                    } else {
+                        e.update();
+                        e.render(g2d);
+                    }
                 }
+
                 break;
             case Consts.PAUSE: {
                 Menus.pauseMenu.draw(g2d);

@@ -12,6 +12,7 @@ public class Entity {
     public String direction;
     public int spriteCounter=0;
     public int spriteNum=1;
+    public boolean dead;
 
     public Entity(float posX, float posY, int width, int height, int speed) {
         this.posX = posX;
@@ -19,6 +20,11 @@ public class Entity {
         this.width = width;
         this.height = height;
         this.speed = speed;
+        this.dead = false;
+    }
+
+    public void die() {
+        this.dead = true;
     }
 
     public void update() {

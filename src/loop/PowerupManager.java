@@ -2,14 +2,9 @@ package loop;
 
 import entities.GameCharacter;
 import entities.PowerUp;
-
-import loop.GameLoop;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import util.Consts;
-import util.Utils;
 /**
  * PowerupManager
  */
