@@ -50,15 +50,15 @@ public class Bomb extends Entity {
                         GameLoop.entities.add(explosionMatrix[i][j]);
                     }else{
                         hitWall = true;
-                    }
+								break;
                 }
             }
         }
-        this.die();
+        this.die();}
     }
 
     private boolean checkSolid(int posX, int posY) {
-        for (int i = 0; i < GameLoop.entities.size(); i++) { //for every in the list
+        for (int i = 0; i < GameLoop.entities.size(); i++) { //for every entity in the list
             Entity e = GameLoop.entities.get(i);  // get the entity
             if (e.posX == posX && e.posY == posY) { // if the entity is in the same position as the explosion
                 if (e.isSolid) { // if the entity is solid
@@ -73,8 +73,8 @@ public class Bomb extends Entity {
             // check if the entity is an enemy. if it is, and the enemy and explosion overlap, kill it.
             if (e instanceof Enemy) {
                 Enemy enemy = (Enemy) e;
-                // System.out.println("enemy"); 
-                // if the enemy and the explosion have aabb collision, kill the enemy
+
+                // if the enemy and the explosion have aabb collision, damage it.
                 if (enemy.posX < posX + Consts.tileDims && enemy.posX + enemy.width > posX && enemy.posY < posY + Consts.tileDims && enemy.posY + enemy.height > posY) {
                     enemy.dealDamage(1);
                 }
@@ -86,9 +86,6 @@ public class Bomb extends Entity {
                 GameCharacter player = (GameCharacter) e;
                 if (player.posX < posX + Consts.tileDims && player.posX + player.width > posX && player.posY < posY + Consts.tileDims && player.posY + player.height > posY) {
                     player.dealDamage(1);
-                    System.out.println("player hit");
-                    player.immune=true;
-                    Utils.setTimeout(()->{player.immune=false; System.out.println("no more immune"); }, 1000);
                 }
             }
 

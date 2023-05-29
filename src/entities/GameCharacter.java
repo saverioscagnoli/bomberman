@@ -10,7 +10,6 @@ import javax.imageio.ImageIO;
 import loop.GameLoop;
 import loop.Controller;
 import util.*;
-import interfaces.*;
 
 public class GameCharacter extends Entity {
 
@@ -161,6 +160,7 @@ public class GameCharacter extends Entity {
         g2d.fillRect((int) posX-15, (int) posY-20, 5*10, 5);
         g2d.setColor(Color.GREEN);
         g2d.fillRect((int) posX-15, (int) posY-20, health*10, 5);
+		  g2d.setColor(Color.GRAY);
     }
 
     public void playerSprite(){

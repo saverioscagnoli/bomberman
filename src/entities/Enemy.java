@@ -38,7 +38,6 @@ public class Enemy extends Entity {
          case 0:
                 if (Utils.EnemyCollision(this, GameLoop.entities, direction)){
                     this.direction = 1;
-                    System.out.println("switched to direction 1");
                 } else {
                     this.posX -= this.speed;
                 }
@@ -46,7 +45,6 @@ public class Enemy extends Entity {
             case 1:
                 if (Utils.EnemyCollision(this, GameLoop.entities, direction)){
                     this.direction = 0;
-                    System.out.println("switched to direction 0");
                 } else {
                     this.posX += this.speed;
                 }
