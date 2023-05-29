@@ -3,6 +3,7 @@ package util;
 import java.util.List;
 
 import entities.Entity;
+import entities.Explosion;
 import entities.GameCharacter;
 import entities.PowerUp;
 import loop.PowerupManager;
@@ -18,7 +19,7 @@ public class CollisionChecker {
 		}
 
 		// get the normalized position of the character
-		int[] normalizedPos = Utils.normalizeCharacterPos(character);
+		int[] normalizedPos = Utils.normalizeEntityPos(character);
 
 		// create an array with the coordinates of the 8 surrounding grid squares
 		int[][] surroundingGridSquares = {
@@ -58,8 +59,8 @@ public class CollisionChecker {
 		// if the player's normalized position is on top of a powerup square, the
 		// powerup is collected, activate the onpickup function
 		if (entity instanceof PowerUp) {
-			if (Utils.normalizeCharacterPos(character)[0] == entity.posX
-					&& Utils.normalizeCharacterPos(character)[1] == entity.posY) {
+			if (Utils.normalizeEntityPos(character)[0] == entity.posX
+					&& Utils.normalizeEntityPos(character)[1] == entity.posY) {
 				PowerUp powerup = (PowerUp) entity;
 				PowerupManager.HandlePowerup(powerup, character);
 			}

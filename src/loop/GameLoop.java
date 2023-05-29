@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import entities.Enemy;
 import entities.Entity;
 import entities.GameCharacter;
 import entities.PowerUp;
@@ -42,11 +43,16 @@ public class GameLoop extends JPanel implements Runnable {
         this.buttons = new ArrayList<Button>();
         keyHandler = new Controller(this); // Create an instance of KeyHandler and passes the gameloop to it
         character = new GameCharacter(characterX, characterY, 30, 30, 5, keyHandler, this); // Initialize character
+        entities.add(character);
         // after keyHandler
 
         // create a powerup in a random location aligned to grid tiles
         entities.add(new PowerUp((int) (Math.random() * 10) * tileDims, (int) (Math.random() * 10) * tileDims, tileDims,
-                tileDims, 0, "speed"));
+                tileDims, 0, "rain"));
+
+        // create an enemy in a random location aligned to grid tiles
+        entities.add(new Enemy((float) 48, (float)48, tileDims,
+                tileDims, 1));
 
         this.addKeyListener(keyHandler); // Add KeyHandler as a key listener
         this.setFocusable(true); // Make the GameLoop focusable
@@ -100,7 +106,6 @@ public class GameLoop extends JPanel implements Runnable {
                 break;
             case Consts.IN_GAME: // In game
                 CollisionChecker.updateAdjacentEntities(character, entities);
-                character.update();
                 break;
         }
         this.repaint();
@@ -139,6 +144,9 @@ public class GameLoop extends JPanel implements Runnable {
                         e.render(g2d);
                     }
                 }
+
+                // draw player lives number in top left corner
+                g2d.drawString("Lives: " + character.lives, 10, 20);
 
                 break;
             case Consts.PAUSE: {

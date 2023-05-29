@@ -7,7 +7,7 @@ import util.Consts;
 import util.Utils;
 import javax.imageio.ImageIO;
 import java.io.IOException;
-import entities.GameCharacter;
+import entities.*;
 
 public class Bomb extends Entity {
 
@@ -20,31 +20,16 @@ public class Bomb extends Entity {
             e.printStackTrace();
         }
         Utils.setTimeout(() -> this.explode(bombRadius), 3000);
-        // bombSprite();
-        // direction="up";
+
     }
 
     @Override
     public void update() {
     }
 
-    // public void bombSprite(){
-    // try{
-    // rightb=ImageIO.read(getClass().getResourceAsStream("/spritesheet/rightb.png"));
-    // leftb=ImageIO.read(getClass().getResourceAsStream("/spritesheet/leftb.png"));
-    // } catch (IOException e) {e.printStackTrace();}
-    // }
-
     private Explosion explosionMatrix[][];
 
     private void explode(int bombRadius) {
-
-        // int[][] surr = {
-        //         { (int) this.posX - Consts.tileDims, (int) this.posY },
-        //         { (int) this.posX, (int) this.posY - Consts.tileDims },
-        //         { (int) this.posX + Consts.tileDims, (int) this.posY },
-        //         { (int) this.posX, (int) this.posY + Consts.tileDims }
-        // };
 
         explosionMatrix = new Explosion[4][5];  // creating an array that can store up to 5 explosions in the 4 directions
 
@@ -69,27 +54,44 @@ public class Bomb extends Entity {
                 }
             }
         }
-
-        // for (int i = 0; i < surr.length; i++) {
-        //     if (this.checkSolid(surr[i][0], surr[i][1]))
-        //         continue;
-        //     GameLoop.entities.add(new Explosion(surr[i][0], surr[i][1]));
-        // }
         this.die();
     }
 
     private boolean checkSolid(int posX, int posY) {
-        for (int i = 0; i < GameLoop.entities.size(); i++) {
-            Entity e = GameLoop.entities.get(i);
-            if (e.posX == posX && e.posY == posY) {
-                if (e.isSolid) {
-                    Obstacle wall = (Obstacle) e;
-                    if (wall.destructable) {
-                        Utils.setTimeout(() -> wall.die(), 100);
+        for (int i = 0; i < GameLoop.entities.size(); i++) { //for every in the list
+            Entity e = GameLoop.entities.get(i);  // get the entity
+            if (e.posX == posX && e.posY == posY) { // if the entity is in the same position as the explosion
+                if (e.isSolid) { // if the entity is solid
+                    Obstacle wall = (Obstacle) e; // cast the entity to an obstacle
+                    if (wall.destructable) { // if the obstacle is destructable
+                        Utils.setTimeout(() -> wall.die(), 100); // destroy the obstacle
                     }
                 }
                 return true;
             }
+            
+            // check if the entity is an enemy. if it is, and the enemy and explosion overlap, kill it.
+            if (e instanceof Enemy) {
+                Enemy enemy = (Enemy) e;
+                // System.out.println("enemy"); 
+                // if the enemy and the explosion have aabb collision, kill the enemy
+                if (enemy.posX < posX + Consts.tileDims && enemy.posX + enemy.width > posX && enemy.posY < posY + Consts.tileDims && enemy.posY + enemy.height > posY) {
+                    enemy.dealDamage(1);
+                }
+
+            }
+
+            if (e instanceof GameCharacter){
+                // System.out.println("player");
+                GameCharacter player = (GameCharacter) e;
+                if (player.posX < posX + Consts.tileDims && player.posX + player.width > posX && player.posY < posY + Consts.tileDims && player.posY + player.height > posY) {
+                    player.dealDamage(1);
+                    System.out.println("player hit");
+                    player.immune=true;
+                    Utils.setTimeout(()->{player.immune=false; System.out.println("no more immune"); }, 1000);
+                }
+            }
+
 
         }
         return false;

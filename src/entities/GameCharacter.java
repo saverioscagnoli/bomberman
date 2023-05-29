@@ -1,5 +1,6 @@
 package entities;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -8,26 +9,45 @@ import javax.imageio.ImageIO;
 
 import loop.GameLoop;
 import loop.Controller;
-import util.CollisionChecker;
+import util.*;
+import interfaces.*;
 
 public class GameCharacter extends Entity {
 
     Controller keyHandler;
     GameLoop gameLoop;
     public int bombRadius;
+    public int health;
+    public boolean immune;
+    public int lives;
 
     public GameCharacter(float posX, float posY, int width, int height, int speed, Controller keyHandler,
             GameLoop gameLoop) {
         super(posX, posY, width, height, speed);
         this.gameLoop = gameLoop;
         this.keyHandler = keyHandler;
-        this.bombRadius = 3; // TODO : limitare il bomb radius a 5!!!
+        this.bombRadius = 3; 
+        this.health = 5;
+        this.immune = false;
+        this.lives = 3;
         playerSprite();
         direction="up";
     }
 
+    public void dealDamage(int damage) {
+        if (!immune) {
+            health -= damage;
+            immune = true;
+            Utils.setTimeout(() -> immune = false, 1000);
+            System.out.println("Player health: " + health);
+        }
+    }
+
     public void update() {
 
+        // TODO: sarebbe un po' piu organizzato creare un metodo fatto apposta nel collision checker per il movimento del player.
+        // probabilmente si potrebbe anche comprimere un po'.
+        
         if (keyHandler.buttonPriorities.isEmpty() == false) {
             switch (keyHandler.buttonPriorities.get(0)) {
                 case "A":
@@ -136,6 +156,11 @@ public class GameCharacter extends Entity {
             break;
         }
         g2d.drawImage(image, (int) posX-15, (int) posY-20, width*2, height*2, null);
+        // draw the health bar above the player with 5 squares for each health point
+        g2d.setColor(Color.RED);
+        g2d.fillRect((int) posX-15, (int) posY-20, 5*10, 5);
+        g2d.setColor(Color.GREEN);
+        g2d.fillRect((int) posX-15, (int) posY-20, health*10, 5);
     }
 
     public void playerSprite(){
