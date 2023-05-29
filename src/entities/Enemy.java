@@ -12,8 +12,24 @@ public class Enemy extends Entity {
 
     private int direction = 0;
 
+    private int health;
+    public boolean immune = false;
+
     public Enemy(float posX, float posY, int width, int height, int speed) {
         super(posX, posY, width, height, speed);
+        this.health = 2;
+    }
+
+    public void dealDamage(int damage) {
+        if (!immune) {
+            health -= damage;
+            immune = true;
+            Utils.setTimeout(() -> immune = false, 1000);
+            System.out.println(this + " health: " + health);
+            if (health <= 0) {
+                this.die();
+            }
+        }
     }
 
     public void update() {  
@@ -58,5 +74,11 @@ public class Enemy extends Entity {
     public void render(Graphics2D g2d) {
         g2d.setColor(Color.GREEN);
         g2d.fillRect((int) this.posX, (int) this.posY, this.width, this.height);
+
+        g2d.setColor(Color.RED);
+        g2d.fillRect((int) posX-15, (int) posY-20, 5*10, 5);
+        g2d.setColor(Color.GREEN);
+        g2d.fillRect((int) posX-15, (int) posY-20, health*10, 5);
+
     }
 }

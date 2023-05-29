@@ -76,7 +76,7 @@ public class Bomb extends Entity {
                 // System.out.println("enemy"); 
                 // if the enemy and the explosion have aabb collision, kill the enemy
                 if (enemy.posX < posX + Consts.tileDims && enemy.posX + enemy.width > posX && enemy.posY < posY + Consts.tileDims && enemy.posY + enemy.height > posY) {
-                    Utils.setTimeout(() -> enemy.die(), 100);
+                    enemy.dealDamage(1);
                 }
 
             }
