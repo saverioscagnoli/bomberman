@@ -5,6 +5,11 @@ import entities.PowerUp;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import javax.xml.stream.events.EndElement;
+
+import loop.*;
+import entities.*;
+
 /**
  * PowerupManager
  */
@@ -26,6 +31,22 @@ public class PowerupManager {
             case "bomb": {
                 Runnable onPickup = () -> {
                     if (c.bombRadius < 5){c.bombRadius += 1;} // avoids having the bomb radius going above 5.
+                };
+                Runnable onExpire = () -> {
+                };
+                p.onPickup(5000, onPickup, onExpire);
+            }
+            break;
+
+            case "rain": {
+                Runnable onPickup = () -> {
+                    for (Entity e : GameLoop.entities) {
+                        if (e instanceof Enemy) {
+                            Enemy enemy = (Enemy) e;
+                            enemy.dealDamage((int)enemy.health/2);
+                            System.out.println(enemy + " health: " + enemy.health);
+                        }
+                    }
                 };
                 Runnable onExpire = () -> {
                 };

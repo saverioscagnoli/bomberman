@@ -12,12 +12,12 @@ public class Enemy extends Entity {
 
     private int direction = 0;
 
-    private int health;
+    public int health;
     public boolean immune = false;
 
     public Enemy(float posX, float posY, int width, int height, int speed) {
         super(posX, posY, width, height, speed);
-        this.health = 2;
+        this.health = 3;
     }
 
     public void dealDamage(int damage) {

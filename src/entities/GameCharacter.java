@@ -19,6 +19,7 @@ public class GameCharacter extends Entity {
     public int bombRadius;
     public int health;
     public boolean immune;
+    public int lives;
 
     public GameCharacter(float posX, float posY, int width, int height, int speed, Controller keyHandler,
             GameLoop gameLoop) {
@@ -28,6 +29,7 @@ public class GameCharacter extends Entity {
         this.bombRadius = 3; 
         this.health = 5;
         this.immune = false;
+        this.lives = 3;
         playerSprite();
         direction="up";
     }
@@ -159,8 +161,6 @@ public class GameCharacter extends Entity {
         g2d.fillRect((int) posX-15, (int) posY-20, 5*10, 5);
         g2d.setColor(Color.GREEN);
         g2d.fillRect((int) posX-15, (int) posY-20, health*10, 5);
-
-        
     }
 
     public void playerSprite(){

@@ -48,7 +48,7 @@ public class GameLoop extends JPanel implements Runnable {
 
         // create a powerup in a random location aligned to grid tiles
         entities.add(new PowerUp((int) (Math.random() * 10) * tileDims, (int) (Math.random() * 10) * tileDims, tileDims,
-                tileDims, 0, "bomb"));
+                tileDims, 0, "rain"));
 
         // create an enemy in a random location aligned to grid tiles
         entities.add(new Enemy((float) 48, (float)48, tileDims,
@@ -144,6 +144,9 @@ public class GameLoop extends JPanel implements Runnable {
                         e.render(g2d);
                     }
                 }
+
+                // draw player lives number in top left corner
+                g2d.drawString("Lives: " + character.lives, 10, 20);
 
                 break;
             case Consts.PAUSE: {
