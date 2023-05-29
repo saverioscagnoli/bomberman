@@ -22,6 +22,15 @@ public class PowerupManager {
                 p.onPickup(5000, onPickup, onExpire);
             }
             break;
+
+            case "bomb": {
+                Runnable onPickup = () -> {
+                    if (c.bombRadius < 5){c.bombRadius += 1;} // avoids having the bomb radius going above 5.
+                };
+                Runnable onExpire = () -> {
+                };
+                p.onPickup(5000, onPickup, onExpire);
+            }
         }
     }
 

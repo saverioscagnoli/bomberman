@@ -15,19 +15,24 @@ public class GameCharacter extends Entity {
     Controller keyHandler;
     GameLoop gameLoop;
     public int bombRadius;
+    public int health;
 
     public GameCharacter(float posX, float posY, int width, int height, int speed, Controller keyHandler,
             GameLoop gameLoop) {
         super(posX, posY, width, height, speed);
         this.gameLoop = gameLoop;
         this.keyHandler = keyHandler;
-        this.bombRadius = 3; // TODO : limitare il bomb radius a 5!!!
+        this.bombRadius = 3; 
+        this.health = 5;
         playerSprite();
         direction="up";
     }
 
     public void update() {
 
+        // TODO: sarebbe un po' piu organizzato creare un metodo fatto apposta nel collision checker per il movimento del player.
+        // probabilmente si potrebbe anche comprimere un po'.
+        
         if (keyHandler.buttonPriorities.isEmpty() == false) {
             switch (keyHandler.buttonPriorities.get(0)) {
                 case "A":

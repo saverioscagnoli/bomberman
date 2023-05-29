@@ -1,6 +1,8 @@
 package util;
 
-import entities.GameCharacter;
+import java.util.List;
+
+import entities.*;
 import ui.Button;
 
 public abstract class Utils {
@@ -11,10 +13,36 @@ public abstract class Utils {
         return gridArray;
     }
 
-    public static int[] normalizeCharacterPos(GameCharacter character) {
-        int pX = (int) (character.posX + character.width * 0.5);
-        int pY = (int) (character.posY + character.height * 0.5);
+    public static int[] normalizeEntityPos(Entity entity) {
+        int pX = (int) (entity.posX + entity.width * 0.5);
+        int pY = (int) (entity.posY + entity.height * 0.5);
         return normalizePos(pX, pY);
+    }
+
+    public static boolean EnemyCollision(Enemy enemy, List<Entity> entities, int direction){
+        // if the enemy's normalized position is just about to hit a solid entity, change direction
+        int[] normalizedPos = {(int)enemy.posX,(int) enemy.posY};
+        switch (direction) {
+            case 0:
+                normalizedPos[0] -= Consts.tileDims;
+                break;
+            case 1:
+                normalizedPos[0] += Consts.tileDims;
+                break;
+            case 2:
+                normalizedPos[1] -= Consts.tileDims;
+                break;
+            case 3:
+                normalizedPos[1] += Consts.tileDims;
+                break;
+        }
+        for (Entity entity : entities) {
+            if (entity.isSolid && entity.posX == normalizedPos[0] && entity.posY == normalizedPos[1]) {
+                System.out.println("Collision");
+                return true;
+            }
+        }
+        return false;
     }
 
     public static boolean buttonClick(int mouseX, int mouseY, Button btn) {

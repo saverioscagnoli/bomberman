@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import entities.Enemy;
 import entities.Entity;
 import entities.GameCharacter;
 import entities.PowerUp;
@@ -46,7 +47,11 @@ public class GameLoop extends JPanel implements Runnable {
 
         // create a powerup in a random location aligned to grid tiles
         entities.add(new PowerUp((int) (Math.random() * 10) * tileDims, (int) (Math.random() * 10) * tileDims, tileDims,
-                tileDims, 0, "speed"));
+                tileDims, 0, "bomb"));
+
+        // create an enemy in a random location aligned to grid tiles
+        entities.add(new Enemy((float) 48, (float)48, tileDims,
+                tileDims, 1));
 
         this.addKeyListener(keyHandler); // Add KeyHandler as a key listener
         this.setFocusable(true); // Make the GameLoop focusable
