@@ -114,7 +114,7 @@ public class Controller extends MouseAdapter implements KeyListener {
 
             case KeyEvent.VK_SPACE: {
                 int[] gridPos = Utils.normalizeCharacterPos(loop.character);
-                GameLoop.entities.add(new Bomb(gridPos[0], gridPos[1], Consts.tileDims, Consts.tileDims, 0));
+                GameLoop.entities.add(new Bomb(gridPos[0], gridPos[1], Consts.tileDims, Consts.tileDims, 0, loop.character.bombRadius));
                 break;
             }
 

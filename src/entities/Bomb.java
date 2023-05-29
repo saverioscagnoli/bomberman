@@ -7,10 +7,11 @@ import util.Consts;
 import util.Utils;
 import javax.imageio.ImageIO;
 import java.io.IOException;
+import entities.GameCharacter;
 
 public class Bomb extends Entity {
 
-    public Bomb(float posX, float posY, int width, int height, int speed) {
+    public Bomb(float posX, float posY, int width, int height, int speed,int bombRadius) {
         super(posX, posY, width, height, speed);
         this.isSolid = false;
         try {
@@ -18,7 +19,7 @@ public class Bomb extends Entity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Utils.setTimeout(() -> this.explode(), 3000);
+        Utils.setTimeout(() -> this.explode(bombRadius), 3000);
         // bombSprite();
         // direction="up";
     }
@@ -34,19 +35,46 @@ public class Bomb extends Entity {
     // } catch (IOException e) {e.printStackTrace();}
     // }
 
-    private void explode() {
-        int[][] surr = {
-                { (int) this.posX - Consts.tileDims, (int) this.posY },
-                { (int) this.posX + Consts.tileDims, (int) this.posY },
-                { (int) this.posX, (int) this.posY - Consts.tileDims },
-                { (int) this.posX, (int) this.posY + Consts.tileDims }
-        };
+    private Explosion explosionMatrix[][];
 
-        for (int i = 0; i < surr.length; i++) {
-            if (this.checkSolid(surr[i][0], surr[i][1]))
-                continue;
-            GameLoop.entities.add(new Explosion(surr[i][0], surr[i][1]));
+    private void explode(int bombRadius) {
+
+        // int[][] surr = {
+        //         { (int) this.posX - Consts.tileDims, (int) this.posY },
+        //         { (int) this.posX, (int) this.posY - Consts.tileDims },
+        //         { (int) this.posX + Consts.tileDims, (int) this.posY },
+        //         { (int) this.posX, (int) this.posY + Consts.tileDims }
+        // };
+
+        explosionMatrix = new Explosion[4][5];  // creating an array that can store up to 5 explosions in the 4 directions
+
+        
+        for(int rad = 1; rad<bombRadius+1;rad++){ // for the length of the bomb radius
+            explosionMatrix[0][rad] = new Explosion((int) this.posX - Consts.tileDims*rad, (int) this.posY);
+            explosionMatrix[1][rad] = new Explosion((int) this.posX, (int) this.posY - Consts.tileDims*rad);
+            explosionMatrix[2][rad] = new Explosion((int) this.posX + Consts.tileDims*rad, (int) this.posY);
+            explosionMatrix[3][rad] = new Explosion((int) this.posX, (int) this.posY + Consts.tileDims*rad);
         }
+
+        // adds explosions in explosion matrix to entities
+        for(int i = 0; i<4; i++){
+            boolean hitWall = false;
+            for(int j = 0; j<bombRadius+1; j++){
+                if(explosionMatrix[i][j] != null){
+                    if(!this.checkSolid((int) explosionMatrix[i][j].posX, (int) explosionMatrix[i][j].posY) && !hitWall){
+                        GameLoop.entities.add(explosionMatrix[i][j]);
+                    }else{
+                        hitWall = true;
+                    }
+                }
+            }
+        }
+
+        // for (int i = 0; i < surr.length; i++) {
+        //     if (this.checkSolid(surr[i][0], surr[i][1]))
+        //         continue;
+        //     GameLoop.entities.add(new Explosion(surr[i][0], surr[i][1]));
+        // }
         this.die();
     }
 

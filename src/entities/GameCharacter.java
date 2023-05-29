@@ -14,12 +14,14 @@ public class GameCharacter extends Entity {
 
     Controller keyHandler;
     GameLoop gameLoop;
+    public int bombRadius;
 
     public GameCharacter(float posX, float posY, int width, int height, int speed, Controller keyHandler,
             GameLoop gameLoop) {
         super(posX, posY, width, height, speed);
         this.gameLoop = gameLoop;
         this.keyHandler = keyHandler;
+        this.bombRadius = 3; // TODO : limitare il bomb radius a 5!!!
         playerSprite();
         direction="up";
     }
