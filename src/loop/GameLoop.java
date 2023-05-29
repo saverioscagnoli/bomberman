@@ -43,6 +43,7 @@ public class GameLoop extends JPanel implements Runnable {
         this.buttons = new ArrayList<Button>();
         keyHandler = new Controller(this); // Create an instance of KeyHandler and passes the gameloop to it
         character = new GameCharacter(characterX, characterY, 30, 30, 5, keyHandler, this); // Initialize character
+        entities.add(character);
         // after keyHandler
 
         // create a powerup in a random location aligned to grid tiles
@@ -105,7 +106,6 @@ public class GameLoop extends JPanel implements Runnable {
                 break;
             case Consts.IN_GAME: // In game
                 CollisionChecker.updateAdjacentEntities(character, entities);
-                character.update();
                 break;
         }
         this.repaint();

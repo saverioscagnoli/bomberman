@@ -1,6 +1,7 @@
 import java.awt.Dimension;
 import java.io.IOException;
 import javax.swing.JFrame;
+
 import loop.GameLoop;
 import lvl.LevelManager;
 import ui.MainMenu;

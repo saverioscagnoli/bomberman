@@ -3,6 +3,7 @@ package util;
 import java.util.List;
 
 import entities.Entity;
+import entities.Explosion;
 import entities.GameCharacter;
 import entities.PowerUp;
 import loop.PowerupManager;

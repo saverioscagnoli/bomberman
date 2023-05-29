@@ -37,7 +37,7 @@ public abstract class Utils {
                 break;
         }
         for (Entity entity : entities) {
-            if (entity.isSolid && entity.posX == normalizedPos[0] && entity.posY == normalizedPos[1]) {
+            if ((entity.isSolid || entity instanceof Bomb ) && entity.posX == normalizedPos[0] && entity.posY == normalizedPos[1]) {
                 System.out.println("Collision");
                 return true;
             }

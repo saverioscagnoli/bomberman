@@ -73,12 +73,23 @@ public class Bomb extends Entity {
             // check if the entity is an enemy. if it is, and the enemy and explosion overlap, kill it.
             if (e instanceof Enemy) {
                 Enemy enemy = (Enemy) e;
-                System.out.println("enemy");
+                // System.out.println("enemy"); 
                 // if the enemy and the explosion have aabb collision, kill the enemy
                 if (enemy.posX < posX + Consts.tileDims && enemy.posX + enemy.width > posX && enemy.posY < posY + Consts.tileDims && enemy.posY + enemy.height > posY) {
                     Utils.setTimeout(() -> enemy.die(), 100);
                 }
 
+            }
+
+            if (e instanceof GameCharacter){
+                // System.out.println("player");
+                GameCharacter player = (GameCharacter) e;
+                if (player.posX < posX + Consts.tileDims && player.posX + player.width > posX && player.posY < posY + Consts.tileDims && player.posY + player.height > posY) {
+                    player.dealDamage(1);
+                    System.out.println("player hit");
+                    player.immune=true;
+                    Utils.setTimeout(()->{player.immune=false; System.out.println("no more immune"); }, 1000);
+                }
             }
 
 
