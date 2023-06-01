@@ -1,8 +1,13 @@
 package loop;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JPanel;
 import java.util.ArrayList;
@@ -39,7 +44,18 @@ public class GameLoop extends JPanel implements Runnable {
 
     public float dt = 0;
 
+    private Font customFont;
+
     public GameLoop() {
+
+        try {
+            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\customFont.ttf")).deriveFont(20f);
+            System.out.println("Font loaded");
+        } catch (IOException | FontFormatException e) {
+            // Handle exception
+            System.out.println("Font not found");
+        }
+
         this.buttons = new ArrayList<Button>();
         keyHandler = new Controller(this); // Create an instance of KeyHandler and passes the gameloop to it
         character = new GameCharacter(characterX, characterY, 30, 30, 5, keyHandler, this); // Initialize character
@@ -54,17 +70,23 @@ public class GameLoop extends JPanel implements Runnable {
         entities.add(new Enemy((float) 48, (float)48, tileDims,
                 tileDims, 1));
 
+        
+
         this.addKeyListener(keyHandler); // Add KeyHandler as a key listener
         this.setFocusable(true); // Make the GameLoop focusable
         setDoubleBuffered(true);
         this.start();
     }
 
+
+
     public void start() {
         this.thread = new Thread(this);
         this.open = true; // Set flag to open to start the loop
         this.thread.start();
     }
+
+
 
     public void stop() {
         this.open = false; // Set the flag to false to stop the loop
@@ -74,6 +96,8 @@ public class GameLoop extends JPanel implements Runnable {
             e.printStackTrace();
         }
     }
+
+
 
     @Override
     public void run() {
@@ -100,6 +124,8 @@ public class GameLoop extends JPanel implements Runnable {
         }
     }
 
+
+
     public void update(double dt) {
         switch (this.gameState) {
             case Consts.MENU:
@@ -111,11 +137,13 @@ public class GameLoop extends JPanel implements Runnable {
         this.repaint();
     }
 
+
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setFont(new Font(getFont().getName(), Font.PLAIN, 20));
+        g2d.setFont(customFont); //TODO : fare in modo che il font venga settato una volta sola.
 
         switch (this.gameState) {
             case Consts.MENU:
@@ -145,7 +173,8 @@ public class GameLoop extends JPanel implements Runnable {
                     }
                 }
 
-                // draw player lives number in top left corner
+                
+                g2d.setColor(Color.BLACK);
                 g2d.drawString("Lives: " + character.lives, 10, 20);
 
                 break;

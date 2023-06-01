@@ -1,5 +1,11 @@
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+
 import javax.swing.JFrame;
 
 import loop.GameLoop;
@@ -20,7 +26,8 @@ class Main {
         GameLoop loop = new GameLoop();
         Menus.mainMenu = new MainMenu(loop);
         Menus.pauseMenu = new PauseMenu(loop);
-
+        
+        
         LevelManager.genLevel(10);
 
         win.add(loop);
