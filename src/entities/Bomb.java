@@ -1,13 +1,11 @@
 package entities;
 
 import java.awt.Graphics2D;
-
 import loop.GameLoop;
 import util.Consts;
 import util.Utils;
 import javax.imageio.ImageIO;
 import java.io.IOException;
-import entities.*;
 
 public class Bomb extends Entity {
 

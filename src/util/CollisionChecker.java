@@ -1,9 +1,7 @@
 package util;
 
 import java.util.List;
-
 import entities.Entity;
-import entities.Explosion;
 import entities.GameCharacter;
 import entities.PowerUp;
 import loop.PowerupManager;
@@ -77,7 +75,8 @@ public class CollisionChecker {
 			case "up":
 				if (entity.posY + entity.height + character.speed >= character.posY
 						&& entity.posY + entity.height <= character.posY) {
-					if (entity.posX + entity.width >= character.posX && entity.posX <= character.posX + character.width) {
+					if (entity.posX + entity.width >= character.posX
+							&& entity.posX <= character.posX + character.width) {
 						return true;
 					}
 				}
@@ -85,7 +84,8 @@ public class CollisionChecker {
 			case "down":
 				if (entity.posY - character.speed <= character.posY + character.height
 						&& entity.posY >= character.posY + character.height) {
-					if (entity.posX + entity.width >= character.posX && entity.posX <= character.posX + character.width) {
+					if (entity.posX + entity.width >= character.posX
+							&& entity.posX <= character.posX + character.width) {
 						return true;
 					}
 				}
@@ -93,7 +93,8 @@ public class CollisionChecker {
 			case "left":
 				if (entity.posX + entity.width + character.speed >= character.posX
 						&& entity.posX + entity.width <= character.posX) {
-					if (entity.posY + entity.height >= character.posY && entity.posY <= character.posY + character.height) {
+					if (entity.posY + entity.height >= character.posY
+							&& entity.posY <= character.posY + character.height) {
 						return true;
 					}
 				}
@@ -101,7 +102,8 @@ public class CollisionChecker {
 			case "right":
 				if (entity.posX - character.speed <= character.posX + character.width
 						&& entity.posX >= character.posX + character.width) {
-					if (entity.posY + entity.height >= character.posY && entity.posY <= character.posY + character.height) {
+					if (entity.posY + entity.height >= character.posY
+							&& entity.posY <= character.posY + character.height) {
 						return true;
 					}
 				}

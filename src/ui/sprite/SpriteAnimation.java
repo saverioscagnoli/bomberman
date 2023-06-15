@@ -1,4 +1,4 @@
-package ui;
+package ui.sprite;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
