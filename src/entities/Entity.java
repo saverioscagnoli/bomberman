@@ -3,6 +3,8 @@ package entities;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import ui.Sprite;
+
 public class Entity extends Sprite {
     public boolean isSolid = false;
     public float posX, posY;
@@ -16,8 +18,8 @@ public class Entity extends Sprite {
     public int spriteNum = 1;
     public boolean dead;
 
-    public Entity(float posX, float posY, int width, int height, int speed, int maxFrames, int hold) {
-        super(maxFrames, hold);
+    public Entity(float posX, float posY, int width, int height, int speed, String src) {
+        super(src);
         this.posX = posX;
         this.posY = posY;
         this.width = width;

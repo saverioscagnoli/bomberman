@@ -9,7 +9,7 @@ import util.Utils;
 public class Explosion extends Entity {
 
   public Explosion(int posX, int posY) {
-    super(posX, posY, Consts.tileDims, Consts.tileDims, 0, 0, 1);
+    super(posX, posY, Consts.tileDims, Consts.tileDims, 0, "");
 
     Utils.setTimeout(() -> this.die(), 500);
   }

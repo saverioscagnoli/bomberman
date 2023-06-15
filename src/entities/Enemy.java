@@ -15,7 +15,7 @@ public class Enemy extends Entity {
     public boolean immune = false;
 
     public Enemy(float posX, float posY, int width, int height, int speed) {
-        super(posX, posY, width, height, speed, 0, 1);
+        super(posX, posY, width, height, speed, "");
         this.health = 3;
     }
 

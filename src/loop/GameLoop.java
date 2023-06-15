@@ -40,15 +40,11 @@ public class GameLoop extends JPanel implements Runnable {
     public float dt = 0;
 
     public GameLoop() {
+        System.out.println(Consts.assetsPath + "bomberman.png");
         this.buttons = new ArrayList<Button>();
         keyHandler = new Controller(this); // Create an instance of KeyHandler and passes the gameloop to it
         character = new GameCharacter(characterX, characterY, 30, 30, 5, keyHandler, this);
         character.setScale(2);
-
-        character.addImage("left", "/bomberman/bomberman-left.png");
-        character.addImage("right", "/bomberman/bomberman-right.png");
-        character.addImage("up", "/bomberman/bomberman-up.png");
-        character.addImage("down", "/bomberman/bomberman-down.png");
 
         entities.add(character);
         // after keyHandler

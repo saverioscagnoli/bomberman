@@ -9,7 +9,7 @@ public class Obstacle extends Entity {
   public boolean destructable;
 
   public Obstacle(float posX, float posY, boolean destructable) {
-    super(posX, posY, dims, dims, 0, 0, 1);
+    super(posX, posY, dims, dims, 0, "");
     this.isSolid = true;
     this.destructable = destructable;
     this.normalizePos();

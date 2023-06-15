@@ -12,7 +12,7 @@ import entities.*;
 public class Bomb extends Entity {
 
     public Bomb(float posX, float posY, int width, int height, int speed, int bombRadius) {
-        super(posX, posY, width, height, speed, 0, 1);
+        super(posX, posY, width, height, speed, "");
         this.isSolid = false;
         try {
             bombSprite = ImageIO.read(getClass().getResourceAsStream("/spritesheet/bombs.png"));

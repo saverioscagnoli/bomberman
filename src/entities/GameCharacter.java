@@ -3,6 +3,7 @@ package entities;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import loop.GameLoop;
+import ui.SpriteAnimation;
 import loop.Controller;
 import util.*;
 
@@ -17,7 +18,8 @@ public class GameCharacter extends Entity {
 
     public GameCharacter(float posX, float posY, int width, int height, int speed, Controller keyHandler,
             GameLoop gameLoop) {
-        super(posX, posY, width, height, speed, 3, 7);
+        super(posX, posY, width, height, speed, "/assets/bomberman.png");
+
         this.gameLoop = gameLoop;
         this.keyHandler = keyHandler;
         this.bombRadius = 3;
@@ -25,6 +27,13 @@ public class GameCharacter extends Entity {
         this.immune = false;
         this.lives = 3;
         this.direction = "up";
+
+        super.setScale(2);
+        super.addAdimation("left", new SpriteAnimation(this.spritesheet, 5, this.scale, 0, 3, 7));
+        super.addAdimation("down", new SpriteAnimation(this.spritesheet, 5, this.scale, 1, 3, 7));
+        super.addAdimation("right", new SpriteAnimation(this.spritesheet, 5, this.scale, 2, 3, 7));
+        super.addAdimation("up", new SpriteAnimation(this.spritesheet, 5, this.scale, 3, 3, 7));
+
     }
 
     public void dealDamage(int damage) {
@@ -41,7 +50,7 @@ public class GameCharacter extends Entity {
         // collision checker per il movimento del player.
         // probabilmente si potrebbe anche comprimere un po'.
 
-        super.animate();
+        super.updateSprite();
 
         if (keyHandler.buttonPriorities.isEmpty() == false) {
             super.isAnimated = true;
@@ -100,15 +109,15 @@ public class GameCharacter extends Entity {
                     break;
             }
 
-            super.switchImage(direction);
+            super.setAnimation(direction);
         } else {
             super.isAnimated = false;
-            super.currentFrame = 1;
+            super.currentAnimation.currentFrame = 1;
         }
     }
 
     public void render(Graphics2D g2d) {
-        super.draw(g2d, (int) this.posX, (int) this.posY - 10);
+        super.drawSprite(g2d, (int) this.posX, (int) this.posY - 10);
         // draw the health bar above the player with 5 squares for each health point
         g2d.setColor(Color.RED);
         g2d.fillRect((int) posX - 15, (int) posY - 20, 5 * 10, 5);
