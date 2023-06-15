@@ -44,11 +44,14 @@ public class CollisionChecker {
 		}
 
 		// print adjacent tiles (DEBUG)
-		/* for (int i = 0; i < adjacentEntities.length; i++) {
-			if (adjacentEntities[i] != null) {
-				System.out.println("adjacentEntities[" + i + "] = " + adjacentEntities[i].getClass().getSimpleName());
-			}
-		} */
+		/*
+		 * for (int i = 0; i < adjacentEntities.length; i++) {
+		 * if (adjacentEntities[i] != null) {
+		 * System.out.println("adjacentEntities[" + i + "] = " +
+		 * adjacentEntities[i].getClass().getSimpleName());
+		 * }
+		 * }
+		 */
 	}
 
 	// function to check collision between an entity and a square's coordinates

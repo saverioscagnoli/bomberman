@@ -9,7 +9,7 @@ public class Obstacle extends Entity {
   public boolean destructable;
 
   public Obstacle(float posX, float posY, boolean destructable) {
-    super(posX, posY, dims, dims, 0);
+    super(posX, posY, dims, dims, 0, 0, 1);
     this.isSolid = true;
     this.destructable = destructable;
     this.normalizePos();
@@ -20,8 +20,8 @@ public class Obstacle extends Entity {
     double pX = this.posX + this.width * 0.5;
     double pY = this.posY + this.height * 0.5;
     int[] norm = Utils.normalizePos((int) pX, (int) pY);
-    this.posX= norm[0];
-    this.posY= norm[1];
+    this.posX = norm[0];
+    this.posY = norm[1];
   }
 
   public void render(Graphics2D g2d) {

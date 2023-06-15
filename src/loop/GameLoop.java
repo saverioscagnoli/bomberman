@@ -42,7 +42,14 @@ public class GameLoop extends JPanel implements Runnable {
     public GameLoop() {
         this.buttons = new ArrayList<Button>();
         keyHandler = new Controller(this); // Create an instance of KeyHandler and passes the gameloop to it
-        character = new GameCharacter(characterX, characterY, 30, 30, 5, keyHandler, this); // Initialize character
+        character = new GameCharacter(characterX, characterY, 30, 30, 5, keyHandler, this);
+        character.setScale(2);
+
+        character.addImage("left", "/bomberman/bomberman-left.png");
+        character.addImage("right", "/bomberman/bomberman-right.png");
+        character.addImage("up", "/bomberman/bomberman-up.png");
+        character.addImage("down", "/bomberman/bomberman-down.png");
+
         entities.add(character);
         // after keyHandler
 
@@ -51,7 +58,7 @@ public class GameLoop extends JPanel implements Runnable {
                 tileDims, 0, "rain"));
 
         // create an enemy in a random location aligned to grid tiles
-        entities.add(new Enemy((float) 48, (float)48, tileDims,
+        entities.add(new Enemy((float) 48, (float) 48, tileDims,
                 tileDims, 1));
 
         this.addKeyListener(keyHandler); // Add KeyHandler as a key listener

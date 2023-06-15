@@ -7,7 +7,6 @@ import loop.GameLoop;
 import util.Consts;
 import util.Utils;
 
-
 public class Enemy extends Entity {
 
     private int direction = 0;
@@ -16,7 +15,7 @@ public class Enemy extends Entity {
     public boolean immune = false;
 
     public Enemy(float posX, float posY, int width, int height, int speed) {
-        super(posX, posY, width, height, speed);
+        super(posX, posY, width, height, speed, 0, 1);
         this.health = 3;
     }
 
@@ -32,32 +31,33 @@ public class Enemy extends Entity {
         }
     }
 
-    public void update() {  
-        // the enemy moves in a direction until it hits a wall, then it changes direction
+    public void update() {
+        // the enemy moves in a direction until it hits a wall, then it changes
+        // direction
         switch (this.direction) {
-         case 0:
-                if (Utils.EnemyCollision(this, GameLoop.entities, direction)){
+            case 0:
+                if (Utils.EnemyCollision(this, GameLoop.entities, direction)) {
                     this.direction = 1;
                 } else {
                     this.posX -= this.speed;
                 }
                 break;
             case 1:
-                if (Utils.EnemyCollision(this, GameLoop.entities, direction)){
+                if (Utils.EnemyCollision(this, GameLoop.entities, direction)) {
                     this.direction = 0;
                 } else {
                     this.posX += this.speed;
                 }
                 break;
             case 2:
-                if (Utils.EnemyCollision(this, GameLoop.entities, direction)){
+                if (Utils.EnemyCollision(this, GameLoop.entities, direction)) {
                     this.direction = 3;
                 } else {
                     this.posY -= this.speed;
                 }
                 break;
             case 3:
-                if (Utils.EnemyCollision(this, GameLoop.entities, direction)){
+                if (Utils.EnemyCollision(this, GameLoop.entities, direction)) {
                     this.direction = 2;
                 } else {
                     this.posY += this.speed;
@@ -74,9 +74,9 @@ public class Enemy extends Entity {
         g2d.fillRect((int) this.posX, (int) this.posY, this.width, this.height);
 
         g2d.setColor(Color.RED);
-        g2d.fillRect((int) posX-15, (int) posY-20, 5*10, 5);
+        g2d.fillRect((int) posX - 15, (int) posY - 20, 5 * 10, 5);
         g2d.setColor(Color.GREEN);
-        g2d.fillRect((int) posX-15, (int) posY-20, health*10, 5);
+        g2d.fillRect((int) posX - 15, (int) posY - 20, health * 10, 5);
 
     }
 }
