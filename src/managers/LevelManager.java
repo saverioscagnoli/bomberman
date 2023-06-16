@@ -1,4 +1,4 @@
-package lvl;
+package managers;
 
 import java.util.Random;
 

@@ -1,7 +1,9 @@
-package loop;
+package managers;
 
 import entities.Bomberman;
 import entities.PowerUp;
+import loop.GameLoop;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import entities.*;
