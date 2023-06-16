@@ -19,20 +19,20 @@ public abstract class Utils {
         return normalizePos(pX, pY);
     }
 
-    public static boolean EnemyCollision(Enemy enemy, List<Entity> entities, int direction){
+    public static boolean EnemyCollision(Enemy enemy, List<Entity> entities, String direction){
         // if the enemy's normalized position is just about to hit a solid entity, change direction
         int[] normalizedPos = {(int)enemy.posX,(int) enemy.posY};
         switch (direction) {
-            case 0:
+            case "left":
                 normalizedPos[0] -= Consts.tileDims;
                 break;
-            case 1:
+            case "right":
                 normalizedPos[0] += Consts.tileDims;
                 break;
-            case 2:
+            case "up":
                 normalizedPos[1] -= Consts.tileDims;
                 break;
-            case 3:
+            case "down":
                 normalizedPos[1] += Consts.tileDims;
                 break;
         }
