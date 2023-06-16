@@ -11,7 +11,7 @@ import java.util.List;
 
 import entities.Enemy;
 import entities.Entity;
-import entities.GameCharacter;
+import entities.Bomberman;
 import entities.PowerUp;
 import ui.Button;
 import ui.Menus;
@@ -35,14 +35,17 @@ public class GameLoop extends JPanel implements Runnable {
     public static List<Entity> entities = new ArrayList<Entity>();
 
     public Controller keyHandler; // Delcaring keyhandler
-    public GameCharacter character;
+    public Bomberman character;
 
     public float dt = 0;
 
     public GameLoop() {
+        System.out.println(Consts.assetsPath + "bomberman.png");
         this.buttons = new ArrayList<Button>();
         keyHandler = new Controller(this); // Create an instance of KeyHandler and passes the gameloop to it
-        character = new GameCharacter(characterX, characterY, 30, 30, 5, keyHandler, this); // Initialize character
+        character = new Bomberman(characterX, characterY, 30, 30, 5, keyHandler, this);
+        character.setScale(2);
+
         entities.add(character);
         // after keyHandler
 
@@ -51,7 +54,7 @@ public class GameLoop extends JPanel implements Runnable {
                 tileDims, 0, "rain"));
 
         // create an enemy in a random location aligned to grid tiles
-        entities.add(new Enemy((float) 48, (float)48, tileDims,
+        entities.add(new Enemy((float) 48, (float) 48, tileDims,
                 tileDims, 1));
 
         this.addKeyListener(keyHandler); // Add KeyHandler as a key listener

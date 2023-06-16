@@ -1,21 +1,14 @@
 package loop;
 
-import entities.GameCharacter;
+import entities.Bomberman;
 import entities.PowerUp;
 import java.awt.Color;
 import java.awt.Graphics2D;
-
-import javax.xml.stream.events.EndElement;
-
-import loop.*;
 import entities.*;
 
-/**
- * PowerupManager
- */
 public class PowerupManager {
 
-    public static void HandlePowerup(PowerUp p, GameCharacter c){
+    public static void HandlePowerup(PowerUp p, Bomberman c) {
         switch (p.name) {
             case "speed": {
                 Runnable onPickup = () -> {
@@ -26,24 +19,26 @@ public class PowerupManager {
                 };
                 p.onPickup(5000, onPickup, onExpire);
             }
-            break;
+                break;
 
             case "bomb": {
                 Runnable onPickup = () -> {
-                    if (c.bombRadius < 5){c.bombRadius += 1;} // avoids having the bomb radius going above 5.
+                    if (c.bombRadius < 5) {
+                        c.bombRadius += 1;
+                    } // avoids having the bomb radius going above 5.
                 };
                 Runnable onExpire = () -> {
                 };
                 p.onPickup(5000, onPickup, onExpire);
             }
-            break;
+                break;
 
             case "rain": {
                 Runnable onPickup = () -> {
                     for (Entity e : GameLoop.entities) {
                         if (e instanceof Enemy) {
                             Enemy enemy = (Enemy) e;
-                            enemy.dealDamage((int)enemy.health/2);
+                            enemy.dealDamage((int) enemy.health / 2);
                             System.out.println(enemy + " health: " + enemy.health);
                         }
                     }
@@ -55,7 +50,7 @@ public class PowerupManager {
         }
     }
 
-    public static void RenderPowerup(PowerUp p, Graphics2D g2d){
+    public static void RenderPowerup(PowerUp p, Graphics2D g2d) {
         // draw an orange rectangle for the powerup
         g2d.setColor(Color.ORANGE);
         g2d.fillRect((int) p.posX, (int) p.posY, p.width, p.height);
