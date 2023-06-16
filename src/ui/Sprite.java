@@ -13,7 +13,7 @@ public class Sprite {
   public BufferedImage spritesheet;
 
   // The scaling factor for the sprite
-  public int scale;
+  public float scale;
 
   // Determines if the sprite has animations
   public boolean isAnimated;
@@ -70,7 +70,7 @@ public class Sprite {
   }
 
   // Set the scaling factor for the sprite
-  public void setScale(int scale) {
+  public void setScale(float scale) {
     this.scale = scale;
   }
 
@@ -93,8 +93,8 @@ public class Sprite {
         width = dims[0];
         height = dims[1];
       }
-      int scaledX = width * this.scale;
-      int scaledY = height * this.scale;
+      int scaledX = (int) (width * this.scale);
+      int scaledY = (int) (height * this.scale);
       g2d.drawImage(this.spritesheet, x, y, scaledX, scaledY, null);
     } else {
       // If the sprite is animated, delegate drawing to the current animation

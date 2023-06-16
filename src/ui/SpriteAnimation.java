@@ -23,9 +23,9 @@ public class SpriteAnimation {
   public int currentFrame;
 
   // The scaling factor for the animation
-  public int scale;
+  public float scale;
 
-  public SpriteAnimation(BufferedImage spritesheet, int rows, double absoluteMaxFrames, int scale, int frameY,
+  public SpriteAnimation(BufferedImage spritesheet, int rows, double absoluteMaxFrames, float scale, int frameY,
       int maxFrames, int stagger) {
     // Calculate the width of each frame based on the spritesheet dimensions and the
     // maximum number of frames
@@ -73,7 +73,10 @@ public class SpriteAnimation {
     // Extract the current frame from the spritesheet
     BufferedImage spriteFrame = spritesheet.getSubimage(currentWidth, currentHeight, this.width, this.height);
 
+    int scaledWidth = (int) (this.width * this.scale);
+    int scaledHeight = (int) (this.height * this.scale);
+
     // Draw the current frame at the specified position with scaling
-    g2d.drawImage(spriteFrame, x, y, this.width * this.scale, this.height * this.scale, null);
+    g2d.drawImage(spriteFrame, x, y, scaledWidth, scaledHeight, null);
   }
 }

@@ -15,6 +15,7 @@ import entities.Bomberman;
 import entities.PowerUp;
 import ui.Button;
 import ui.Menus;
+import ui.SpriteAnimation;
 import util.CollisionChecker;
 import util.Consts;
 
@@ -46,16 +47,20 @@ public class GameLoop extends JPanel implements Runnable {
         character = new Bomberman(characterX, characterY, 30, 30, 5, keyHandler, this);
         character.setScale(2);
 
+        Enemy enemy1 = new Enemy(48, 48, tileDims, tileDims, 1, "/assets/enemy-1.png");
+        enemy1.setScale(2);
+        enemy1.addAnimation("down", new SpriteAnimation(enemy1.spritesheet, 4, 4, enemy1.scale, 0, 4, 5));
+        enemy1.addAnimation("up", new SpriteAnimation(enemy1.spritesheet, 4, 4, enemy1.scale, 1, 4, 5));
+        enemy1.addAnimation("left", new SpriteAnimation(enemy1.spritesheet, 4, 4, enemy1.scale, 2, 4, 5));
+        enemy1.addAnimation("right", new SpriteAnimation(enemy1.spritesheet, 4, 4, enemy1.scale, 3, 4, 5));
+
         entities.add(character);
+        entities.add(enemy1);
         // after keyHandler
 
         // create a powerup in a random location aligned to grid tiles
         entities.add(new PowerUp((int) (Math.random() * 10) * tileDims, (int) (Math.random() * 10) * tileDims, tileDims,
                 tileDims, 0, "rain"));
-
-        // create an enemy in a random location aligned to grid tiles
-        entities.add(new Enemy((float) 48, (float) 48, tileDims,
-                tileDims, 1));
 
         this.addKeyListener(keyHandler); // Add KeyHandler as a key listener
         this.setFocusable(true); // Make the GameLoop focusable

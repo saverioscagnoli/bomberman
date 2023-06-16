@@ -2,18 +2,19 @@ package entities;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+
 import loop.GameLoop;
 import util.Utils;
 
 public class Enemy extends Entity {
 
-    private int direction = 0;
+    private String direction = "right";
 
     public int health;
     public boolean immune = false;
 
-    public Enemy(float posX, float posY, int width, int height, int speed) {
-        super(posX, posY, width, height, speed, "", false);
+    public Enemy(float posX, float posY, int width, int height, int speed, String src) {
+        super(posX, posY, width, height, speed, src, false);
         this.health = 3;
     }
 
@@ -32,49 +33,48 @@ public class Enemy extends Entity {
     public void update() {
         // the enemy moves in a direction until it hits a wall, then it changes
         // direction
+        super.updateSprite();
         switch (this.direction) {
-            case 0:
+            case "left":
                 if (Utils.EnemyCollision(this, GameLoop.entities, direction)) {
-                    this.direction = 1;
+                    this.direction = "right";
                 } else {
                     this.posX -= this.speed;
                 }
                 break;
-            case 1:
+            case "right":
                 if (Utils.EnemyCollision(this, GameLoop.entities, direction)) {
-                    this.direction = 0;
+                    this.direction = "left";
                 } else {
                     this.posX += this.speed;
                 }
                 break;
-            case 2:
+            case "up":
                 if (Utils.EnemyCollision(this, GameLoop.entities, direction)) {
-                    this.direction = 3;
+                    this.direction = "down";
                 } else {
                     this.posY -= this.speed;
                 }
                 break;
-            case 3:
+            case "down":
                 if (Utils.EnemyCollision(this, GameLoop.entities, direction)) {
-                    this.direction = 2;
+                    this.direction = "up";
                 } else {
                     this.posY += this.speed;
                 }
                 break;
         }
 
+        super.setAnimation(direction);
         // if the enemy is about to hit a solid entity, change direction
 
     }
 
     public void render(Graphics2D g2d) {
-        g2d.setColor(Color.GREEN);
-        g2d.fillRect((int) this.posX, (int) this.posY, this.width, this.height);
-
+        super.drawSprite(g2d, (int) this.posX, (int) this.posY);
         g2d.setColor(Color.RED);
         g2d.fillRect((int) posX - 15, (int) posY - 20, 5 * 10, 5);
         g2d.setColor(Color.GREEN);
         g2d.fillRect((int) posX - 15, (int) posY - 20, health * 10, 5);
-
     }
 }
