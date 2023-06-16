@@ -3,7 +3,7 @@ import java.io.IOException;
 import javax.swing.JFrame;
 
 import loop.GameLoop;
-import lvl.LevelManager;
+import managers.LevelManager;
 import ui.MainMenu;
 import ui.Menus;
 import ui.PauseMenu;

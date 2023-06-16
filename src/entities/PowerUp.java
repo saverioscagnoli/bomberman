@@ -1,9 +1,8 @@
 package entities;
 
-import loop.PowerupManager;
-
 import java.awt.Graphics2D;
 
+import managers.PowerupManager;
 import util.Consts;
 import util.Utils;
 

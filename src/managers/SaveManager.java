@@ -1,7 +1,10 @@
-package util;
+package managers;
 
 import java.io.InputStreamReader;
 import java.util.HashMap;
+
+import util.Consts;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileWriter;

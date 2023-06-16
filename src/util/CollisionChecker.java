@@ -6,7 +6,7 @@ import entities.Entity;
 import entities.Explosion;
 import entities.Bomberman;
 import entities.PowerUp;
-import loop.PowerupManager;
+import managers.PowerupManager;
 
 public class CollisionChecker {
 	// array for the 3x3 grid around the character

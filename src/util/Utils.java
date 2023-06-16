@@ -1,11 +1,21 @@
 package util;
 
-import java.util.List;
-
+import java.util.Random;
 import entities.*;
+import managers.EnemyManager;
 import ui.Button;
 
 public abstract class Utils {
+
+    public static int rng(int min, int max) {
+        Random rnd = new Random();
+        return rnd.nextInt(min, max);
+    }
+
+    public static <T> T pick(T[] arr) {
+        return arr[rng(0, arr.length)];
+    }
+
     public static int[] normalizePos(int x, int y) {
         int gridX = ((int) (x - (x % Consts.tileDims)));
         int gridY = ((int) (y - (y % Consts.tileDims)));
@@ -19,34 +29,32 @@ public abstract class Utils {
         return normalizePos(pX, pY);
     }
 
-    public static boolean EnemyCollision(Enemy enemy, List<Entity> entities, String direction){
-        // if the enemy's normalized position is just about to hit a solid entity, change direction
-        int[] normalizedPos = {(int)enemy.posX,(int) enemy.posY};
+    public static boolean EnemyCollision(Enemy enemy, String direction) {
+        // if the enemy's normalized position is just about to hit a solid entity,
+        // change direction
+        int[] normalizedPos = { (int) enemy.posX, (int) enemy.posY };
         switch (direction) {
             case "left":
+            case "up":
                 normalizedPos[0] -= Consts.tileDims;
                 break;
             case "right":
+            case "down":
                 normalizedPos[0] += Consts.tileDims;
                 break;
-            case "up":
-                normalizedPos[1] -= Consts.tileDims;
-                break;
-            case "down":
-                normalizedPos[1] += Consts.tileDims;
-                break;
         }
-        for (Entity entity : entities) {
-            if ((entity.isSolid || entity instanceof Bomb ) && entity.posX == normalizedPos[0] && entity.posY == normalizedPos[1]) {
-                System.out.println("Collision");
+        // TODO: Check for tiles
+        /* for (Enemy e : EnemyManager.getInstance().enemies) {
+            if (e.isSolid && e.posX == normalizedPos[0] && e.posY == normalizedPos[1]) {
+
                 return true;
             }
-        }
+        } */
         return false;
     }
 
     public static boolean buttonClick(int mouseX, int mouseY, Button btn) {
-        return  ((mouseX >= btn.x && mouseX <= btn.x + btn.width) && (mouseY >= btn.y && mouseY <= btn.y + btn.height));
+        return ((mouseX >= btn.x && mouseX <= btn.x + btn.width) && (mouseY >= btn.y && mouseY <= btn.y + btn.height));
     }
 
     public static void setTimeout(Runnable runnable, int delay) {

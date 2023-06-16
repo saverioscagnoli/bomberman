@@ -70,6 +70,8 @@ public class Bomb extends Entity {
             if (e instanceof Enemy) {
                 Enemy enemy = (Enemy) e;
 
+                System.out.println("a");
+
                 // if the enemy and the explosion have aabb collision, damage it.
                 if (enemy.posX < posX + Consts.tileDims && enemy.posX + enemy.width > posX
                         && enemy.posY < posY + Consts.tileDims && enemy.posY + enemy.height > posY) {
