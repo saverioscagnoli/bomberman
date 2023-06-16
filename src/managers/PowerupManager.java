@@ -58,4 +58,11 @@ public class PowerupManager {
         g2d.fillRect((int) p.posX, (int) p.posY, p.width, p.height);
     }
 
+    public static void RenderMessage(PowerUp p, Graphics2D g2d){
+        // draw a message above the powerup for 1 second
+        System.out.println("rendering message");
+        g2d.setColor(Color.BLACK);
+        g2d.drawString(p.name, (int) p.posX, (int) p.posY - 10);
+    }
+
 }

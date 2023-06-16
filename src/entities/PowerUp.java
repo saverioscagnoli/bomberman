@@ -8,6 +8,7 @@ import util.Utils;
 
 public class PowerUp extends Entity {
 	public final String name;
+	public boolean isPickedUp = false;
 
 	public PowerUp(float posX, float posY, int width, int height, int speed, String name) {
 		super(posX, posY, Consts.tileDims, Consts.tileDims, speed, "", true);
