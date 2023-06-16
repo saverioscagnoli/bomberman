@@ -9,17 +9,32 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 public class Sprite {
+  // The image used for the sprite
   public BufferedImage spritesheet;
+
+  // The scaling factor for the sprite
   public int scale;
+
+  // Determines if the sprite has animations
   public boolean isAnimated;
+
+  // Determines if the sprite is static (non-animated)
   public boolean isStatic;
+
+  // The currently active animation for the sprite
   public SpriteAnimation currentAnimation;
 
+  // A map of animation names to SpriteAnimation objects
   private HashMap<String, SpriteAnimation> map;
+
+  // The number of frames that have elapsed for the current animation
   private int elapsedFrames;
 
   public Sprite(String src, boolean isStatic) {
+    // Load the image from the given source
     BufferedImage img = this.loadImage(src);
+
+    // Initialize the sprite properties
     this.spritesheet = img;
     this.map = new HashMap<>();
     this.elapsedFrames = 0;
@@ -28,17 +43,21 @@ public class Sprite {
     this.isStatic = isStatic;
   }
 
-  public void addAdimation(String name, SpriteAnimation anim) {
+  // Add an animation to the sprite
+  public void addAnimation(String name, SpriteAnimation anim) {
     if (this.map.size() == 0) {
+      // If this is the first animation added, set it as the current animation
       this.currentAnimation = anim;
     }
     this.map.put(name, anim);
   }
 
+  // Set the current animation for the sprite
   public void setAnimation(String name) {
     this.currentAnimation = this.map.get(name);
   }
 
+  // Load an image from the given source
   private BufferedImage loadImage(String src) {
     InputStream stream = getClass().getResourceAsStream(src);
     BufferedImage img = null;
@@ -50,10 +69,12 @@ public class Sprite {
     return img;
   }
 
+  // Set the scaling factor for the sprite
   public void setScale(int scale) {
     this.scale = scale;
   }
 
+  // Update the sprite's animation
   public void updateSprite() {
     if (this.isAnimated && !this.isStatic) {
       this.elapsedFrames++;
@@ -61,8 +82,11 @@ public class Sprite {
     }
   }
 
+  // Draw the sprite on the given graphics context at the specified position
   public void drawSprite(Graphics2D g2d, int x, int y, int... dims) {
     if (this.isStatic) {
+      // If the sprite is static, draw the whole spritesheet or use custom dimensions
+      // if provided
       int width = this.spritesheet.getWidth();
       int height = this.spritesheet.getHeight();
       if (dims.length == 2) {
@@ -73,6 +97,7 @@ public class Sprite {
       int scaledY = height * this.scale;
       g2d.drawImage(this.spritesheet, x, y, scaledX, scaledY, null);
     } else {
+      // If the sprite is animated, delegate drawing to the current animation
       this.currentAnimation.draw(g2d, x, y, this.spritesheet);
     }
   }
