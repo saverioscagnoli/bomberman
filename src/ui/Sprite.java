@@ -12,18 +12,20 @@ public class Sprite {
   public BufferedImage spritesheet;
   public int scale;
   public boolean isAnimated;
+  public boolean isStatic;
   public SpriteAnimation currentAnimation;
 
   private HashMap<String, SpriteAnimation> map;
   private int elapsedFrames;
 
-  public Sprite(String src) {
+  public Sprite(String src, boolean isStatic) {
     BufferedImage img = this.loadImage(src);
     this.spritesheet = img;
     this.map = new HashMap<>();
     this.elapsedFrames = 0;
     this.scale = 1;
     this.isAnimated = true;
+    this.isStatic = isStatic;
   }
 
   public void addAdimation(String name, SpriteAnimation anim) {
@@ -53,13 +55,25 @@ public class Sprite {
   }
 
   public void updateSprite() {
-    if (this.isAnimated) {
+    if (this.isAnimated && !this.isStatic) {
       this.elapsedFrames++;
       this.currentAnimation.animate(this.elapsedFrames);
     }
   }
 
-  public void drawSprite(Graphics2D g2d, int x, int y) {
-    this.currentAnimation.draw(g2d, x, y, this.spritesheet);
+  public void drawSprite(Graphics2D g2d, int x, int y, int... dims) {
+    if (this.isStatic) {
+      int width = this.spritesheet.getWidth();
+      int height = this.spritesheet.getHeight();
+      if (dims.length == 2) {
+        width = dims[0];
+        height = dims[1];
+      }
+      int scaledX = width * this.scale;
+      int scaledY = height * this.scale;
+      g2d.drawImage(this.spritesheet, x, y, scaledX, scaledY, null);
+    } else {
+      this.currentAnimation.draw(g2d, x, y, this.spritesheet);
+    }
   }
 }

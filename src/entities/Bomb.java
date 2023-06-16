@@ -1,33 +1,26 @@
 package entities;
 
 import java.awt.Graphics2D;
-
 import loop.GameLoop;
 import util.Consts;
 import util.Utils;
-import javax.imageio.ImageIO;
-import java.io.IOException;
-import entities.*;
 
 public class Bomb extends Entity {
+    private Explosion explosionMatrix[][];
+    private int offsetX = -25;
+    private int offsetY = -15;
 
     public Bomb(float posX, float posY, int width, int height, int speed, int bombRadius) {
-        super(posX, posY, width, height, speed, "");
+        super(posX, posY, width, height, speed, "/assets/bomb.png", true);
         this.isSolid = false;
-        try {
-            bombSprite = ImageIO.read(getClass().getResourceAsStream("/spritesheet/bombs.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         Utils.setTimeout(() -> this.explode(bombRadius), 3000);
 
     }
 
     @Override
     public void update() {
+        super.updateSprite();
     }
-
-    private Explosion explosionMatrix[][];
 
     private void explode(int bombRadius) {
 
@@ -85,9 +78,9 @@ public class Bomb extends Entity {
 
             }
 
-            if (e instanceof GameCharacter) {
+            if (e instanceof Bomberman) {
                 // System.out.println("player");
-                GameCharacter player = (GameCharacter) e;
+                Bomberman player = (Bomberman) e;
                 if (player.posX < posX + Consts.tileDims && player.posX + player.width > posX
                         && player.posY < posY + Consts.tileDims && player.posY + player.height > posY) {
                     player.dealDamage(1);
@@ -110,6 +103,6 @@ public class Bomb extends Entity {
         // case "up":{imageb=rightb;}
         // case "down":{imageb=leftb;}
         // }
-        g2d.drawImage(bombSprite, (int) posX - 25, (int) posY - 25, width * 2, height * 2, null);
+        super.drawSprite(g2d, (int) this.posX + this.offsetX, (int) this.posY + this.offsetY);
     }
 }

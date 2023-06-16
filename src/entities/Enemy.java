@@ -2,9 +2,7 @@ package entities;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-
 import loop.GameLoop;
-import util.Consts;
 import util.Utils;
 
 public class Enemy extends Entity {
@@ -15,7 +13,7 @@ public class Enemy extends Entity {
     public boolean immune = false;
 
     public Enemy(float posX, float posY, int width, int height, int speed) {
-        super(posX, posY, width, height, speed, "");
+        super(posX, posY, width, height, speed, "", false);
         this.health = 3;
     }
 

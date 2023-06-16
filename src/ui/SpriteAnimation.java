@@ -12,8 +12,9 @@ public class SpriteAnimation {
   public int currentFrame;
   public int scale;
 
-  public SpriteAnimation(BufferedImage spritesheet, int rows, int scale, int frameY, int maxFrames, int stagger) {
-    this.width = (int) (spritesheet.getWidth() / 6.3);
+  public SpriteAnimation(BufferedImage spritesheet, int rows, double absoluteMaxFrames, int scale, int frameY,
+      int maxFrames, int stagger) {
+    this.width = (int) (spritesheet.getWidth() / absoluteMaxFrames);
     this.height = spritesheet.getHeight() / rows;
     this.scale = scale;
     this.frameY = frameY;

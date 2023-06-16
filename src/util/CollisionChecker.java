@@ -4,7 +4,7 @@ import java.util.List;
 
 import entities.Entity;
 import entities.Explosion;
-import entities.GameCharacter;
+import entities.Bomberman;
 import entities.PowerUp;
 import loop.PowerupManager;
 
@@ -12,7 +12,7 @@ public class CollisionChecker {
 	// array for the 3x3 grid around the character
 	public static Entity[] adjacentEntities = new Entity[9];
 
-	public static void updateAdjacentEntities(GameCharacter character, List<Entity> entities) {
+	public static void updateAdjacentEntities(Bomberman character, List<Entity> entities) {
 		// reset the array
 		for (int i = 0; i < adjacentEntities.length; i++) {
 			adjacentEntities[i] = null;
@@ -55,7 +55,7 @@ public class CollisionChecker {
 	}
 
 	// function to check collision between an entity and a square's coordinates
-	public static boolean checkCollision(Entity entity, GameCharacter character, String direction) {
+	public static boolean checkCollision(Entity entity, Bomberman character, String direction) {
 		// based on the direction, a future collision is checked. in case it will
 		// happen, the function returns true
 

@@ -1,21 +1,14 @@
 package loop;
 
-import entities.GameCharacter;
+import entities.Bomberman;
 import entities.PowerUp;
 import java.awt.Color;
 import java.awt.Graphics2D;
-
-import javax.xml.stream.events.EndElement;
-
-import loop.*;
 import entities.*;
 
-/**
- * PowerupManager
- */
 public class PowerupManager {
 
-    public static void HandlePowerup(PowerUp p, GameCharacter c) {
+    public static void HandlePowerup(PowerUp p, Bomberman c) {
         switch (p.name) {
             case "speed": {
                 Runnable onPickup = () -> {

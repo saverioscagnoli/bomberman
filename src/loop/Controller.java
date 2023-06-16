@@ -113,7 +113,7 @@ public class Controller extends MouseAdapter implements KeyListener {
             }
 
             case KeyEvent.VK_SPACE: {
-                GameCharacter character = loop.character;
+                Bomberman character = loop.character;
                 int pX = (int) (character.posX + character.width * 0.5);
                 int pY = (int) (character.posY + character.height * 0.5);
                 int[] gridPos = Utils.normalizePos(pX, pY);

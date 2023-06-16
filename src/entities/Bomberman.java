@@ -7,7 +7,7 @@ import ui.SpriteAnimation;
 import loop.Controller;
 import util.*;
 
-public class GameCharacter extends Entity {
+public class Bomberman extends Entity {
 
     Controller keyHandler;
     GameLoop gameLoop;
@@ -16,9 +16,9 @@ public class GameCharacter extends Entity {
     public boolean immune;
     public int lives;
 
-    public GameCharacter(float posX, float posY, int width, int height, int speed, Controller keyHandler,
+    public Bomberman(float posX, float posY, int width, int height, int speed, Controller keyHandler,
             GameLoop gameLoop) {
-        super(posX, posY, width, height, speed, "/assets/bomberman.png");
+        super(posX, posY, width, height, speed, "/assets/bomberman.png", false);
 
         this.gameLoop = gameLoop;
         this.keyHandler = keyHandler;
@@ -29,10 +29,10 @@ public class GameCharacter extends Entity {
         this.direction = "up";
 
         super.setScale(2);
-        super.addAdimation("left", new SpriteAnimation(this.spritesheet, 5, this.scale, 0, 3, 7));
-        super.addAdimation("down", new SpriteAnimation(this.spritesheet, 5, this.scale, 1, 3, 7));
-        super.addAdimation("right", new SpriteAnimation(this.spritesheet, 5, this.scale, 2, 3, 7));
-        super.addAdimation("up", new SpriteAnimation(this.spritesheet, 5, this.scale, 3, 3, 7));
+        super.addAdimation("left", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 0, 3, 7));
+        super.addAdimation("down", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 1, 3, 7));
+        super.addAdimation("right", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 2, 3, 7));
+        super.addAdimation("up", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 3, 3, 7));
 
     }
 

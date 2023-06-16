@@ -11,7 +11,7 @@ public class PowerUp extends Entity {
 	public final String name;
 
 	public PowerUp(float posX, float posY, int width, int height, int speed, String name) {
-		super(posX, posY, Consts.tileDims, Consts.tileDims, speed, "");
+		super(posX, posY, Consts.tileDims, Consts.tileDims, speed, "", true);
 		this.name = name;
 	}
 
