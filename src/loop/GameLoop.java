@@ -5,15 +5,12 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
-
 import javax.swing.JPanel;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import entities.Entity;
 import entities.Bomberman;
 import entities.PowerUp;

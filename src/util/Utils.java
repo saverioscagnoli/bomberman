@@ -2,7 +2,6 @@ package util;
 
 import java.util.Random;
 import entities.*;
-import managers.EnemyManager;
 import ui.Button;
 
 public abstract class Utils {
@@ -44,12 +43,14 @@ public abstract class Utils {
                 break;
         }
         // TODO: Check for tiles
-        /* for (Enemy e : EnemyManager.getInstance().enemies) {
-            if (e.isSolid && e.posX == normalizedPos[0] && e.posY == normalizedPos[1]) {
-
-                return true;
-            }
-        } */
+        /*
+         * for (Enemy e : EnemyManager.getInstance().enemies) {
+         * if (e.isSolid && e.posX == normalizedPos[0] && e.posY == normalizedPos[1]) {
+         * 
+         * return true;
+         * }
+         * }
+         */
         return false;
     }
 

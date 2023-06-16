@@ -1,13 +1,6 @@
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.GraphicsEnvironment;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-
 import javax.swing.JFrame;
-
 import loop.GameLoop;
 import managers.LevelManager;
 import ui.MainMenu;
