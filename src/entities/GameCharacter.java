@@ -3,7 +3,7 @@ package entities;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import loop.GameLoop;
-import ui.sprite.SpriteAnimation;
+import ui.SpriteAnimation;
 import loop.Controller;
 import util.*;
 
@@ -28,11 +28,11 @@ public class GameCharacter extends Entity {
         this.lives = 3;
         this.direction = "up";
 
-        super.sprite.setScale(2);
-        super.sprite.addAdimation("left", new SpriteAnimation(this.spritesheet, 5, this.scale, 0, 3, 7));
-        super.sprite.addAdimation("down", new SpriteAnimation(this.spritesheet, 5, this.scale, 1, 3, 7));
-        super.sprite.addAdimation("right", new SpriteAnimation(this.spritesheet, 5, this.scale, 2, 3, 7));
-        super.sprite.addAdimation("up", new SpriteAnimation(this.spritesheet, 5, this.scale, 3, 3, 7));
+        super.setScale(2);
+        super.addAdimation("left", new SpriteAnimation(this.spritesheet, 5, this.scale, 0, 3, 7));
+        super.addAdimation("down", new SpriteAnimation(this.spritesheet, 5, this.scale, 1, 3, 7));
+        super.addAdimation("right", new SpriteAnimation(this.spritesheet, 5, this.scale, 2, 3, 7));
+        super.addAdimation("up", new SpriteAnimation(this.spritesheet, 5, this.scale, 3, 3, 7));
 
     }
 

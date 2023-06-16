@@ -1,18 +1,25 @@
-package ui.sprite;
+package ui;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 
-public class DynamicSprite extends Sprite {
+import javax.imageio.ImageIO;
+
+public class Sprite {
+  public BufferedImage spritesheet;
+  public int scale;
   public boolean isAnimated;
   public SpriteAnimation currentAnimation;
 
   private HashMap<String, SpriteAnimation> map;
   private int elapsedFrames;
 
-  public DynamicSprite(String src) {
-    super(src);
+  public Sprite(String src) {
+    BufferedImage img = this.loadImage(src);
+    this.spritesheet = img;
     this.map = new HashMap<>();
     this.elapsedFrames = 0;
     this.scale = 1;
@@ -28,6 +35,17 @@ public class DynamicSprite extends Sprite {
 
   public void setAnimation(String name) {
     this.currentAnimation = this.map.get(name);
+  }
+
+  private BufferedImage loadImage(String src) {
+    InputStream stream = getClass().getResourceAsStream(src);
+    BufferedImage img = null;
+    try {
+      img = ImageIO.read(stream);
+    } catch (IOException err) {
+      err.printStackTrace();
+    }
+    return img;
   }
 
   public void setScale(int scale) {

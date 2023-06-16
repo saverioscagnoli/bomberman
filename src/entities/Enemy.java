@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import loop.GameLoop;
+import util.Consts;
 import util.Utils;
 
 public class Enemy extends Entity {
