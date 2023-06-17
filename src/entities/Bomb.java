@@ -1,7 +1,9 @@
 package entities;
 
 import java.awt.Graphics2D;
-import loop.GameLoop;
+import java.util.ArrayList;
+import java.util.Collection;
+import managers.EnemyManager;
 import util.Consts;
 import util.Utils;
 
@@ -14,7 +16,6 @@ public class Bomb extends Entity {
         super(posX, posY, width, height, speed, "/assets/bomb.png", true);
         this.isSolid = false;
         Utils.setTimeout(() -> this.explode(bombRadius), 3000);
-
     }
 
     @Override
@@ -41,7 +42,7 @@ public class Bomb extends Entity {
                 if (explosionMatrix[i][j] != null) {
                     if (!this.checkSolid((int) explosionMatrix[i][j].posX, (int) explosionMatrix[i][j].posY)
                             && !hitWall) {
-                        GameLoop.entities.add(explosionMatrix[i][j]);
+                        // GameLoop.entities.add(explosionMatrix[i][j]);
                     } else {
                         hitWall = true;
                         break;
@@ -53,8 +54,11 @@ public class Bomb extends Entity {
     }
 
     private boolean checkSolid(int posX, int posY) {
-        for (int i = 0; i < GameLoop.entities.size(); i++) { // for every entity in the list
-            Entity e = GameLoop.entities.get(i); // get the entity
+        Collection<Entity> wallsAndEnemies = new ArrayList<>();
+        wallsAndEnemies.addAll(EnemyManager.getInstance().enemies);
+        wallsAndEnemies.addAll(Utils.getSolidWalls());
+
+        for (Entity e : wallsAndEnemies) { // for every entity in the list
             if (e.posX == posX && e.posY == posY) { // if the entity is in the same position as the explosion
                 if (e.isSolid) { // if the entity is solid
                     Obstacle wall = (Obstacle) e; // cast the entity to an obstacle

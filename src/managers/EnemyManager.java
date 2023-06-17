@@ -68,7 +68,7 @@ public class EnemyManager {
         int l = enemies.size();
         for (int i = 0; i < l; i++) {
             Enemy e = enemies.get(i);
-            e.drawSprite(g2d, (int) e.posX, (int) e.posY);
+            e.render(g2d);
         }
     }
 }

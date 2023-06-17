@@ -9,12 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.JPanel;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import entities.Entity;
 import entities.Bomberman;
-import entities.PowerUp;
 import managers.EnemyManager;
+import managers.TileManager;
 import ui.Button;
 import ui.Menus;
 import util.CollisionChecker;
@@ -24,16 +21,15 @@ public class GameLoop extends JPanel implements Runnable {
     private Thread thread; // Thread for the game loop
     private boolean open; // Flag to start adn stop the game loop
     private final int FPS = 60; // Frames per second (Editable as needed)
-    private final int tileDims = 48;
     private final double conversionToSec = 1000000000.0;
 
     public static EnemyManager enemyManager;
+    public static TileManager tileManager;
 
     public int gameState = Consts.MENU;
     public ArrayList<Button> buttons;
     public static float characterX = 100;
     public static float characterY = 100;
-    public static List<Entity> entities = new ArrayList<Entity>();
     public Controller keyHandler; // Delcaring keyhandler
     public Bomberman character;
     public float dt = 0;
@@ -43,7 +39,7 @@ public class GameLoop extends JPanel implements Runnable {
     public GameLoop() {
 
         try {
-            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\customFont.ttf")).deriveFont(20f);
+            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\assets\\customFont.ttf")).deriveFont(20f);
             System.out.println("Font loaded");
         } catch (IOException | FontFormatException e) {
             // Handle exception
@@ -51,18 +47,14 @@ public class GameLoop extends JPanel implements Runnable {
         }
 
         this.buttons = new ArrayList<Button>();
+
         keyHandler = new Controller(this); // Create an instance of KeyHandler and passes the gameloop to it
         character = new Bomberman(characterX, characterY, 30, 30, 5, keyHandler, this);
         character.setScale(2);
 
-        entities.add(character);
-
+        tileManager = TileManager.getInstance();
         enemyManager = EnemyManager.getInstance();
         enemyManager.instanciateEnemies(3);
-
-        // create a powerup in a random location aligned to grid tiles
-        entities.add(new PowerUp((int) (Math.random() * 10) * tileDims, (int) (Math.random() * 10) * tileDims, tileDims,
-                tileDims, 0, "rain"));
 
         this.addKeyListener(keyHandler); // Add KeyHandler as a key listener
         this.setFocusable(true); // Make the GameLoop focusable
@@ -115,8 +107,10 @@ public class GameLoop extends JPanel implements Runnable {
             case Consts.MENU:
                 break;
             case Consts.IN_GAME: // In game
+                character.update();
+                tileManager.updateTiles();
                 enemyManager.updateEnemies();
-                CollisionChecker.updateAdjacentEntities(character, entities);
+                CollisionChecker.updateAdjacentEntities(character);
                 break;
         }
         this.repaint();
@@ -133,33 +127,13 @@ public class GameLoop extends JPanel implements Runnable {
                 Menus.mainMenu.draw(g2d);
                 break;
             case Consts.IN_GAME:
-                character.render(g2d);
+                tileManager.drawTiles(g2d);
                 g2d.fillRect((int) character.posX, (int) character.posY, (int) character.width, (int) character.height);
 
-                for (int i = 0; i <= 1296; i += this.tileDims) {
-                    g2d.drawLine(i, 0, i, 768);
-                }
-
-                for (int i = 0; i <= 768; i += this.tileDims) {
-                    g2d.drawLine(0, i, 1296, i);
-                }
-
-                Iterator<Entity> iterator = entities.iterator();
-
-                while (iterator.hasNext()) {
-                    Entity e = iterator.next();
-                    if (e.dead) {
-                        iterator.remove();
-                    } else {
-                        e.update();
-                        e.render(g2d);
-                    }
-                }
-
                 enemyManager.drawEnemies(g2d);
+                character.render(g2d);
 
                 // draw player lives number in top left corner
-
                 g2d.setColor(Color.BLACK);
                 g2d.drawString("Lives: " + character.lives, 10, 20);
 
