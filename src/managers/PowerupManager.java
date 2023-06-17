@@ -2,7 +2,6 @@ package managers;
 
 import entities.Bomberman;
 import entities.PowerUp;
-import loop.GameLoop;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -37,7 +36,7 @@ public class PowerupManager {
 
             case "rain": {
                 Runnable onPickup = () -> {
-                    for (Entity e : GameLoop.entities) {
+                    for (Enemy e : EnemyManager.getInstance().enemies) {
                         if (e instanceof Enemy) {
                             Enemy enemy = (Enemy) e;
                             enemy.dealDamage((int) enemy.health / 2);
@@ -58,7 +57,7 @@ public class PowerupManager {
         g2d.fillRect((int) p.posX, (int) p.posY, p.width, p.height);
     }
 
-    public static void RenderMessage(PowerUp p, Graphics2D g2d){
+    public static void RenderMessage(PowerUp p, Graphics2D g2d) {
         // draw a message above the powerup for 1 second
         System.out.println("rendering message");
         g2d.setColor(Color.BLACK);

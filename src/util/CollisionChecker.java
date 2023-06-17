@@ -1,8 +1,7 @@
 package util;
 
-import java.util.List;
-
 import entities.Entity;
+import entities.Obstacle;
 import entities.Bomberman;
 import entities.PowerUp;
 import managers.PowerupManager;
@@ -11,7 +10,7 @@ public class CollisionChecker {
 	// array for the 3x3 grid around the character
 	public static Entity[] adjacentEntities = new Entity[9];
 
-	public static void updateAdjacentEntities(Bomberman character, List<Entity> entities) {
+	public static void updateAdjacentEntities(Bomberman character) {
 		// reset the array
 		for (int i = 0; i < adjacentEntities.length; i++) {
 			adjacentEntities[i] = null;
@@ -34,10 +33,11 @@ public class CollisionChecker {
 
 		// loop through the entities and check if they are in any of the surrounding
 		// grid squares
-		for (Entity entity : entities) {
+
+		for (Obstacle tile : Utils.getSolidWalls()) {
 			for (int i = 0; i < surroundingGridSquares.length; i++) {
-				if (entity.posX == surroundingGridSquares[i][0] && entity.posY == surroundingGridSquares[i][1]) {
-					adjacentEntities[i] = entity;
+				if (tile.posX == surroundingGridSquares[i][0] && tile.posY == surroundingGridSquares[i][1]) {
+					adjacentEntities[i] = tile;
 				}
 			}
 		}

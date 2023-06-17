@@ -1,7 +1,10 @@
 package util;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
 import entities.*;
+import managers.TileManager;
 import ui.Button;
 
 public abstract class Utils {
@@ -28,7 +31,7 @@ public abstract class Utils {
         return normalizePos(pX, pY);
     }
 
-    public static boolean EnemyCollision(Enemy enemy, String direction) {
+    public static boolean enemyCollision(Enemy enemy, String direction) {
         // if the enemy's normalized position is just about to hit a solid entity,
         // change direction
         int[] normalizedPos = { (int) enemy.posX, (int) enemy.posY };
@@ -42,15 +45,13 @@ public abstract class Utils {
                 normalizedPos[0] += Consts.tileDims;
                 break;
         }
-        // TODO: Check for tiles
-        /*
-         * for (Enemy e : EnemyManager.getInstance().enemies) {
-         * if (e.isSolid && e.posX == normalizedPos[0] && e.posY == normalizedPos[1]) {
-         * 
-         * return true;
-         * }
-         * }
-         */
+
+        for (Obstacle e : Utils.getSolidWalls()) {
+            if (e.posX == normalizedPos[0] && e.posY == normalizedPos[1]) {
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -67,5 +68,15 @@ public abstract class Utils {
                 System.err.println(e);
             }
         }).start();
+    }
+
+    public static Collection<Obstacle> getSolidWalls() {
+        ArrayList<Obstacle> solidWalls = new ArrayList<>();
+        for (Obstacle tile : TileManager.getInstance().tiles) {
+            if (tile.isSolid) {
+                solidWalls.add(tile);
+            }
+        }
+        return solidWalls;
     }
 }

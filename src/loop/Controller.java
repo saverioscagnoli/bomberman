@@ -117,8 +117,11 @@ public class Controller extends MouseAdapter implements KeyListener {
                 int pX = (int) (character.posX + character.width * 0.5);
                 int pY = (int) (character.posY + character.height * 0.5);
                 int[] gridPos = Utils.normalizePos(pX, pY);
-                GameLoop.entities.add(new Bomb(gridPos[0], gridPos[1], Consts.tileDims, Consts.tileDims, 0,
-                        loop.character.bombRadius));
+                /*
+                 * TODO GameLoop.entities.add(new Bomb(gridPos[0], gridPos[1], Consts.tileDims,
+                 * Consts.tileDims, 0,
+                 * loop.character.bombRadius));
+                 */
                 break;
             }
 

@@ -34,28 +34,28 @@ public class Enemy extends Entity {
         super.updateSprite();
         switch (this.direction) {
             case "left":
-                if (Utils.EnemyCollision(this, direction)) {
+                if (Utils.enemyCollision(this, direction)) {
                     this.direction = "right";
                 } else {
                     this.posX -= this.speed;
                 }
                 break;
             case "right":
-                if (Utils.EnemyCollision(this, direction)) {
+                if (Utils.enemyCollision(this, direction)) {
                     this.direction = "left";
                 } else {
                     this.posX += this.speed;
                 }
                 break;
             case "up":
-                if (Utils.EnemyCollision(this, direction)) {
+                if (Utils.enemyCollision(this, direction)) {
                     this.direction = "down";
                 } else {
                     this.posY -= this.speed;
                 }
                 break;
             case "down":
-                if (Utils.EnemyCollision(this, direction)) {
+                if (Utils.enemyCollision(this, direction)) {
                     this.direction = "up";
                 } else {
                     this.posY += this.speed;
