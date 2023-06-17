@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import entities.Obstacle;
 import util.Consts;
+import util.Utils;
 
 public class TileManager {
     public static TileManager instance = null;
@@ -31,10 +32,15 @@ public class TileManager {
             for (int j = 0; j < this.grid[i].length; j++) {
                 int x = j * Consts.tileDims;
                 int y = i * Consts.tileDims;
+                boolean shouldSpawnObstacle = Utils.rng(1, 6) == 3;
                 if (i == 0 || i == this.grid.length - 1 || j == 0 || j == this.grid[i].length - 1
                         || (i % 2 == 0 && j % 2 == 0)) {
                     this.grid[i][j] = "W";
                     Obstacle tile = new Obstacle(x, y, true, false, "/assets/wall.png");
+                    this.tiles.add(tile);
+                } else if (shouldSpawnObstacle) {
+                    this.grid[i][j] = "WD";
+                    Obstacle tile = new Obstacle(x, y, true, true, "/assets/wall-destructable.png");
                     this.tiles.add(tile);
                 } else {
                     this.grid[i][j] = "N";
@@ -46,9 +52,15 @@ public class TileManager {
     }
 
     public void updateTiles() {
+        ArrayList<Obstacle> toRemove = new ArrayList<>();
         for (Obstacle tile : this.tiles) {
-            tile.update();
+            if (tile.dead) {
+                toRemove.add(tile);
+            } else {
+                tile.update();
+            }
         }
+        toRemove.forEach((t) -> this.tiles.remove(t));
     }
 
     public void drawTiles(Graphics2D g2d) {

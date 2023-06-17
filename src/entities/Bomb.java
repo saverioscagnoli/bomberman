@@ -3,17 +3,19 @@ package entities;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
+
+import managers.BombManager;
 import managers.EnemyManager;
 import util.Consts;
 import util.Utils;
 
 public class Bomb extends Entity {
     private Explosion explosionMatrix[][];
-    private int offsetX = -25;
-    private int offsetY = -15;
+    private int offsetX = 5;
+    private int offsetY = 10;
 
     public Bomb(float posX, float posY, int width, int height, int speed, int bombRadius) {
-        super(posX, posY, width, height, speed, "/assets/bomb.png", true);
+        super(posX, posY, width, height, speed, "/assets/bomb.png", false);
         this.isSolid = false;
         Utils.setTimeout(() -> this.explode(bombRadius), 3000);
     }
@@ -42,7 +44,8 @@ public class Bomb extends Entity {
                 if (explosionMatrix[i][j] != null) {
                     if (!this.checkSolid((int) explosionMatrix[i][j].posX, (int) explosionMatrix[i][j].posY)
                             && !hitWall) {
-                        // GameLoop.entities.add(explosionMatrix[i][j]);
+                        BombManager bombManager = BombManager.getInstance();
+                        bombManager.addExplosion(explosionMatrix[i][j]);
                     } else {
                         hitWall = true;
                         break;
@@ -73,9 +76,6 @@ public class Bomb extends Entity {
             // overlap, kill it.
             if (e instanceof Enemy) {
                 Enemy enemy = (Enemy) e;
-
-                System.out.println("a");
-
                 // if the enemy and the explosion have aabb collision, damage it.
                 if (enemy.posX < posX + Consts.tileDims && enemy.posX + enemy.width > posX
                         && enemy.posY < posY + Consts.tileDims && enemy.posY + enemy.height > posY) {
@@ -85,7 +85,6 @@ public class Bomb extends Entity {
             }
 
             if (e instanceof Bomberman) {
-                // System.out.println("player");
                 Bomberman player = (Bomberman) e;
                 if (player.posX < posX + Consts.tileDims && player.posX + player.width > posX
                         && player.posY < posY + Consts.tileDims && player.posY + player.height > posY) {
@@ -99,16 +98,6 @@ public class Bomb extends Entity {
 
     @Override
     public void render(Graphics2D g2d) {
-        // g2d.setColor(Color.BLUE);
-        // g2d.fillRect((int) posX, (int) posY, width, height);
-
-        // BufferedImage bombSprite=null;
-        // switch (direction){
-        // case "right":{imageb=rightb;}
-        // case "left":{imageb=leftb;}
-        // case "up":{imageb=rightb;}
-        // case "down":{imageb=leftb;}
-        // }
         super.drawSprite(g2d, (int) this.posX + this.offsetX, (int) this.posY + this.offsetY);
     }
 }

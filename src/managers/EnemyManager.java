@@ -47,7 +47,12 @@ public class EnemyManager {
             int x = Utils.rng(Consts.tileDims + 1, Consts.screenWidth - Consts.tileDims);
             int y = Utils.rng(Consts.tileDims + 1, Consts.screenHeight - Consts.tileDims);
             int[] pos = Utils.normalizePos(x, y);
-
+            String[][] grid = TileManager.getInstance().grid;
+            while (grid[y / Consts.tileDims][x / Consts.tileDims] == "WD"
+                    || grid[y / Consts.tileDims][x / Consts.tileDims] == "W") {
+                x = Utils.rng(Consts.tileDims + 1, Consts.screenWidth - Consts.tileDims);
+                y = Utils.rng(Consts.tileDims + 1, Consts.screenHeight - Consts.tileDims);
+            }
             Enemy e = new Enemy(pos[0], pos[1], Consts.tileDims, Consts.tileDims, 1, src);
             animMap.forEach((k, v) -> {
                 e.addAnimation(k, v);
@@ -57,11 +62,18 @@ public class EnemyManager {
     }
 
     public void updateEnemies() {
+        ArrayList<Enemy> toRemove = new ArrayList<>();
         int l = enemies.size();
         for (int i = 0; i < l; i++) {
             Enemy e = enemies.get(i);
-            e.update();
+            if (e.dead) {
+                toRemove.add(e);
+            } else {
+                e.update();
+            }
         }
+
+        toRemove.forEach((e) -> this.enemies.remove(e));
     }
 
     public void drawEnemies(Graphics2D g2d) {

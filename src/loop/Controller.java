@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import entities.*;
+import managers.BombManager;
 import ui.Button;
 import ui.Menus;
 import util.*;
@@ -114,14 +115,7 @@ public class Controller extends MouseAdapter implements KeyListener {
 
             case KeyEvent.VK_SPACE: {
                 Bomberman character = loop.character;
-                int pX = (int) (character.posX + character.width * 0.5);
-                int pY = (int) (character.posY + character.height * 0.5);
-                int[] gridPos = Utils.normalizePos(pX, pY);
-                /*
-                 * TODO GameLoop.entities.add(new Bomb(gridPos[0], gridPos[1], Consts.tileDims,
-                 * Consts.tileDims, 0,
-                 * loop.character.bombRadius));
-                 */
+                BombManager.getInstance().addBomb(character);
                 break;
             }
 
