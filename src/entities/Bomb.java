@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import managers.BombManager;
 import managers.EnemyManager;
+import managers.TileManager;
 import util.Consts;
 import util.Utils;
 
@@ -15,7 +16,7 @@ public class Bomb extends Entity {
     private int offsetY = 10;
 
     public Bomb(float posX, float posY, int width, int height, int speed, int bombRadius) {
-        super(posX, posY, width, height, speed, "/assets/bomb.png", false);
+        super(posX, posY, width, height, speed, "assets/bomb.png", false);
         this.isSolid = false;
         Utils.setTimeout(() -> this.explode(bombRadius), 3000);
     }
@@ -26,7 +27,7 @@ public class Bomb extends Entity {
     }
 
     private void explode(int bombRadius) {
-
+        Utils.playSound("assets/bomb-explosion.wav");
         explosionMatrix = new Explosion[4][5]; // creating an array that can store up to 5 explosions in the 4
                                                // directions
 
@@ -59,7 +60,7 @@ public class Bomb extends Entity {
     private boolean checkSolid(int posX, int posY) {
         Collection<Entity> wallsAndEnemies = new ArrayList<>();
         wallsAndEnemies.addAll(EnemyManager.getInstance().enemies);
-        wallsAndEnemies.addAll(Utils.getSolidWalls());
+        wallsAndEnemies.addAll(TileManager.getInstance().obtsacles);
 
         for (Entity e : wallsAndEnemies) { // for every entity in the list
             if (e.posX == posX && e.posY == posY) { // if the entity is in the same position as the explosion
@@ -67,6 +68,9 @@ public class Bomb extends Entity {
                     Obstacle wall = (Obstacle) e; // cast the entity to an obstacle
                     if (wall.destructable) { // if the obstacle is destructable
                         Utils.setTimeout(() -> wall.die(), 100); // destroy the obstacle
+                        int x = (int) wall.posX / Consts.tileDims;
+                        int y = (int) wall.posY / Consts.tileDims;
+                        TileManager.getInstance().grid[y][x] = "N";
                     }
                 }
                 return true;

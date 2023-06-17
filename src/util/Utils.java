@@ -1,8 +1,10 @@
 package util;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.io.File;
 import java.util.Random;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import entities.*;
 import managers.TileManager;
 import ui.Button;
@@ -46,7 +48,7 @@ public abstract class Utils {
                 break;
         }
 
-        for (Obstacle e : Utils.getSolidWalls()) {
+        for (Obstacle e : TileManager.getInstance().obtsacles) {
             if (e.posX == normalizedPos[0] && e.posY == normalizedPos[1]) {
                 return true;
             }
@@ -70,13 +72,15 @@ public abstract class Utils {
         }).start();
     }
 
-    public static Collection<Obstacle> getSolidWalls() {
-        ArrayList<Obstacle> solidWalls = new ArrayList<>();
-        for (Obstacle tile : TileManager.getInstance().tiles) {
-            if (tile.isSolid) {
-                solidWalls.add(tile);
-            }
+    public static void playSound(String src) {
+        try {
+            File path = new File(src);
+            AudioInputStream audio = AudioSystem.getAudioInputStream(path);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audio);
+            clip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return solidWalls;
     }
 }

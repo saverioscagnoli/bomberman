@@ -41,7 +41,7 @@ public class GameLoop extends JPanel implements Runnable {
     public GameLoop() {
 
         try {
-            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\assets\\customFont.ttf")).deriveFont(20f);
+            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("assets/customFont.ttf")).deriveFont(20f);
             System.out.println("Font loaded");
         } catch (IOException | FontFormatException e) {
             // Handle exception
@@ -131,12 +131,13 @@ public class GameLoop extends JPanel implements Runnable {
                 Menus.mainMenu.draw(g2d);
                 break;
             case Consts.IN_GAME:
-                tileManager.drawTiles(g2d);
                 g2d.fillRect((int) character.posX, (int) character.posY, (int) character.width, (int) character.height);
 
+                tileManager.drawObstacles(g2d);
+                character.render(g2d);
+                tileManager.drawBasicTiles(g2d);
                 bombManager.drawBombs(g2d);
                 enemyManager.drawEnemies(g2d);
-                character.render(g2d);
 
                 // draw player lives number in top left corner
                 g2d.setColor(Color.BLACK);

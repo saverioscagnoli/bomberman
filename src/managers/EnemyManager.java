@@ -13,7 +13,7 @@ public class EnemyManager {
     public ArrayList<Enemy> enemies;
 
     private HashMap<Integer, HashMap<String, SpriteAnimation>> animations;
-    private static String[] srcs = { "/assets/enemy-1.png" };
+    private static String[] srcs = { "assets/enemy-1.png" };
 
     private EnemyManager() {
         this.enemies = new ArrayList<>();
@@ -30,7 +30,7 @@ public class EnemyManager {
 
     private void createAnimations() {
         Enemy enemy1 = new Enemy(0, 0, Consts.tileDims, Consts.tileDims, 1, srcs[0]);
-        enemy1.setScale(2);
+        enemy1.setScale(1.9f);
         HashMap<String, SpriteAnimation> animMap = new HashMap<>();
         animMap.put("down", new SpriteAnimation(enemy1.spritesheet, 4, 4, enemy1.scale, 0, 4, 5));
         animMap.put("up", new SpriteAnimation(enemy1.spritesheet, 4, 4, enemy1.scale, 1, 4, 5));

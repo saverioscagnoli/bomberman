@@ -5,6 +5,7 @@ import entities.Obstacle;
 import entities.Bomberman;
 import entities.PowerUp;
 import managers.PowerupManager;
+import managers.TileManager;
 
 public class CollisionChecker {
 	// array for the 3x3 grid around the character
@@ -34,7 +35,7 @@ public class CollisionChecker {
 		// loop through the entities and check if they are in any of the surrounding
 		// grid squares
 
-		for (Obstacle tile : Utils.getSolidWalls()) {
+		for (Obstacle tile : TileManager.getInstance().obtsacles) {
 			for (int i = 0; i < surroundingGridSquares.length; i++) {
 				if (tile.posX == surroundingGridSquares[i][0] && tile.posY == surroundingGridSquares[i][1]) {
 					adjacentEntities[i] = tile;

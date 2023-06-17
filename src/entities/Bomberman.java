@@ -18,7 +18,7 @@ public class Bomberman extends Entity {
 
     public Bomberman(float posX, float posY, int width, int height, int speed, Controller keyHandler,
             GameLoop gameLoop) {
-        super(posX, posY, width, height, speed, "/assets/bomberman.png", false);
+        super(posX, posY, width, height, speed, "assets/bomberman.png", false);
 
         this.gameLoop = gameLoop;
         this.keyHandler = keyHandler;

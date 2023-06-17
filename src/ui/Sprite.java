@@ -2,6 +2,8 @@ package ui;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -59,9 +61,10 @@ public class Sprite {
 
   // Load an image from the given source
   private BufferedImage loadImage(String src) {
-    InputStream stream = getClass().getResourceAsStream(src);
+    File path = new File(src);
     BufferedImage img = null;
     try {
+      InputStream stream = new FileInputStream(path);
       img = ImageIO.read(stream);
     } catch (IOException err) {
       err.printStackTrace();
