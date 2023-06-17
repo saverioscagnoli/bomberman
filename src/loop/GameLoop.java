@@ -10,6 +10,7 @@ import java.io.IOException;
 import javax.swing.JPanel;
 import java.util.ArrayList;
 import entities.Bomberman;
+import managers.BombManager;
 import managers.EnemyManager;
 import managers.TileManager;
 import ui.Button;
@@ -25,6 +26,7 @@ public class GameLoop extends JPanel implements Runnable {
 
     public static EnemyManager enemyManager;
     public static TileManager tileManager;
+    public static BombManager bombManager;
 
     public int gameState = Consts.MENU;
     public ArrayList<Button> buttons;
@@ -39,7 +41,7 @@ public class GameLoop extends JPanel implements Runnable {
     public GameLoop() {
 
         try {
-            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\assets\\customFont.ttf")).deriveFont(20f);
+            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("assets/customFont.ttf")).deriveFont(20f);
             System.out.println("Font loaded");
         } catch (IOException | FontFormatException e) {
             // Handle exception
@@ -55,6 +57,7 @@ public class GameLoop extends JPanel implements Runnable {
         tileManager = TileManager.getInstance();
         enemyManager = EnemyManager.getInstance();
         enemyManager.instanciateEnemies(3);
+        bombManager = BombManager.getInstance();
 
         this.addKeyListener(keyHandler); // Add KeyHandler as a key listener
         this.setFocusable(true); // Make the GameLoop focusable
@@ -109,6 +112,7 @@ public class GameLoop extends JPanel implements Runnable {
             case Consts.IN_GAME: // In game
                 character.update();
                 tileManager.updateTiles();
+                bombManager.updateBombs();
                 enemyManager.updateEnemies();
                 CollisionChecker.updateAdjacentEntities(character);
                 break;
@@ -127,11 +131,13 @@ public class GameLoop extends JPanel implements Runnable {
                 Menus.mainMenu.draw(g2d);
                 break;
             case Consts.IN_GAME:
-                tileManager.drawTiles(g2d);
                 g2d.fillRect((int) character.posX, (int) character.posY, (int) character.width, (int) character.height);
 
-                enemyManager.drawEnemies(g2d);
+                tileManager.drawObstacles(g2d);
                 character.render(g2d);
+                tileManager.drawBasicTiles(g2d);
+                bombManager.drawBombs(g2d);
+                enemyManager.drawEnemies(g2d);
 
                 // draw player lives number in top left corner
                 g2d.setColor(Color.BLACK);

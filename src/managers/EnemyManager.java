@@ -13,7 +13,7 @@ public class EnemyManager {
     public ArrayList<Enemy> enemies;
 
     private HashMap<Integer, HashMap<String, SpriteAnimation>> animations;
-    private static String[] srcs = { "/assets/enemy-1.png" };
+    private static String[] srcs = { "assets/enemy-1.png" };
 
     private EnemyManager() {
         this.enemies = new ArrayList<>();
@@ -30,7 +30,7 @@ public class EnemyManager {
 
     private void createAnimations() {
         Enemy enemy1 = new Enemy(0, 0, Consts.tileDims, Consts.tileDims, 1, srcs[0]);
-        enemy1.setScale(2);
+        enemy1.setScale(1.9f);
         HashMap<String, SpriteAnimation> animMap = new HashMap<>();
         animMap.put("down", new SpriteAnimation(enemy1.spritesheet, 4, 4, enemy1.scale, 0, 4, 5));
         animMap.put("up", new SpriteAnimation(enemy1.spritesheet, 4, 4, enemy1.scale, 1, 4, 5));
@@ -47,7 +47,12 @@ public class EnemyManager {
             int x = Utils.rng(Consts.tileDims + 1, Consts.screenWidth - Consts.tileDims);
             int y = Utils.rng(Consts.tileDims + 1, Consts.screenHeight - Consts.tileDims);
             int[] pos = Utils.normalizePos(x, y);
-
+            String[][] grid = TileManager.getInstance().grid;
+            while (grid[y / Consts.tileDims][x / Consts.tileDims] == "WD"
+                    || grid[y / Consts.tileDims][x / Consts.tileDims] == "W") {
+                x = Utils.rng(Consts.tileDims + 1, Consts.screenWidth - Consts.tileDims);
+                y = Utils.rng(Consts.tileDims + 1, Consts.screenHeight - Consts.tileDims);
+            }
             Enemy e = new Enemy(pos[0], pos[1], Consts.tileDims, Consts.tileDims, 1, src);
             animMap.forEach((k, v) -> {
                 e.addAnimation(k, v);
@@ -57,11 +62,18 @@ public class EnemyManager {
     }
 
     public void updateEnemies() {
+        ArrayList<Enemy> toRemove = new ArrayList<>();
         int l = enemies.size();
         for (int i = 0; i < l; i++) {
             Enemy e = enemies.get(i);
-            e.update();
+            if (e.dead) {
+                toRemove.add(e);
+            } else {
+                e.update();
+            }
         }
+
+        toRemove.forEach((e) -> this.enemies.remove(e));
     }
 
     public void drawEnemies(Graphics2D g2d) {
