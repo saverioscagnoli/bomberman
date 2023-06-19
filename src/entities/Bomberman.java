@@ -11,7 +11,7 @@ public class Bomberman extends Entity {
 
 	Controller keyHandler;
 	GameLoop gameLoop;
-	public int bombRadius;
+	public int bombRadius, maxBombs;
 	public int health;
 	public boolean immune;
 	public int lives;
@@ -20,6 +20,7 @@ public class Bomberman extends Entity {
 			GameLoop gameLoop) {
 		super(posX, posY, width, height, speed, "assets/bomberman.png", false);
 
+		this.maxBombs = 3;
 		this.gameLoop = gameLoop;
 		this.keyHandler = keyHandler;
 		this.bombRadius = 3;

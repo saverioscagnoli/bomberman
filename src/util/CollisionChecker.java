@@ -2,6 +2,9 @@ package util;
 
 import entities.Entity;
 import entities.Obstacle;
+
+import java.util.ArrayList;
+
 import entities.Bomberman;
 import entities.PowerUp;
 import managers.PowerupManager;
@@ -35,7 +38,11 @@ public class CollisionChecker {
 		// loop through the entities and check if they are in any of the surrounding
 		// grid squares
 
-		for (Obstacle tile : TileManager.getInstance().obtsacles) {
+		ArrayList<Entity> obstaclesAndPowerups = new ArrayList<>();
+		obstaclesAndPowerups.addAll(TileManager.getInstance().obtsacles);
+		obstaclesAndPowerups.addAll(PowerupManager.getInstance().powerups);
+
+		for (Entity tile : obstaclesAndPowerups) {
 			for (int i = 0; i < surroundingGridSquares.length; i++) {
 				if (tile.posX == surroundingGridSquares[i][0] && tile.posY == surroundingGridSquares[i][1]) {
 					adjacentEntities[i] = tile;
