@@ -21,7 +21,7 @@ import util.*;
 
 public class Controller extends MouseAdapter implements KeyListener {
 
-    // variables for keys taht are currently pressed
+    // variables for keys that are currently pressed
     private boolean wPressed = false;
     private boolean aPressed = false;
     private boolean sPressed = false;
@@ -46,7 +46,7 @@ public class Controller extends MouseAdapter implements KeyListener {
                         if (Utils.buttonClick(x, y, btn)) {
                             switch (btn.uuid) {
                                 case "s":
-                                    loop.gameState = Consts.IN_GAME;
+                                    loop.setGameState(Consts.IN_GAME);
                                     break;
                                 case "q":
                                     System.exit(0);
@@ -61,7 +61,7 @@ public class Controller extends MouseAdapter implements KeyListener {
                         if (Utils.buttonClick(x, y, btn)) {
                             switch (btn.uuid) {
                                 case "r": {
-                                    loop.gameState = Consts.IN_GAME;
+                                    loop.setGameState(Consts.IN_GAME);
                                 }
                             }
                         }
@@ -116,14 +116,15 @@ public class Controller extends MouseAdapter implements KeyListener {
             case KeyEvent.VK_SPACE: {
                 Bomberman character = loop.character;
                 BombManager.getInstance().addBomb(character);
+                Utils.playSound("assets/place-bomb.wav");
                 break;
             }
 
             case KeyEvent.VK_ESCAPE: {
                 if (this.loop.gameState == Consts.IN_GAME) {
-                    this.loop.gameState = Consts.PAUSE;
+                    this.loop.setGameState(Consts.PAUSE);
                 } else if (this.loop.gameState == Consts.PAUSE) {
-                    this.loop.gameState = Consts.IN_GAME;
+                    this.loop.setGameState(Consts.IN_GAME);
                 }
                 break;
             }

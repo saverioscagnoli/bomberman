@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import entities.Bomberman;
 import managers.BombManager;
 import managers.EnemyManager;
+import managers.MusicManager;
 import managers.TileManager;
 import ui.Button;
 import ui.Menus;
@@ -39,7 +40,6 @@ public class GameLoop extends JPanel implements Runnable {
     private Font customFont;
 
     public GameLoop() {
-
         try {
             customFont = Font.createFont(Font.TRUETYPE_FONT, new File("assets/customFont.ttf")).deriveFont(20f);
             System.out.println("Font loaded");
@@ -80,6 +80,11 @@ public class GameLoop extends JPanel implements Runnable {
         }
     }
 
+    public void setGameState(int gameState) {
+        this.gameState = gameState;
+        MusicManager.getInstance().ost(this.gameState);
+    }
+
     @Override
     public void run() {
         double last = System.nanoTime();
@@ -106,7 +111,7 @@ public class GameLoop extends JPanel implements Runnable {
     }
 
     public void update(double dt) {
-        switch (this.gameState) {
+        switch (gameState) {
             case Consts.MENU:
                 break;
             case Consts.IN_GAME: // In game
@@ -126,7 +131,7 @@ public class GameLoop extends JPanel implements Runnable {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setFont(customFont); // TODO : fare in modo che il font venga settato una volta sola.
 
-        switch (this.gameState) {
+        switch (gameState) {
             case Consts.MENU:
                 Menus.mainMenu.draw(g2d);
                 break;
