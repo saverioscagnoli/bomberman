@@ -29,7 +29,7 @@ public class Bomberman extends Entity {
 		this.lives = 3;
 		this.direction = "up";
 
-		super.setScale(2.1f);
+		super.setScale(2.5f);
 		super.addAnimation("left", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 0, 3, 10));
 		super.addAnimation("down", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 1, 3, 10));
 		super.addAnimation("right", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 2, 3, 10));
@@ -119,7 +119,7 @@ public class Bomberman extends Entity {
 	}
 
 	public void render(Graphics2D g2d) {
-		super.drawSprite(g2d, (int) this.posX, (int) this.posY - 22);
+		super.drawSprite(g2d, (int) this.posX, (int) this.posY - 30);
 		// draw the health bar above the player with 5 squares for each health point
 
 		// draw the hitbox as a gray square

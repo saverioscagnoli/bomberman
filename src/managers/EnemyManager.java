@@ -32,7 +32,7 @@ public class EnemyManager {
 
 	private void createAnimations() {
 		Enemy enemy1 = new Enemy(0, 0, Consts.tileDims, Consts.tileDims, 1, srcs[0]);
-		enemy1.setScale(1.9f);
+		enemy1.setScale(2.5f);
 		HashMap<String, SpriteAnimation> animMap = new HashMap<>();
 		animMap.put("down", new SpriteAnimation(enemy1.spritesheet, 4, 4, enemy1.scale, 0, 4, 5));
 		animMap.put("up", new SpriteAnimation(enemy1.spritesheet, 4, 4, enemy1.scale, 1, 4, 5));

@@ -51,7 +51,6 @@ public class Loop extends JPanel implements Runnable {
 
 		keyHandler = new Controller(this); // Create an instance of KeyHandler and passes the gameloop to it
 		character = new Bomberman(48, 48, 30, 30, 5, keyHandler, this);
-		character.setScale(2);
 
 		tileManager = TileManager.getInstance();
 		enemyManager = EnemyManager.getInstance();

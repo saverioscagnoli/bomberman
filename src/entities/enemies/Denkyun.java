@@ -49,6 +49,7 @@ public class Denkyun extends Enemy {
 					} else {
 						this.direction = "right";
 					}
+					this.setAnimation(direction);
 				} else {
 					this.posX -= this.speed;
 				}
@@ -65,6 +66,7 @@ public class Denkyun extends Enemy {
 					} else {
 						this.direction = "left";
 					}
+					this.setAnimation(direction);
 				} else {
 					this.posX += this.speed;
 				}
@@ -81,6 +83,7 @@ public class Denkyun extends Enemy {
 					} else {
 						this.direction = "down";
 					}
+					this.setAnimation(direction);
 				} else {
 					this.posY -= this.speed;
 				}
@@ -98,18 +101,16 @@ public class Denkyun extends Enemy {
 					} else {
 						this.direction = "up";
 					}
-					break;
+					this.setAnimation(direction);
 				} else {
 					this.posY += this.speed;
 				}
+				break;
 		}
-
-		this.isAnimated = true;
-		this.setAnimation(direction);
 	}
 
 	public void render(Graphics2D g2d) {
 		// draw hitbox as blue box (debug purpose)
-		super.drawSprite(g2d, (int) this.posX, (int) this.posY);
+		super.drawSprite(g2d, (int) this.posX, (int) this.posY - 15);
 	}
 }

@@ -14,8 +14,6 @@ import util.Utils;
 
 public class Bomb extends Entity {
 	private Explosion explosionMatrix[][];
-	private int offsetX = 5;
-	private int offsetY = 10;
 
 	public Bomb(float posX, float posY, int width, int height, int speed, int bombRadius) {
 		super(posX, posY, width, height, speed, Consts.bombPath + "bomb.png", false);
@@ -142,6 +140,6 @@ public class Bomb extends Entity {
 
 	@Override
 	public void render(Graphics2D g2d) {
-		super.drawSprite(g2d, (int) this.posX + this.offsetX, (int) this.posY + this.offsetY);
+		super.drawSprite(g2d, (int) this.posX, (int) this.posY);
 	}
 }
