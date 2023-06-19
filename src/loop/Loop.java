@@ -20,7 +20,7 @@ import ui.Menus;
 import util.CollisionChecker;
 import util.Consts;
 
-public class GameLoop extends JPanel implements Runnable {
+public class Loop extends JPanel implements Runnable {
 	private Thread thread; // Thread for the game loop
 	private boolean open; // Flag to start adn stop the game loop
 	private final int FPS = 60; // Frames per second (Editable as needed)
@@ -38,7 +38,7 @@ public class GameLoop extends JPanel implements Runnable {
 
 	private Font customFont;
 
-	public GameLoop() {
+	public Loop() {
 		try {
 			customFont = Font.createFont(Font.TRUETYPE_FONT, new File("assets/customFont.ttf")).deriveFont(20f);
 			System.out.println("Font loaded");

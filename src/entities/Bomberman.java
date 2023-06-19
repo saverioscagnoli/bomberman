@@ -2,7 +2,7 @@ package entities;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import loop.GameLoop;
+import loop.Loop;
 import ui.SpriteAnimation;
 import loop.Controller;
 import util.*;
@@ -10,14 +10,14 @@ import util.*;
 public class Bomberman extends Entity {
 
 	Controller keyHandler;
-	GameLoop gameLoop;
+	Loop gameLoop;
 	public int bombRadius, maxBombs;
 	public int health;
 	public boolean immune;
 	public int lives;
 
 	public Bomberman(float posX, float posY, int width, int height, int speed, Controller keyHandler,
-			GameLoop gameLoop) {
+			Loop gameLoop) {
 		super(posX, posY, width, height, speed, "assets/bomberman.png", false);
 
 		this.maxBombs = 3;
