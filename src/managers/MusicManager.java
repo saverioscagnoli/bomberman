@@ -9,7 +9,7 @@ public class MusicManager {
     private Clip clip;
 
     private MusicManager() {
-        this.clip = Utils.playSound("assets/title.wav");
+        this.clip = Utils.playSound(Consts.soundPath + "title.wav");
         this.clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
@@ -24,12 +24,12 @@ public class MusicManager {
         this.clip.stop();
         switch (gameState) {
             case Consts.MENU: {
-                this.clip = Utils.playSound("assets/title.wav");
+                this.clip = Utils.playSound(Consts.soundPath + "title.wav");
                 this.clip.loop(Clip.LOOP_CONTINUOUSLY);
                 break;
             }
             case Consts.IN_GAME: {
-                this.clip = Utils.playSound("assets/level-1.wav");
+                this.clip = Utils.playSound(Consts.soundPath + "level-1.wav");
                 this.clip.loop(Clip.LOOP_CONTINUOUSLY);
                 break;
             }

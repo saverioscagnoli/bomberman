@@ -6,10 +6,16 @@ import util.Consts;
 public class Obstacle extends Entity {
   public boolean destructable;
 
-  public Obstacle(float posX, float posY, boolean isSolid, boolean destructable, String src) {
-    super(posX, posY, Consts.tileDims, Consts.tileDims, 0, src, true);
+  public Obstacle(float posX, float posY, boolean isSolid, boolean isStatic, boolean destructable, String src) {
+    super(posX, posY, Consts.tileDims, Consts.tileDims, 0, src, isStatic);
     this.isSolid = isSolid;
     this.destructable = destructable;
+  }
+
+  public void update() {
+    if (!isStatic) {
+      super.updateSprite();
+    }
   }
 
   public void render(Graphics2D g2d) {

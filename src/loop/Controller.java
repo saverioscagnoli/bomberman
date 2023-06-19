@@ -116,7 +116,7 @@ public class Controller extends MouseAdapter implements KeyListener {
             case KeyEvent.VK_SPACE: {
                 Bomberman character = loop.character;
                 BombManager.getInstance().addBomb(character);
-                Utils.playSound("assets/place-bomb.wav");
+                Utils.playSound(Consts.soundPath + "place-bomb.wav");
                 break;
             }
 
