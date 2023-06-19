@@ -1,11 +1,13 @@
 package util;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Random;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import entities.*;
+import managers.BombManager;
 import managers.TileManager;
 import ui.Button;
 
@@ -14,10 +16,6 @@ public abstract class Utils {
     public static int rng(int min, int max) {
         Random rnd = new Random();
         return rnd.nextInt(min, max);
-    }
-
-    public static <T> T pick(T[] arr) {
-        return arr[rng(0, arr.length)];
     }
 
     public static int[] normalizePos(int x, int y) {
@@ -48,7 +46,13 @@ public abstract class Utils {
                 break;
         }
 
-        for (Obstacle e : TileManager.getInstance().obtsacles) {
+        ArrayList<Obstacle> obstacles = TileManager.getInstance().obtsacles;
+        ArrayList<Bomb> bombs = BombManager.getInstance().bombs;
+        ArrayList<Entity> obstaclesAndBombs = new ArrayList<>();
+        obstaclesAndBombs.addAll(obstacles);
+        obstaclesAndBombs.addAll(bombs);
+
+        for (Entity e : obstaclesAndBombs) {
             if (e.posX == normalizedPos[0] && e.posY == normalizedPos[1]) {
                 return true;
             }
@@ -72,15 +76,18 @@ public abstract class Utils {
         }).start();
     }
 
-    public static void playSound(String src) {
+    public static Clip playSound(String src) {
+        Clip clip = null;
         try {
             File path = new File(src);
             AudioInputStream audio = AudioSystem.getAudioInputStream(path);
-            Clip clip = AudioSystem.getClip();
+            clip = AudioSystem.getClip();
             clip.open(audio);
             clip.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return clip;
     }
+
 }
