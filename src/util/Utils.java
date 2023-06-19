@@ -50,7 +50,7 @@ public abstract class Utils {
 				break;
 		}
 
-		ArrayList<Obstacle> obstacles = TileManager.getInstance().obtsacles;
+		ArrayList<Obstacle> obstacles = TileManager.getInstance().walls;
 		ArrayList<Bomb> bombs = BombManager.getInstance().bombs;
 		ArrayList<Entity> obstaclesAndBombs = new ArrayList<>();
 		obstaclesAndBombs.addAll(obstacles);

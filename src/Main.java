@@ -1,7 +1,7 @@
 import java.awt.Dimension;
 import java.io.IOException;
 import javax.swing.JFrame;
-import loop.GameLoop;
+import loop.Loop;
 import managers.MusicManager;
 import ui.MainMenu;
 import ui.Menus;
@@ -17,7 +17,7 @@ class Main {
         win.setPreferredSize(new Dimension(Consts.screenWidth + 16, Consts.screenHeight + 35));
         win.setResizable(false);
         win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        GameLoop loop = new GameLoop();
+        Loop loop = new Loop();
         Menus.mainMenu = new MainMenu(loop);
         Menus.pauseMenu = new PauseMenu(loop);
 

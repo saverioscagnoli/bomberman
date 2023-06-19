@@ -2,7 +2,7 @@ package entities;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import loop.GameLoop;
+import loop.Loop;
 import ui.SpriteAnimation;
 import loop.Controller;
 import util.*;
@@ -10,14 +10,14 @@ import util.*;
 public class Bomberman extends Entity {
 
 	Controller keyHandler;
-	GameLoop gameLoop;
+	Loop gameLoop;
 	public int bombRadius, maxBombs;
 	public int health;
 	public boolean immune;
 	public int lives;
 
 	public Bomberman(float posX, float posY, int width, int height, int speed, Controller keyHandler,
-			GameLoop gameLoop) {
+			Loop gameLoop) {
 		super(posX, posY, width, height, speed, "assets/bomberman.png", false);
 
 		this.maxBombs = 3;
@@ -29,7 +29,7 @@ public class Bomberman extends Entity {
 		this.lives = 3;
 		this.direction = "up";
 
-		super.setScale(2);
+		super.setScale(2.1f);
 		super.addAnimation("left", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 0, 3, 10));
 		super.addAnimation("down", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 1, 3, 10));
 		super.addAnimation("right", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 2, 3, 10));

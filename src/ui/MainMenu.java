@@ -1,10 +1,10 @@
 package ui;
-import loop.GameLoop;
+import loop.Loop;
 import util.Consts;
 
 
 public class MainMenu extends Page {
-  public MainMenu(GameLoop loop) {
+  public MainMenu(Loop loop) {
     super(loop);
     this.init();
   }

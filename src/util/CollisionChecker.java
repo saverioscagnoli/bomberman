@@ -1,10 +1,7 @@
 package util;
 
 import entities.Entity;
-import entities.Obstacle;
-
 import java.util.ArrayList;
-
 import entities.Bomberman;
 import entities.PowerUp;
 import managers.BombManager;
@@ -40,7 +37,7 @@ public class CollisionChecker {
 		// grid squares
 
 		ArrayList<Entity> obstaclesAndPowerups = new ArrayList<>();
-		obstaclesAndPowerups.addAll(TileManager.getInstance().obtsacles);
+		obstaclesAndPowerups.addAll(TileManager.getInstance().walls);
 		obstaclesAndPowerups.addAll(PowerupManager.getInstance().powerups);
 		obstaclesAndPowerups.addAll(BombManager.getInstance().bombs);
 

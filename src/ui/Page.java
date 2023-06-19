@@ -4,14 +4,14 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
-import loop.GameLoop;
+import loop.Loop;
 import util.Consts;
 
 public class Page {
   public final ArrayList<Button> buttons;
-  public final GameLoop loop;
+  public final Loop loop;
 
-  public Page(GameLoop loop) {
+  public Page(Loop loop) {
     this.buttons = new ArrayList<Button>();
     this.loop = loop;
   }

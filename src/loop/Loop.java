@@ -10,7 +10,6 @@ import java.io.IOException;
 import javax.swing.JPanel;
 import java.util.ArrayList;
 import entities.Bomberman;
-import entities.PowerUp;
 import managers.BombManager;
 import managers.EnemyManager;
 import managers.MusicManager;
@@ -21,7 +20,7 @@ import ui.Menus;
 import util.CollisionChecker;
 import util.Consts;
 
-public class GameLoop extends JPanel implements Runnable {
+public class Loop extends JPanel implements Runnable {
 	private Thread thread; // Thread for the game loop
 	private boolean open; // Flag to start adn stop the game loop
 	private final int FPS = 60; // Frames per second (Editable as needed)
@@ -33,15 +32,13 @@ public class GameLoop extends JPanel implements Runnable {
 
 	public int gameState = Consts.MENU;
 	public ArrayList<Button> buttons;
-	public static float characterX = 100;
-	public static float characterY = 100;
 	public Controller keyHandler; // Delcaring keyhandler
 	public static Bomberman character;
 	public float dt = 0;
 
 	private Font customFont;
 
-	public GameLoop() {
+	public Loop() {
 		try {
 			customFont = Font.createFont(Font.TRUETYPE_FONT, new File("assets/customFont.ttf")).deriveFont(20f);
 			System.out.println("Font loaded");
@@ -53,7 +50,7 @@ public class GameLoop extends JPanel implements Runnable {
 		this.buttons = new ArrayList<Button>();
 
 		keyHandler = new Controller(this); // Create an instance of KeyHandler and passes the gameloop to it
-		character = new Bomberman(characterX, characterY, 30, 30, 5, keyHandler, this);
+		character = new Bomberman(48, 48, 30, 30, 5, keyHandler, this);
 		character.setScale(2);
 
 		tileManager = TileManager.getInstance();
@@ -139,11 +136,9 @@ public class GameLoop extends JPanel implements Runnable {
 				Menus.mainMenu.draw(g2d);
 				break;
 			case Consts.IN_GAME:
-				g2d.fillRect((int) character.posX, (int) character.posY, (int) character.width, (int) character.height);
-
 				tileManager.drawObstacles(g2d);
-				character.render(g2d);
 				tileManager.drawBasicTiles(g2d);
+				character.render(g2d);
 				bombManager.drawBombs(g2d);
 				enemyManager.drawEnemies(g2d);
 				PowerupManager.RenderPowerup(g2d);

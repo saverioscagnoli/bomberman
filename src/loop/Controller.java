@@ -32,9 +32,9 @@ public class Controller extends MouseAdapter implements KeyListener {
     public String latestHorizontalKey;
     public String latestVerticalKey;
 
-    private GameLoop loop;
+    private Loop loop;
 
-    public Controller(GameLoop loop) {
+    public Controller(Loop loop) {
         this.loop = loop;
         loop.addMouseListener(new MouseAdapter() {
             @Override
@@ -116,7 +116,7 @@ public class Controller extends MouseAdapter implements KeyListener {
             case KeyEvent.VK_SPACE: {
                 Bomberman character = loop.character;
                 BombManager.getInstance().addBomb(character);
-                Utils.playSound("assets/place-bomb.wav");
+                Utils.playSound(Consts.soundPath + "place-bomb.wav");
                 break;
             }
 

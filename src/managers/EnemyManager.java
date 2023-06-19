@@ -15,7 +15,7 @@ public class EnemyManager {
 	public ArrayList<Enemy> enemies;
 
 	private HashMap<Integer, HashMap<String, SpriteAnimation>> animations;
-	private static String[] srcs = { "assets/enemy-1.png" };
+	private static String[] srcs = { Consts.enemiesPath + "enemy-1.png" };
 
 	private EnemyManager() {
 		this.enemies = new ArrayList<>();
