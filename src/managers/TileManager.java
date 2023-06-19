@@ -85,15 +85,23 @@ public class TileManager {
                         this.walls.add(tile);
                     } else {
                         if (shouldSpawnObstacle) {
+                            src = Consts.tilesPath + "wd-1.png";
+                            String animationName = null;
                             if (i == 1 || this.grid[i - 1][j] == "W") {
-                                src = Consts.tilesPath + "wd-1-edge.png";
+                                animationName = "idle-edge";
                             } else {
+                                animationName = "idle";
                                 src = Consts.tilesPath + "wd-1.png";
                             }
                             tile = new Obstacle(x, y, true, false, true, src);
                             tile.addAnimation("idle",
-                                    new SpriteAnimation(tile.spritesheet, 1, 4, tile.scale, 0, 4, 10));
+                                    new SpriteAnimation(tile.spritesheet, 3, 6, tile.scale, 0, 4, 10));
+                            tile.addAnimation("idle-edge",
+                                    new SpriteAnimation(tile.spritesheet, 3, 6, tile.scale, 1, 4, 10));
+                            tile.addAnimation("death",
+                                    new SpriteAnimation(tile.spritesheet, 3, 6, tile.scale, 2, 6, 10));
                             this.grid[i][j] = "WD";
+                            tile.setAnimation(animationName);
                             this.walls.add(tile);
                         } else {
                             this.grid[i][j] = "N";
@@ -113,10 +121,12 @@ public class TileManager {
     public void updateTiles() {
         ArrayList<Obstacle> toRemove = new ArrayList<>();
         for (Obstacle tile : this.walls) {
-            if (tile.dead) {
-                toRemove.add(tile);
-            } else {
-                tile.update();
+            if (tile.destructable) {
+                if (tile.dead) {
+                    toRemove.add(tile);
+                } else {
+                    tile.update();
+                }
             }
         }
         toRemove.forEach((t) -> {

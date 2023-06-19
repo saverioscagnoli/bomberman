@@ -98,7 +98,7 @@ public class Bomb extends Entity {
 				if (e.isSolid) { // if the entity is solid
 					Obstacle wall = (Obstacle) e; // cast the entity to an obstacle
 					if (wall.destructable) { // if the obstacle is destructable
-						Utils.setTimeout(() -> wall.die(), 100); // destroy the obstacle
+						wall.die(); // destroy the obstacle
 						int x = (int) wall.posX / Consts.tileDims;
 						int y = (int) wall.posY / Consts.tileDims;
 						TileManager.getInstance().grid[y][x] = "N";

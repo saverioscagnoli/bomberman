@@ -110,9 +110,6 @@ public class Denkyun extends Enemy {
 
 	public void render(Graphics2D g2d) {
 		// draw hitbox as blue box (debug purpose)
-		g2d.setColor(Color.BLUE);
-		g2d.fillRect((int) posX, (int) posY, width, height);
 		super.drawSprite(g2d, (int) this.posX, (int) this.posY);
 	}
-
 }
