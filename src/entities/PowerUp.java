@@ -1,5 +1,6 @@
 package entities;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 import managers.PowerupManager;
@@ -25,6 +26,8 @@ public class PowerUp extends Entity {
 	}
 
 	public void render(Graphics2D g2d) {
-		PowerupManager.RenderPowerup(this, g2d);
+		g2d.setColor(Color.ORANGE);
+		// draws a recatngle
+		g2d.fillRect((int) posX, (int) posY, width, height);
 	}
 }

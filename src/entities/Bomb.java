@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import managers.BombManager;
 import managers.EnemyManager;
+import managers.PowerupManager;
 import managers.TileManager;
 import ui.SpriteAnimation;
 import util.Consts;
@@ -100,6 +101,12 @@ public class Bomb extends Entity {
 						int x = (int) wall.posX / Consts.tileDims;
 						int y = (int) wall.posY / Consts.tileDims;
 						TileManager.getInstance().grid[y][x] = "N";
+
+						// have a 30% chance to drop a powerup when a wall is destroyed
+						if (Math.random() < 0.3) {
+							PowerUp powerup = new PowerUp(wall.posX, wall.posY, Consts.tileDims, Consts.tileDims, 0, "speed");
+							PowerupManager.getInstance().powerups.add(powerup);
+						}
 					}
 				}
 				return true;
