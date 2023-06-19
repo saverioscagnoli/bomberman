@@ -2,6 +2,7 @@ import java.awt.Dimension;
 import java.io.IOException;
 import javax.swing.JFrame;
 import loop.GameLoop;
+import managers.MusicManager;
 import ui.MainMenu;
 import ui.Menus;
 import ui.PauseMenu;
@@ -25,5 +26,6 @@ class Main {
         win.setLocationRelativeTo(null);
         win.setVisible(true);
         loop.requestFocus();
+        MusicManager.getInstance();
     }
 }

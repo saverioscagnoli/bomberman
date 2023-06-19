@@ -29,10 +29,10 @@ public class Bomberman extends Entity {
         this.direction = "up";
 
         super.setScale(2);
-        super.addAnimation("left", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 0, 3, 7));
-        super.addAnimation("down", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 1, 3, 7));
-        super.addAnimation("right", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 2, 3, 7));
-        super.addAnimation("up", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 3, 3, 7));
+        super.addAnimation("left", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 0, 3, 10));
+        super.addAnimation("down", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 1, 3, 10));
+        super.addAnimation("right", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 2, 3, 10));
+        super.addAnimation("up", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 3, 3, 10));
 
     }
 
@@ -52,7 +52,8 @@ public class Bomberman extends Entity {
 
         super.updateSprite();
 
-        if (keyHandler.buttonPriorities.isEmpty() == false) {
+        if (!keyHandler.buttonPriorities.isEmpty()) {
+
             super.isAnimated = true;
             switch (keyHandler.buttonPriorities.get(0)) {
                 case "A":
