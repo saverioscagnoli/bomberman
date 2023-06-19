@@ -2,6 +2,7 @@
   "[java]": {
     "editor.defaultFormatter": "redhat.java",
     "editor.formatOnSave": true,
-    "editor.formatOnPaste": true
+    "editor.formatOnPaste": true,
+    "editor.tabSize": 2
   }
 }
