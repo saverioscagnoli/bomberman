@@ -6,7 +6,7 @@ import util.Utils;
 
 public class Enemy extends Entity {
 
-	private String direction = "right";
+	protected String direction;
 
 	public int health;
 	public boolean immune = false;
@@ -14,6 +14,23 @@ public class Enemy extends Entity {
 	public Enemy(float posX, float posY, int width, int height, int speed, String src) {
 		super(posX, posY, width, height, speed, src, false);
 		this.health = 3;
+
+		// sets a random direction between right, left, up, down
+		int rand = (int) (Math.random() * 4);
+		switch (rand) {
+			case 0:
+				this.direction = "right";
+				break;
+			case 1:
+				this.direction = "left";
+				break;
+			case 2:
+				this.direction = "up";
+				break;
+			case 3:
+				this.direction = "down";
+				break;
+		}
 	}
 
 	public void dealDamage(int damage) {
@@ -29,43 +46,7 @@ public class Enemy extends Entity {
 	}
 
 	public void update() {
-		// the enemy moves in a direction until it hits a wall, then it changes
-		// direction
-		super.updateSprite();
-		switch (this.direction) {
-			case "left":
-				if (Utils.enemyCollision(this, direction)) {
-					this.direction = "right";
-				} else {
-					this.posX -= this.speed;
-				}
-				break;
-			case "right":
-				if (Utils.enemyCollision(this, direction)) {
-					this.direction = "left";
-				} else {
-					this.posX += this.speed;
-				}
-				break;
-			case "up":
-				if (Utils.enemyCollision(this, direction)) {
-					this.direction = "down";
-				} else {
-					this.posY -= this.speed;
-				}
-				break;
-			case "down":
-				if (Utils.enemyCollision(this, direction)) {
-					this.direction = "up";
-				} else {
-					this.posY += this.speed;
-				}
-				break;
-		}
-
 		super.setAnimation(direction);
-		// if the enemy is about to hit a solid entity, change direction
-
 	}
 
 	public void render(Graphics2D g2d) {

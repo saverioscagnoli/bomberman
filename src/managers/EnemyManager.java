@@ -3,6 +3,8 @@ package managers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import entities.Enemy;
+import entities.enemies.Denkyun;
+import entities.enemies.Puropen;
 import ui.SpriteAnimation;
 import util.Consts;
 import util.Utils;
@@ -54,7 +56,7 @@ public class EnemyManager {
 				y = Utils.rng(Consts.tileDims + 1, Consts.screenHeight - Consts.tileDims);
 				pos = Utils.normalizePos(x, y);
 			}
-			Enemy e = new Enemy(pos[0], pos[1], Consts.tileDims - 2, Consts.tileDims - 2, 1, src);
+			Enemy e = new Denkyun(pos[0], pos[1], Consts.tileDims - 2, Consts.tileDims - 2, 1, src);
 			animMap.forEach((k, v) -> {
 				e.addAnimation(k, v);
 			});
