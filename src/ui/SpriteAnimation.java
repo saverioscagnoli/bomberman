@@ -65,7 +65,7 @@ public class SpriteAnimation {
   }
 
   // Draw the current frame of the animation at the specified position
-  public void draw(Graphics2D g2d, int x, int y, BufferedImage spritesheet) {
+  public void draw(Graphics2D g2d, int x, int y, BufferedImage spritesheet, int... dims) {
     // Calculate the coordinates and dimensions of the current frame
     int currentWidth = this.width * this.currentFrame;
     int currentHeight = this.height * this.frameY;
@@ -75,6 +75,11 @@ public class SpriteAnimation {
 
     int scaledWidth = (int) (this.width * this.scale);
     int scaledHeight = (int) (this.height * this.scale);
+
+    if (dims.length > 1) {
+      scaledWidth = dims[0];
+      scaledHeight = dims[1];
+    }
 
     // Draw the current frame at the specified position with scaling
     g2d.drawImage(spriteFrame, x, y, scaledWidth, scaledHeight, null);
