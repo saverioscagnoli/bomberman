@@ -33,7 +33,7 @@ public class Loop extends JPanel implements Runnable {
 	public int gameState = Consts.MENU;
 	public ArrayList<Button> buttons;
 	public Controller keyHandler; // Delcaring keyhandler
-	public Bomberman character;
+	public static Bomberman character;
 	public float dt = 0;
 
 	private Font customFont;

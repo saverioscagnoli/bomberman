@@ -18,7 +18,6 @@ public abstract class Utils {
 		return rnd.nextInt(min, max);
 	}
 
-
 	public static int[] normalizePos(int x, int y) {
 		int gridX = ((int) (x - (x % Consts.tileDims)));
 		int gridY = ((int) (y - (y % Consts.tileDims)));
@@ -38,27 +37,30 @@ public abstract class Utils {
 		int[] normalizedPos = { (int) enemy.posX, (int) enemy.posY };
 		switch (direction) {
 			case "left":
-			case "up":
 				normalizedPos[0] -= enemy.width;
 				break;
+			case "up":
+				normalizedPos[1] -= enemy.width;
+				break;
 			case "right":
-			case "down":
 				normalizedPos[0] += enemy.width;
+				break;
+			case "down":
+				normalizedPos[1] += enemy.width;
 				break;
 		}
 
+		ArrayList<Obstacle> obstacles = TileManager.getInstance().walls;
+		ArrayList<Bomb> bombs = BombManager.getInstance().bombs;
+		ArrayList<Entity> obstaclesAndBombs = new ArrayList<>();
+		obstaclesAndBombs.addAll(obstacles);
+		obstaclesAndBombs.addAll(bombs);
 
-        ArrayList<Obstacle> obstacles = TileManager.getInstance().obtsacles;
-        ArrayList<Bomb> bombs = BombManager.getInstance().bombs;
-        ArrayList<Entity> obstaclesAndBombs = new ArrayList<>();
-        obstaclesAndBombs.addAll(obstacles);
-        obstaclesAndBombs.addAll(bombs);
-
-        for (Entity e : obstaclesAndBombs) {
-            if (e.posX == normalizedPos[0] && e.posY == normalizedPos[1]) {
-                return true;
-            }
-        }
+		for (Entity e : obstaclesAndBombs) {
+			if (e.posX == normalizedPos[0] && e.posY == normalizedPos[1]) {
+				return true;
+			}
+		}
 
 		return false;
 	}
@@ -78,19 +80,18 @@ public abstract class Utils {
 		}).start();
 	}
 
-    public static Clip playSound(String src) {
-        Clip clip = null;
-        try {
-            File path = new File(src);
-            AudioInputStream audio = AudioSystem.getAudioInputStream(path);
-            clip = AudioSystem.getClip();
-            clip.open(audio);
-            clip.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return clip;
-    }
-
+	public static Clip playSound(String src) {
+		Clip clip = null;
+		try {
+			File path = new File(src);
+			AudioInputStream audio = AudioSystem.getAudioInputStream(path);
+			clip = AudioSystem.getClip();
+			clip.open(audio);
+			clip.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return clip;
+	}
 
 }

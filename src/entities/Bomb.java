@@ -4,9 +4,9 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import loop.Loop;
 import managers.BombManager;
 import managers.EnemyManager;
-import managers.PowerupManager;
 import managers.TileManager;
 import ui.SpriteAnimation;
 import util.Consts;
@@ -18,8 +18,8 @@ public class Bomb extends Entity {
 	private int offsetY = 10;
 
 	public Bomb(float posX, float posY, int width, int height, int speed, int bombRadius) {
-		super(posX, posY, width, height, speed, "assets/bomb.png", false);
-		this.isSolid = false;
+		super(posX, posY, width, height, speed, Consts.bombPath + "bomb.png", false);
+		this.isSolid = true;
 		Utils.setTimeout(() -> this.explode(bombRadius), 3000);
 	}
 
@@ -29,10 +29,10 @@ public class Bomb extends Entity {
 	}
 
 	private void explode(int bombRadius) {
-		Utils.playSound("assets/bomb-explosion.wav");
+		Utils.playSound(Consts.soundPath + "bomb-explosion.wav");
 		explosionMatrix = new Explosion[4][5]; // creating an array that can store up to 5 explosions in the 4
 		// directions
-		String src = "assets/explosion.png";
+		String src = Consts.bombPath + "explosion.png";
 
 		for (int rad = 1; rad < bombRadius + 1; rad++) { // for the length of the bomb radius
 			Explosion ex1 = new Explosion((int) this.posX - Consts.tileDims * rad, (int) this.posY, src);
@@ -90,7 +90,8 @@ public class Bomb extends Entity {
 	private boolean checkSolid(int posX, int posY) {
 		Collection<Entity> wallsAndEnemies = new ArrayList<>();
 		wallsAndEnemies.addAll(EnemyManager.getInstance().enemies);
-		wallsAndEnemies.addAll(TileManager.getInstance().obtsacles);
+		wallsAndEnemies.addAll(TileManager.getInstance().walls);
+		wallsAndEnemies.add(Loop.character);
 
 		for (Entity e : wallsAndEnemies) { // for every entity in the list
 			if (e.posX == posX && e.posY == posY) { // if the entity is in the same position as the explosion
@@ -103,10 +104,13 @@ public class Bomb extends Entity {
 						TileManager.getInstance().grid[y][x] = "N";
 
 						// have a 30% chance to drop a powerup when a wall is destroyed
-						if (Math.random() < 0.3) {
-							PowerUp powerup = new PowerUp(wall.posX, wall.posY, Consts.tileDims, Consts.tileDims, 0, "speed");
-							PowerupManager.getInstance().powerups.add(powerup);
-						}
+						/*
+						 * if (Math.random() < 0.3) {
+						 * PowerUp powerup = new PowerUp(wall.posX, wall.posY, Consts.tileDims,
+						 * Consts.tileDims, 0, "speed");
+						 * PowerupManager.getInstance().powerups.add(powerup);
+						 * }
+						 */
 					}
 				}
 				return true;
@@ -117,8 +121,8 @@ public class Bomb extends Entity {
 			if (e instanceof Enemy) {
 				Enemy enemy = (Enemy) e;
 				// if the enemy and the explosion have aabb collision, damage it.
-				if (enemy.posX < posX + Consts.tileDims && enemy.posX + enemy.width > posX
-						&& enemy.posY < posY + Consts.tileDims && enemy.posY + enemy.height > posY) {
+				if ((enemy.posX < posX + Consts.tileDims && enemy.posX + enemy.width > posX
+						&& enemy.posY < posY + Consts.tileDims && enemy.posY + enemy.height > posY)) {
 					enemy.dealDamage(1);
 				}
 
