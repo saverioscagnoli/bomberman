@@ -2,8 +2,6 @@ package entities;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-
-import managers.PowerupManager;
 import util.Consts;
 import util.Utils;
 

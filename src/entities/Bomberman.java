@@ -29,7 +29,7 @@ public class Bomberman extends Entity {
 		this.lives = 3;
 		this.direction = "up";
 
-		super.setScale(2);
+		super.setScale(2.1f);
 		super.addAnimation("left", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 0, 3, 10));
 		super.addAnimation("down", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 1, 3, 10));
 		super.addAnimation("right", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 2, 3, 10));

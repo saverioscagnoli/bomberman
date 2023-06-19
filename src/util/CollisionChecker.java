@@ -1,10 +1,7 @@
 package util;
 
 import entities.Entity;
-import entities.Obstacle;
-
 import java.util.ArrayList;
-
 import entities.Bomberman;
 import entities.PowerUp;
 import managers.PowerupManager;
