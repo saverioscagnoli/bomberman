@@ -6,7 +6,9 @@ import java.util.Collection;
 
 import managers.BombManager;
 import managers.EnemyManager;
+import managers.PowerupManager;
 import managers.TileManager;
+import ui.SpriteAnimation;
 import util.Consts;
 import util.Utils;
 
@@ -29,13 +31,41 @@ public class Bomb extends Entity {
 	private void explode(int bombRadius) {
 		Utils.playSound("assets/bomb-explosion.wav");
 		explosionMatrix = new Explosion[4][5]; // creating an array that can store up to 5 explosions in the 4
-															// directions
+		// directions
+		String src = "assets/explosion.png";
 
 		for (int rad = 1; rad < bombRadius + 1; rad++) { // for the length of the bomb radius
-			explosionMatrix[0][rad] = new Explosion((int) this.posX - Consts.tileDims * rad, (int) this.posY);
-			explosionMatrix[1][rad] = new Explosion((int) this.posX, (int) this.posY - Consts.tileDims * rad);
-			explosionMatrix[2][rad] = new Explosion((int) this.posX + Consts.tileDims * rad, (int) this.posY);
-			explosionMatrix[3][rad] = new Explosion((int) this.posX, (int) this.posY + Consts.tileDims * rad);
+			Explosion ex1 = new Explosion((int) this.posX - Consts.tileDims * rad, (int) this.posY, src);
+			Explosion ex2 = new Explosion((int) this.posX, (int) this.posY - Consts.tileDims * rad, src);
+			Explosion ex3 = new Explosion((int) this.posX + Consts.tileDims * rad, (int) this.posY, src);
+			Explosion ex4 = new Explosion((int) this.posX, (int) this.posY + Consts.tileDims * rad, src);
+			Explosion central = new Explosion((int) this.posX, (int) this.posY, src);
+			central.setScale(2);
+			central.addAnimation("central", new SpriteAnimation(central.spritesheet, 7, 9, central.scale, 1, 9, 3));
+
+			ex1.setScale(2);
+			ex2.setScale(2);
+			ex3.setScale(2);
+			ex4.setScale(2);
+
+			if (rad == bombRadius) {
+				ex1.addAnimation("left", new SpriteAnimation(ex1.spritesheet, 7, 9, ex1.scale, 4, 9, 3));
+				ex2.addAnimation("up", new SpriteAnimation(ex2.spritesheet, 7, 9, ex2.scale, 0, 9, 3));
+				ex3.addAnimation("right", new SpriteAnimation(ex3.spritesheet, 7, 9, ex3.scale, 5, 9, 3));
+				ex4.addAnimation("down", new SpriteAnimation(ex3.spritesheet, 7, 9, ex4.scale, 3, 9, 3));
+
+			} else {
+				ex1.addAnimation("central-left", new SpriteAnimation(ex1.spritesheet, 7, 9, ex1.scale, 6, 9, 3));
+				ex2.addAnimation("central-up", new SpriteAnimation(ex2.spritesheet, 7, 9, ex2.scale, 2, 9, 3));
+				ex3.addAnimation("central-right", new SpriteAnimation(ex1.spritesheet, 7, 9, ex3.scale, 6, 9, 3));
+				ex4.addAnimation("central-down", new SpriteAnimation(ex1.spritesheet, 7, 9, ex4.scale, 2, 9, 3));
+
+			}
+			explosionMatrix[0][rad] = ex1;
+			explosionMatrix[1][rad] = ex2;
+			explosionMatrix[2][rad] = ex3;
+			explosionMatrix[3][rad] = ex4;
+			BombManager.getInstance().addExplosion(central);
 		}
 
 		// adds explosions in explosion matrix to entities
@@ -71,6 +101,12 @@ public class Bomb extends Entity {
 						int x = (int) wall.posX / Consts.tileDims;
 						int y = (int) wall.posY / Consts.tileDims;
 						TileManager.getInstance().grid[y][x] = "N";
+
+						// have a 30% chance to drop a powerup when a wall is destroyed
+						if (Math.random() < 0.3) {
+							PowerUp powerup = new PowerUp(wall.posX, wall.posY, Consts.tileDims, Consts.tileDims, 0, "speed");
+							PowerupManager.getInstance().powerups.add(powerup);
+						}
 					}
 				}
 				return true;

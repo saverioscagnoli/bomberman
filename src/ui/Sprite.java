@@ -101,7 +101,7 @@ public class Sprite {
       g2d.drawImage(this.spritesheet, x, y, scaledX, scaledY, null);
     } else {
       // If the sprite is animated, delegate drawing to the current animation
-      this.currentAnimation.draw(g2d, x, y, this.spritesheet);
+      this.currentAnimation.draw(g2d, x, y, this.spritesheet, dims);
     }
   }
 }
