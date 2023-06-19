@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import loop.GameLoop;
 import managers.BombManager;
 import managers.EnemyManager;
 import managers.PowerupManager;
@@ -18,7 +19,7 @@ public class Bomb extends Entity {
 
 	public Bomb(float posX, float posY, int width, int height, int speed, int bombRadius) {
 		super(posX, posY, width, height, speed, "assets/bomb.png", false);
-		this.isSolid = false;
+		this.isSolid = true;
 		Utils.setTimeout(() -> this.explode(bombRadius), 3000);
 	}
 
@@ -62,6 +63,8 @@ public class Bomb extends Entity {
 		Collection<Entity> wallsAndEnemies = new ArrayList<>();
 		wallsAndEnemies.addAll(EnemyManager.getInstance().enemies);
 		wallsAndEnemies.addAll(TileManager.getInstance().obtsacles);
+		wallsAndEnemies.add(GameLoop.character);
+		System.out.println(wallsAndEnemies.size());
 
 		for (Entity e : wallsAndEnemies) { // for every entity in the list
 			if (e.posX == posX && e.posY == posY) { // if the entity is in the same position as the explosion
@@ -88,8 +91,8 @@ public class Bomb extends Entity {
 			if (e instanceof Enemy) {
 				Enemy enemy = (Enemy) e;
 				// if the enemy and the explosion have aabb collision, damage it.
-				if (enemy.posX < posX + Consts.tileDims && enemy.posX + enemy.width > posX
-						&& enemy.posY < posY + Consts.tileDims && enemy.posY + enemy.height > posY) {
+				if ((enemy.posX < posX + Consts.tileDims && enemy.posX + enemy.width > posX
+						&& enemy.posY < posY + Consts.tileDims && enemy.posY + enemy.height > posY)) {
 					enemy.dealDamage(1);
 				}
 

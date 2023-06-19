@@ -36,7 +36,7 @@ public class GameLoop extends JPanel implements Runnable {
 	public static float characterX = 100;
 	public static float characterY = 100;
 	public Controller keyHandler; // Delcaring keyhandler
-	public Bomberman character;
+	public static Bomberman character;
 	public float dt = 0;
 
 	private Font customFont;

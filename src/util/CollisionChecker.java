@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import entities.Bomberman;
 import entities.PowerUp;
+import managers.BombManager;
 import managers.PowerupManager;
 import managers.TileManager;
 
@@ -41,6 +42,7 @@ public class CollisionChecker {
 		ArrayList<Entity> obstaclesAndPowerups = new ArrayList<>();
 		obstaclesAndPowerups.addAll(TileManager.getInstance().obtsacles);
 		obstaclesAndPowerups.addAll(PowerupManager.getInstance().powerups);
+		obstaclesAndPowerups.addAll(BombManager.getInstance().bombs);
 
 		for (Entity tile : obstaclesAndPowerups) {
 			for (int i = 0; i < surroundingGridSquares.length; i++) {
