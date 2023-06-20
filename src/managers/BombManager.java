@@ -39,7 +39,6 @@ public class BombManager {
 		}
 		Bomb b = new Bomb(pos[0], pos[1], Consts.tileDims, Consts.tileDims, 0, character.bombRadius);
 		b.setScale(3f);
-		b.addAnimation("bomb", new SpriteAnimation(b.spritesheet, 1, 4, b.scale, 0, 4, 10));
 		this.bombs.add(b);
 	}
 

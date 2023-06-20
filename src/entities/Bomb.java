@@ -3,8 +3,10 @@ package entities;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 import loop.Loop;
+import managers.AnimationManager;
 import managers.BombManager;
 import managers.EnemyManager;
 import managers.TileManager;
@@ -16,9 +18,10 @@ public class Bomb extends Entity {
 	private Explosion explosionMatrix[][];
 
 	public Bomb(float posX, float posY, int width, int height, int speed, int bombRadius) {
-		super(posX, posY, width, height, speed, Consts.bombPath + "bomb.png", false);
+		super(posX, posY, width, height, speed, AnimationManager.spritesheets.get("bomb"), false);
 		this.isSolid = true;
 		Utils.setTimeout(() -> this.explode(bombRadius), 3000);
+		this.animation = AnimationManager.animations.get("bomb").get("idle");
 	}
 
 	@Override
@@ -30,33 +33,33 @@ public class Bomb extends Entity {
 		Utils.playSound(Consts.soundPath + "bomb-explosion.wav");
 		explosionMatrix = new Explosion[4][5]; // creating an array that can store up to 5 explosions in the 4
 		// directions
-		String src = Consts.bombPath + "explosion.png";
 
 		for (int rad = 1; rad < bombRadius + 1; rad++) { // for the length of the bomb radius
-			Explosion ex1 = new Explosion((int) this.posX - Consts.tileDims * rad, (int) this.posY, src);
-			Explosion ex2 = new Explosion((int) this.posX, (int) this.posY - Consts.tileDims * rad, src);
-			Explosion ex3 = new Explosion((int) this.posX + Consts.tileDims * rad, (int) this.posY, src);
-			Explosion ex4 = new Explosion((int) this.posX, (int) this.posY + Consts.tileDims * rad, src);
-			Explosion central = new Explosion((int) this.posX, (int) this.posY, src);
+			Explosion ex1 = new Explosion((int) this.posX - Consts.tileDims * rad, (int) this.posY);
+			Explosion ex2 = new Explosion((int) this.posX, (int) this.posY - Consts.tileDims * rad);
+			Explosion ex3 = new Explosion((int) this.posX + Consts.tileDims * rad, (int) this.posY);
+			Explosion ex4 = new Explosion((int) this.posX, (int) this.posY + Consts.tileDims * rad);
+			Explosion central = new Explosion((int) this.posX, (int) this.posY);
 			central.setScale(2);
-			central.addAnimation("central", new SpriteAnimation(central.spritesheet, 7, 9, central.scale, 1, 9, 3));
 
 			ex1.setScale(2);
 			ex2.setScale(2);
 			ex3.setScale(2);
 			ex4.setScale(2);
+			HashMap<String, SpriteAnimation> exAnims = AnimationManager.animations.get("explosion");
+			central.setAnimation(exAnims.get("central"));
 
 			if (rad == bombRadius) {
-				ex1.addAnimation("left", new SpriteAnimation(ex1.spritesheet, 7, 9, ex1.scale, 4, 9, 3));
-				ex2.addAnimation("up", new SpriteAnimation(ex2.spritesheet, 7, 9, ex2.scale, 0, 9, 3));
-				ex3.addAnimation("right", new SpriteAnimation(ex3.spritesheet, 7, 9, ex3.scale, 5, 9, 3));
-				ex4.addAnimation("down", new SpriteAnimation(ex3.spritesheet, 7, 9, ex4.scale, 3, 9, 3));
+				ex1.setAnimation(exAnims.get("left"));
+				ex2.setAnimation(exAnims.get("up"));
+				ex3.setAnimation(exAnims.get("right"));
+				ex4.setAnimation(exAnims.get("down"));
 
 			} else {
-				ex1.addAnimation("central-left", new SpriteAnimation(ex1.spritesheet, 7, 9, ex1.scale, 6, 9, 3));
-				ex2.addAnimation("central-up", new SpriteAnimation(ex2.spritesheet, 7, 9, ex2.scale, 2, 9, 3));
-				ex3.addAnimation("central-right", new SpriteAnimation(ex1.spritesheet, 7, 9, ex3.scale, 6, 9, 3));
-				ex4.addAnimation("central-down", new SpriteAnimation(ex1.spritesheet, 7, 9, ex4.scale, 2, 9, 3));
+				ex1.setAnimation(exAnims.get("vertical"));
+				ex2.setAnimation(exAnims.get("horizontal"));
+				ex3.setAnimation(exAnims.get("vertical"));
+				ex4.setAnimation(exAnims.get("horizontal"));
 
 			}
 			explosionMatrix[0][rad] = ex1;

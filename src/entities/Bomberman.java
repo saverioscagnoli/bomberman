@@ -3,7 +3,7 @@ package entities;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import loop.Loop;
-import ui.SpriteAnimation;
+import managers.AnimationManager;
 import loop.Controller;
 import util.*;
 
@@ -18,7 +18,7 @@ public class Bomberman extends Entity {
 
 	public Bomberman(float posX, float posY, int width, int height, int speed, Controller keyHandler,
 			Loop gameLoop) {
-		super(posX, posY, width, height, speed, "assets/bomberman.png", false);
+		super(posX, posY, width, height, speed, AnimationManager.spritesheets.get("bomberman"), false);
 
 		this.maxBombs = 3;
 		this.gameLoop = gameLoop;
@@ -28,13 +28,7 @@ public class Bomberman extends Entity {
 		this.immune = false;
 		this.lives = 3;
 		this.direction = "up";
-
-		super.setScale(2.5f);
-		super.addAnimation("left", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 0, 3, 10));
-		super.addAnimation("down", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 1, 3, 10));
-		super.addAnimation("right", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 2, 3, 10));
-		super.addAnimation("up", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 3, 3, 10));
-
+		this.animation = AnimationManager.animations.get("bomberman").get("down");
 	}
 
 	public void dealDamage(int damage) {
@@ -111,10 +105,10 @@ public class Bomberman extends Entity {
 					break;
 			}
 
-			super.setAnimation(direction);
+			super.setAnimation(AnimationManager.animations.get("bomberman").get(direction));
 		} else {
 			super.isAnimated = false;
-			super.currentAnimation.currentFrame = 1;
+			super.animation.currentFrame = 1;
 		}
 	}
 

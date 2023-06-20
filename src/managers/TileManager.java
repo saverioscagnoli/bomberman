@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import entities.Obstacle;
-import ui.SpriteAnimation;
 import util.Consts;
 import util.Utils;
 
@@ -47,61 +46,55 @@ public class TileManager {
 
                 if (i == 0) {
                     if (j == 0) {
-                        src = Consts.tilesPath + "w-tl.png";
+                        src = "w-tl";
                     } else if (j == this.grid[i].length - 1) {
-                        src = Consts.tilesPath + "w-tr.png";
+                        src = "w-tr";
                     } else {
-                        src = Consts.tilesPath + "w-t.png";
+                        src = "w-t";
                     }
-                    tile = new Obstacle(x, y, true, true, false, src);
+                    tile = new Obstacle(x, y, true, true, false, AnimationManager.spritesheets.get(src));
                     this.grid[i][j] = "W";
                     this.walls.add(tile);
                 } else if (i == this.grid.length - 1) {
                     if (j == 0) {
-                        src = Consts.tilesPath + "w-bl.png";
+                        src = "w-bl";
                     } else if (j == this.grid[i].length - 1) {
-                        src = Consts.tilesPath + "w-br.png";
+                        src = "w-br";
                     } else {
-                        src = Consts.tilesPath + "w-b.png";
+                        src = "w-b";
                     }
-                    tile = new Obstacle(x, y, true, true, false, src);
+                    tile = new Obstacle(x, y, true, true, false, AnimationManager.spritesheets.get(src));
                     this.grid[i][j] = "W";
                     this.walls.add(tile);
                 } else if (i % 2 == 0 && j % 2 == 0 && j != 0 && j < this.grid[i].length - 1) {
-                    src = Consts.tilesPath + "w-center.png";
-                    tile = new Obstacle(x, y, true, true, false, src);
+                    src = "w-center";
+                    tile = new Obstacle(x, y, true, true, false, AnimationManager.spritesheets.get(src));
                     this.grid[i][j] = "W";
                     this.walls.add(tile);
                 } else {
                     if (j == 0) {
-                        src = Consts.tilesPath + "w-l.png";
-                        tile = new Obstacle(x, y, true, true, false, src);
+                        src = "w-l";
+                        tile = new Obstacle(x, y, true, true, false, AnimationManager.spritesheets.get(src));
                         this.grid[i][j] = "W";
                         this.walls.add(tile);
                     } else if (j == this.grid[i].length - 1) {
-                        src = Consts.tilesPath + "w-r.png";
-                        tile = new Obstacle(x, y, true, true, false, src);
+                        src = "w-r";
+                        tile = new Obstacle(x, y, true, true, false, AnimationManager.spritesheets.get(src));
                         this.grid[i][j] = "W";
                         this.walls.add(tile);
                     } else {
                         if (shouldSpawnObstacle) {
-                            src = Consts.tilesPath + "wd-1.png";
+                            src = "wd-1";
                             String animationName = null;
                             if (i == 1 || this.grid[i - 1][j] == "W") {
                                 animationName = "idle-edge";
                             } else {
                                 animationName = "idle";
-                                src = Consts.tilesPath + "wd-1.png";
+                                src = "wd-1";
                             }
-                            tile = new Obstacle(x, y, true, false, true, src);
-                            tile.addAnimation("idle",
-                                    new SpriteAnimation(tile.spritesheet, 3, 6, tile.scale, 0, 4, 10));
-                            tile.addAnimation("idle-edge",
-                                    new SpriteAnimation(tile.spritesheet, 3, 6, tile.scale, 1, 4, 10));
-                            tile.addAnimation("death",
-                                    new SpriteAnimation(tile.spritesheet, 3, 6, tile.scale, 2, 6, 10));
+                            tile = new Obstacle(x, y, true, false, true, AnimationManager.spritesheets.get(src));
                             this.grid[i][j] = "WD";
-                            tile.setAnimation(animationName);
+                            tile.setAnimation(AnimationManager.animations.get(src).get(animationName));
                             this.walls.add(tile);
                         } else {
                             this.grid[i][j] = "N";
@@ -109,11 +102,11 @@ public class TileManager {
                     }
                 }
                 if (i == 1 || (i > 0 && this.grid[i - 1][j] == "W")) {
-                    src = Consts.tilesPath + "basic-1-edge.png";
+                    src = "basic-1-edge";
                 } else {
-                    src = Consts.tilesPath + "basic-1.png";
+                    src = "basic-1";
                 }
-                this.addBasicTile(new Obstacle(x, y, false, true, false, src));
+                this.addBasicTile(new Obstacle(x, y, false, true, false, AnimationManager.spritesheets.get(src)));
             }
         }
     }

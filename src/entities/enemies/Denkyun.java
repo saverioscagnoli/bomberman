@@ -1,18 +1,17 @@
 package entities.enemies;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.Arrays;
-
 import entities.Enemy;
+import managers.AnimationManager;
 import util.Utils;
 
 public class Denkyun extends Enemy {
 
-	public Denkyun(float posX, float posY, int width, int height, int speed, String src) {
-		super(posX, posY, 47, 47, 1, src);
+	public Denkyun(float posX, float posY, int width, int height, int speed) {
+		super(posX, posY, 47, 47, 1, AnimationManager.spritesheets.get("enemy-1"));
 		this.health = 2;
-
+		this.direction = "left";
+		super.setAnimation(AnimationManager.animations.get("enemy-1").get(direction));
 	}
 
 	public void update() {
@@ -34,7 +33,6 @@ public class Denkyun extends Enemy {
 		// }
 		// }
 
-		int[] nPos = Utils.normalizeEntityPos(this);
 		int randInt = Utils.rng(0, 100);
 		switch (this.direction) {
 			case "left":
@@ -49,7 +47,7 @@ public class Denkyun extends Enemy {
 					} else {
 						this.direction = "right";
 					}
-					this.setAnimation(direction);
+					this.setAnimation(AnimationManager.animations.get("enemy-1").get(direction));
 				} else {
 					this.posX -= this.speed;
 				}
@@ -66,7 +64,7 @@ public class Denkyun extends Enemy {
 					} else {
 						this.direction = "left";
 					}
-					this.setAnimation(direction);
+					this.setAnimation(AnimationManager.animations.get("enemy-1").get(direction));
 				} else {
 					this.posX += this.speed;
 				}
@@ -83,7 +81,7 @@ public class Denkyun extends Enemy {
 					} else {
 						this.direction = "down";
 					}
-					this.setAnimation(direction);
+					this.setAnimation(AnimationManager.animations.get("enemy-1").get(direction));
 				} else {
 					this.posY -= this.speed;
 				}
@@ -101,7 +99,7 @@ public class Denkyun extends Enemy {
 					} else {
 						this.direction = "up";
 					}
-					this.setAnimation(direction);
+					this.setAnimation(AnimationManager.animations.get("enemy-1").get(direction));
 				} else {
 					this.posY += this.speed;
 				}

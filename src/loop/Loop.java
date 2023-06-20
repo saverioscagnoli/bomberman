@@ -10,6 +10,7 @@ import java.io.IOException;
 import javax.swing.JPanel;
 import java.util.ArrayList;
 import entities.Bomberman;
+import managers.AnimationManager;
 import managers.BombManager;
 import managers.EnemyManager;
 import managers.MusicManager;
@@ -46,7 +47,8 @@ public class Loop extends JPanel implements Runnable {
 			// Handle exception
 			System.out.println("Font not found");
 		}
-
+		AnimationManager animationManager = AnimationManager.getInstance();
+		animationManager.init();
 		this.buttons = new ArrayList<Button>();
 
 		keyHandler = new Controller(this); // Create an instance of KeyHandler and passes the gameloop to it

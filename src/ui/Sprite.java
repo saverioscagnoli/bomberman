@@ -2,15 +2,7 @@ package ui;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
-
-import javax.imageio.ImageIO;
-
-import util.Utils;
 
 public class Sprite {
   // The image used for the sprite
@@ -26,21 +18,17 @@ public class Sprite {
   public boolean isStatic;
 
   // The currently active animation for the sprite
-  public SpriteAnimation currentAnimation;
+  public SpriteAnimation animation;
 
-  // A map of animation names to SpriteAnimation objects
-  private HashMap<String, SpriteAnimation> map;
 
   // The number of frames that have elapsed for the current animation
   private int elapsedFrames;
 
-  public Sprite(String src, boolean isStatic) {
+  public Sprite(BufferedImage spritesheet, boolean isStatic) {
     // Load the image from the given source
-    BufferedImage img = Utils.loadImage(src);
 
     // Initialize the sprite properties
-    this.spritesheet = img;
-    this.map = new HashMap<>();
+    this.spritesheet = spritesheet;
     this.elapsedFrames = 0;
     this.scale = 1;
     this.isAnimated = true;
@@ -48,19 +36,12 @@ public class Sprite {
   }
 
   // Add an animation to the sprite
-  public void addAnimation(String name, SpriteAnimation anim) {
-    if (this.map.size() == 0) {
-      // If this is the first animation added, set it as the current animation
-      this.currentAnimation = anim;
-    }
-    this.map.put(name, anim);
-  }
+
 
   // Set the current animation for the sprite
-  public void setAnimation(String name) {
-    this.currentAnimation = this.map.get(name);
+  public void setAnimation(SpriteAnimation anim) {
+    this.animation= anim;
   }
-
 
   // Set the scaling factor for the sprite
   public void setScale(float scale) {
@@ -71,7 +52,7 @@ public class Sprite {
   public void updateSprite() {
     if (this.isAnimated && !this.isStatic) {
       this.elapsedFrames++;
-      this.currentAnimation.animate(this.elapsedFrames);
+      this.animation.animate(this.elapsedFrames);
     }
   }
 
@@ -91,7 +72,7 @@ public class Sprite {
       g2d.drawImage(this.spritesheet, x, y, scaledX, scaledY, null);
     } else {
       // If the sprite is animated, delegate drawing to the current animation
-      this.currentAnimation.draw(g2d, x, y, this.spritesheet, dims);
+      this.animation.draw(g2d, x, y, this.spritesheet, dims);
     }
   }
 }
