@@ -10,6 +10,8 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
+import util.Utils;
+
 public class Sprite {
   // The image used for the sprite
   public BufferedImage spritesheet;
@@ -34,7 +36,7 @@ public class Sprite {
 
   public Sprite(String src, boolean isStatic) {
     // Load the image from the given source
-    BufferedImage img = this.loadImage(src);
+    BufferedImage img = Utils.loadImage(src);
 
     // Initialize the sprite properties
     this.spritesheet = img;
@@ -59,18 +61,6 @@ public class Sprite {
     this.currentAnimation = this.map.get(name);
   }
 
-  // Load an image from the given source
-  private BufferedImage loadImage(String src) {
-    File path = new File(src);
-    BufferedImage img = null;
-    try {
-      InputStream stream = new FileInputStream(path);
-      img = ImageIO.read(stream);
-    } catch (IOException err) {
-      err.printStackTrace();
-    }
-    return img;
-  }
 
   // Set the scaling factor for the sprite
   public void setScale(float scale) {

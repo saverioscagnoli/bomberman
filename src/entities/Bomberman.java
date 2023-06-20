@@ -23,7 +23,7 @@ public class Bomberman extends Entity {
 		this.maxBombs = 3;
 		this.gameLoop = gameLoop;
 		this.keyHandler = keyHandler;
-		this.bombRadius = 3;
+		this.bombRadius = 1;
 		this.health = 5;
 		this.immune = false;
 		this.lives = 3;

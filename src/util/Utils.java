@@ -1,8 +1,14 @@
 package util;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -93,5 +99,20 @@ public abstract class Utils {
 		}
 		return clip;
 	}
+
+	  // Load an image from the given source
+  public static BufferedImage loadImage(String src) {
+    File path = new File(src);
+    BufferedImage img = null;
+    try {
+      InputStream stream = new FileInputStream(path);
+      img = ImageIO.read(stream);
+    } catch (IOException err) {
+      err.printStackTrace();
+    }
+    return img;
+  }
+
+
 
 }
