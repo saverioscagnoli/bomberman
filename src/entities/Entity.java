@@ -16,8 +16,8 @@ public class Entity extends Sprite {
     public boolean dead;
 
     public Entity(float posX, float posY, int width, int height, int speed, BufferedImage spritesheet,
-            boolean isStatic) {
-        super(spritesheet, isStatic);
+            boolean isStatic, int maxFrames, int absoluteFrames, int stagger, int rows, int frameY) {
+        super(spritesheet, isStatic, maxFrames, absoluteFrames, stagger, rows, frameY);
         this.posX = posX;
         this.posY = posY;
         this.width = width;

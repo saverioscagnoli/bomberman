@@ -54,7 +54,7 @@ public class AnimationManager {
   private void buildBombs() {
     int scale = 1;
     BufferedImage bombSprite = spritesheets.get("bomb");
-    SpriteAnimation bombAnim = new SpriteAnimation(bombSprite, 1, 4, scale, 0, 4, 10);
+    SpriteAnimation bombAnim = new SpriteAnimation("idle", 4, 0);
     HashMap<String, SpriteAnimation> bombMap = new HashMap<>();
     bombMap.put("idle", bombAnim);
     animations.put("bomb", bombMap);
@@ -63,13 +63,13 @@ public class AnimationManager {
     int max = 9;
     int stagger = 3;
     BufferedImage explosionSprite = spritesheets.get("explosion");
-    SpriteAnimation up = new SpriteAnimation(explosionSprite, rows, max, scale, 0, max, stagger);
-    SpriteAnimation central = new SpriteAnimation(explosionSprite, rows, max, scale, 1, max, stagger);
-    SpriteAnimation vertical = new SpriteAnimation(explosionSprite, rows, max, scale, 2, max, stagger);
-    SpriteAnimation down = new SpriteAnimation(explosionSprite, rows, max, scale, 3, max, stagger);
-    SpriteAnimation left = new SpriteAnimation(explosionSprite, rows, max, scale, 4, max, stagger);
-    SpriteAnimation right = new SpriteAnimation(explosionSprite, rows, max, scale, 5, max, stagger);
-    SpriteAnimation horizontal = new SpriteAnimation(explosionSprite, rows, max, scale, 6, max, stagger);
+    SpriteAnimation up = new SpriteAnimation("up", max);
+    SpriteAnimation central = new SpriteAnimation("central", max);
+    SpriteAnimation vertical = new SpriteAnimation("", max);
+    SpriteAnimation down = new SpriteAnimation("", max);
+    SpriteAnimation left = new SpriteAnimation("", max);
+    SpriteAnimation right = new SpriteAnimation("", max);
+    SpriteAnimation horizontal = new SpriteAnimation("", max);
 
     HashMap<String, SpriteAnimation> exMap = new HashMap<>();
     exMap.put("up", up);

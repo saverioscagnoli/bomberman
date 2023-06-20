@@ -2,7 +2,8 @@ package ui;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
+
+import managers.AnimationManager;
 
 public class Sprite {
   // The image used for the sprite
@@ -20,27 +21,40 @@ public class Sprite {
   // The currently active animation for the sprite
   public SpriteAnimation animation;
 
-
   // The number of frames that have elapsed for the current animation
   private int elapsedFrames;
+  public int maxFrames;
+  public int currentFrame;
+  public int stagger;
+  public int rows;
+  public int frameY;
+  public int absoluteFrames;
+  public int spriteWidth;
+  public int spriteHeight;
 
-  public Sprite(BufferedImage spritesheet, boolean isStatic) {
+  public Sprite(String spritesheetName, boolean isStatic, int maxFrames, int absoluteFrames, int stagger, int rows,
+      int frameY) {
     // Load the image from the given source
 
     // Initialize the sprite properties
-    this.spritesheet = spritesheet;
+    this.spritesheet = AnimationManager.spritesheets.get(spritesheetName);
     this.elapsedFrames = 0;
     this.scale = 1;
     this.isAnimated = true;
     this.isStatic = isStatic;
+    this.maxFrames = maxFrames;
+    this.currentFrame = 0;
+    this.stagger = stagger;
+    this.rows = rows;
+    this.frameY = frameY;
+    this.absoluteFrames = absoluteFrames;
+    this.spriteWidth = spritesheet.getWidth() / absoluteFrames;
+    this.spriteHeight = spritesheet.getHeight() / rows;
   }
-
-  // Add an animation to the sprite
-
 
   // Set the current animation for the sprite
   public void setAnimation(SpriteAnimation anim) {
-    this.animation= anim;
+    this.animation = anim;
   }
 
   // Set the scaling factor for the sprite
