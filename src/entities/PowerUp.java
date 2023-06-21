@@ -10,7 +10,7 @@ public class PowerUp extends Entity {
 	public boolean isPickedUp = false;
 
 	public PowerUp(float posX, float posY, int width, int height, int speed, String name) {
-		super(posX, posY, Consts.tileDims, Consts.tileDims, speed, null, true);
+		super(posX, posY, Consts.tileDims, Consts.tileDims, 0, "", true, 1, 1, 1);
 		this.name = name;
 	}
 

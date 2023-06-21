@@ -52,24 +52,19 @@ public class AnimationManager {
   }
 
   private void buildBombs() {
-    int scale = 1;
-    BufferedImage bombSprite = spritesheets.get("bomb");
     SpriteAnimation bombAnim = new SpriteAnimation("idle", 4, 0);
     HashMap<String, SpriteAnimation> bombMap = new HashMap<>();
     bombMap.put("idle", bombAnim);
     animations.put("bomb", bombMap);
 
-    int rows = 7;
     int max = 9;
-    int stagger = 3;
-    BufferedImage explosionSprite = spritesheets.get("explosion");
-    SpriteAnimation up = new SpriteAnimation("up", max);
-    SpriteAnimation central = new SpriteAnimation("central", max);
-    SpriteAnimation vertical = new SpriteAnimation("", max);
-    SpriteAnimation down = new SpriteAnimation("", max);
-    SpriteAnimation left = new SpriteAnimation("", max);
-    SpriteAnimation right = new SpriteAnimation("", max);
-    SpriteAnimation horizontal = new SpriteAnimation("", max);
+    SpriteAnimation up = new SpriteAnimation("up", max, 0);
+    SpriteAnimation central = new SpriteAnimation("central", max, 1);
+    SpriteAnimation vertical = new SpriteAnimation("vertical", max, 2);
+    SpriteAnimation down = new SpriteAnimation("down", max, 3);
+    SpriteAnimation left = new SpriteAnimation("left", max, 4);
+    SpriteAnimation right = new SpriteAnimation("right", max, 5);
+    SpriteAnimation horizontal = new SpriteAnimation("horizontal", max, 6);
 
     HashMap<String, SpriteAnimation> exMap = new HashMap<>();
     exMap.put("up", up);
@@ -84,14 +79,9 @@ public class AnimationManager {
 
   private void buildTiles() {
     HashMap<String, SpriteAnimation> tileMap = new HashMap<>();
-    int scale = 1;
-    int rows = 3;
-    int absMax = 6;
-    int stagger = 10;
-    BufferedImage wd1 = spritesheets.get("wd-1");
-    SpriteAnimation idle = new SpriteAnimation(wd1, rows, absMax, scale, 0, 4, stagger);
-    SpriteAnimation idleEdge = new SpriteAnimation(wd1, rows, absMax, scale, 1, 4, stagger);
-    SpriteAnimation death = new SpriteAnimation(wd1, rows, absMax, scale, 2, absMax, stagger);
+    SpriteAnimation idle = new SpriteAnimation("idle", 4, 0);
+    SpriteAnimation idleEdge = new SpriteAnimation("idle-edge", 4, 1);
+    SpriteAnimation death = new SpriteAnimation("death", 6, 2);
     tileMap.put("idle", idle);
     tileMap.put("idle-edge", idleEdge);
     tileMap.put("death", death);
@@ -100,16 +90,11 @@ public class AnimationManager {
 
   private void buildBomberman() {
     HashMap<String, SpriteAnimation> bombermanMap = new HashMap<>();
-    float scale = 2.5f;
-    int rows = 5;
-    double absMax = 6.3;
-    int stagger = 10;
-    BufferedImage bombermanSprite = spritesheets.get("bomberman");
-    SpriteAnimation left = new SpriteAnimation(bombermanSprite, rows, absMax, scale, 0, 3, stagger);
-    SpriteAnimation down = new SpriteAnimation(bombermanSprite, rows, absMax, scale, 1, 3, stagger);
-    SpriteAnimation right = new SpriteAnimation(bombermanSprite, rows, absMax, scale, 2, 3, stagger);
-    SpriteAnimation up = new SpriteAnimation(bombermanSprite, rows, absMax, scale, 3, 3, stagger);
-    SpriteAnimation death = new SpriteAnimation(bombermanSprite, rows, absMax, scale, 4, 6, stagger);
+    SpriteAnimation left = new SpriteAnimation("left", 3, 0);
+    SpriteAnimation down = new SpriteAnimation("down", 3, 1);
+    SpriteAnimation right = new SpriteAnimation("right", 3, 2);
+    SpriteAnimation up = new SpriteAnimation("up", 3, 3);
+    SpriteAnimation death = new SpriteAnimation("death", 6, 4);
     bombermanMap.put("left", left);
     bombermanMap.put("down", down);
     bombermanMap.put("right", right);
@@ -120,15 +105,10 @@ public class AnimationManager {
 
   private void buildEnemies() {
     HashMap<String, SpriteAnimation> enemy1Map = new HashMap<>();
-    float scale = 2.5f;
-    int rows = 4;
-    int max = 4;
-    int stagger = 5;
-    BufferedImage enemy1Sprite = spritesheets.get("enemy-1");
-    SpriteAnimation down = new SpriteAnimation(enemy1Sprite, rows, max, scale, 0, max, stagger);
-    SpriteAnimation up = new SpriteAnimation(enemy1Sprite, rows, max, scale, 1, max, stagger);
-    SpriteAnimation left = new SpriteAnimation(enemy1Sprite, rows, max, scale, 2, max, stagger);
-    SpriteAnimation right = new SpriteAnimation(enemy1Sprite, rows, max, scale, 3, max, stagger);
+    SpriteAnimation down = new SpriteAnimation("down", 4, 0);
+    SpriteAnimation up = new SpriteAnimation("up", 4, 1);
+    SpriteAnimation left = new SpriteAnimation("left", 4, 2);
+    SpriteAnimation right = new SpriteAnimation("right", 4, 3);
     enemy1Map.put("down", down);
     enemy1Map.put("up", up);
     enemy1Map.put("left", left);

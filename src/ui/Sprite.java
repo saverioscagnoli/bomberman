@@ -2,7 +2,6 @@ package ui;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-
 import managers.AnimationManager;
 
 public class Sprite {
@@ -23,38 +22,35 @@ public class Sprite {
 
   // The number of frames that have elapsed for the current animation
   private int elapsedFrames;
-  public int maxFrames;
   public int currentFrame;
   public int stagger;
   public int rows;
-  public int frameY;
-  public int absoluteFrames;
+  public double absoluteFrames;
   public int spriteWidth;
   public int spriteHeight;
 
-  public Sprite(String spritesheetName, boolean isStatic, int maxFrames, int absoluteFrames, int stagger, int rows,
-      int frameY) {
-    // Load the image from the given source
+  private String spritesheetName;
+
+  public Sprite(String spritesheetName, boolean isStatic, double absoluteFrames, int stagger, int rows) {
 
     // Initialize the sprite properties
+    this.spritesheetName = spritesheetName;
     this.spritesheet = AnimationManager.spritesheets.get(spritesheetName);
     this.elapsedFrames = 0;
     this.scale = 1;
     this.isAnimated = true;
     this.isStatic = isStatic;
-    this.maxFrames = maxFrames;
     this.currentFrame = 0;
     this.stagger = stagger;
     this.rows = rows;
-    this.frameY = frameY;
     this.absoluteFrames = absoluteFrames;
-    this.spriteWidth = spritesheet.getWidth() / absoluteFrames;
+    this.spriteWidth = (int) (spritesheet.getWidth() / absoluteFrames);
     this.spriteHeight = spritesheet.getHeight() / rows;
   }
 
   // Set the current animation for the sprite
-  public void setAnimation(SpriteAnimation anim) {
-    this.animation = anim;
+  public void setAnimation(String animName) {
+    this.animation = AnimationManager.animations.get(this.spritesheetName).get(animName);
   }
 
   // Set the scaling factor for the sprite
@@ -66,7 +62,13 @@ public class Sprite {
   public void updateSprite() {
     if (this.isAnimated && !this.isStatic) {
       this.elapsedFrames++;
-      this.animation.animate(this.elapsedFrames);
+      if (this.elapsedFrames % this.stagger == 0) {
+        if (this.currentFrame < this.animation.maxFrames - 1) {
+          this.currentFrame++;
+        } else {
+          this.currentFrame = 0;
+        }
+      }
     }
   }
 
@@ -75,8 +77,8 @@ public class Sprite {
     if (this.isStatic) {
       // If the sprite is static, draw the whole spritesheet or use custom dimensions
       // if provided
-      int width = this.spritesheet.getWidth();
-      int height = this.spritesheet.getHeight();
+      int width = (int) (this.spriteWidth * this.scale);
+      int height = (int) (this.spriteHeight * this.scale);
       if (dims.length == 2) {
         width = dims[0];
         height = dims[1];
@@ -86,7 +88,16 @@ public class Sprite {
       g2d.drawImage(this.spritesheet, x, y, scaledX, scaledY, null);
     } else {
       // If the sprite is animated, delegate drawing to the current animation
-      this.animation.draw(g2d, x, y, this.spritesheet, dims);
+      int spriteX = (int) this.currentFrame * this.spriteWidth;
+      int spriteY = this.animation.frameY * this.spriteHeight;
+      int width = (int) (this.spriteWidth * this.scale);
+      int height = (int) (this.spriteHeight * this.scale);
+      if (dims.length == 2) {
+        width = dims[0];
+        height = dims[1];
+      }
+      BufferedImage frame = this.spritesheet.getSubimage(spriteX, spriteY, this.spriteWidth, this.spriteHeight);
+      g2d.drawImage(frame, x, y, width, height, null);
     }
   }
 }

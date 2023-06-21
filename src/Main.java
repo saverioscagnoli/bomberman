@@ -1,7 +1,6 @@
 import java.awt.Dimension;
 import java.io.IOException;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import loop.Loop;
 import managers.MusicManager;

@@ -18,8 +18,7 @@ public class Bomberman extends Entity {
 
 	public Bomberman(float posX, float posY, int width, int height, int speed, Controller keyHandler,
 			Loop gameLoop) {
-		super(posX, posY, width, height, speed, AnimationManager.spritesheets.get("bomberman"), false);
-
+		super(posX, posY, width, height, speed, "bomberman", false, 6.3, 10, 5);
 		this.maxBombs = 3;
 		this.gameLoop = gameLoop;
 		this.keyHandler = keyHandler;
@@ -29,6 +28,7 @@ public class Bomberman extends Entity {
 		this.lives = 3;
 		this.direction = "up";
 		this.animation = AnimationManager.animations.get("bomberman").get("down");
+		super.setScale(2.5f);
 	}
 
 	public void dealDamage(int damage) {
@@ -105,10 +105,10 @@ public class Bomberman extends Entity {
 					break;
 			}
 
-			super.setAnimation(AnimationManager.animations.get("bomberman").get(direction));
+			super.setAnimation(direction);
 		} else {
 			super.isAnimated = false;
-			super.animation.currentFrame = 1;
+			super.currentFrame = 1;
 		}
 	}
 

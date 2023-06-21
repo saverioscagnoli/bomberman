@@ -2,7 +2,6 @@ package entities;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 
 import util.Utils;
 
@@ -13,8 +12,8 @@ public class Enemy extends Entity {
 	public int health;
 	public boolean immune = false;
 
-	public Enemy(float posX, float posY, int width, int height, int speed, BufferedImage spritesheet) {
-		super(posX, posY, width, height, speed, spritesheet, false);
+	public Enemy(float posX, float posY, int width, int height, int speed, String spritesheetName) {
+		super(posX, posY, width, height, speed, spritesheetName, false, 4, 3, 4);
 		this.health = 3;
 
 		// sets a random direction between right, left, up, down

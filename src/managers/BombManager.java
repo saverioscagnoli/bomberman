@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import entities.Bomb;
 import entities.Bomberman;
 import entities.Explosion;
-import ui.SpriteAnimation;
-import util.Consts;
 import util.Utils;
 import java.awt.Graphics2D;
 
@@ -37,7 +35,7 @@ public class BombManager {
 		if (this.bombs.stream().anyMatch(b -> b.posX == pos[0] && b.posY == pos[1])) {
 			return;
 		}
-		Bomb b = new Bomb(pos[0], pos[1], Consts.tileDims, Consts.tileDims, 0, character.bombRadius);
+		Bomb b = new Bomb(pos[0], pos[1], character.bombRadius);
 		b.setScale(3f);
 		this.bombs.add(b);
 	}

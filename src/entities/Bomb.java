@@ -3,22 +3,19 @@ package entities;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-
 import loop.Loop;
 import managers.AnimationManager;
 import managers.BombManager;
 import managers.EnemyManager;
 import managers.TileManager;
-import ui.SpriteAnimation;
 import util.Consts;
 import util.Utils;
 
 public class Bomb extends Entity {
 	private Explosion explosionMatrix[][];
 
-	public Bomb(float posX, float posY, int width, int height, int speed, int bombRadius) {
-		super(posX, posY, width, height, speed, AnimationManager.spritesheets.get("bomb"), false);
+	public Bomb(float posX, float posY, int bombRadius) {
+		super(posX, posY, Consts.tileDims, Consts.tileDims, 0, "bomb", false, 4, 7, 1);
 		this.isSolid = true;
 		Utils.setTimeout(() -> this.explode(bombRadius), 3000);
 		this.animation = AnimationManager.animations.get("bomb").get("idle");
@@ -40,26 +37,20 @@ public class Bomb extends Entity {
 			Explosion ex3 = new Explosion((int) this.posX + Consts.tileDims * rad, (int) this.posY);
 			Explosion ex4 = new Explosion((int) this.posX, (int) this.posY + Consts.tileDims * rad);
 			Explosion central = new Explosion((int) this.posX, (int) this.posY);
-			central.setScale(2);
 
-			ex1.setScale(2);
-			ex2.setScale(2);
-			ex3.setScale(2);
-			ex4.setScale(2);
-			HashMap<String, SpriteAnimation> exAnims = AnimationManager.animations.get("explosion");
-			central.setAnimation(exAnims.get("central"));
+			central.setAnimation("central");
 
 			if (rad == bombRadius) {
-				ex1.setAnimation(exAnims.get("left"));
-				ex2.setAnimation(exAnims.get("up"));
-				ex3.setAnimation(exAnims.get("right"));
-				ex4.setAnimation(exAnims.get("down"));
+				ex1.setAnimation("left");
+				ex2.setAnimation("up");
+				ex3.setAnimation("right");
+				ex4.setAnimation("down");
 
 			} else {
-				ex1.setAnimation(exAnims.get("vertical"));
-				ex2.setAnimation(exAnims.get("horizontal"));
-				ex3.setAnimation(exAnims.get("vertical"));
-				ex4.setAnimation(exAnims.get("horizontal"));
+				ex1.setAnimation("horizontal");
+				ex2.setAnimation("vertical");
+				ex3.setAnimation("horizontal");
+				ex4.setAnimation("vertical");
 
 			}
 			explosionMatrix[0][rad] = ex1;

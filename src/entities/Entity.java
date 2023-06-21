@@ -1,7 +1,6 @@
 package entities;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 
 import ui.Sprite;
 
@@ -15,9 +14,9 @@ public class Entity extends Sprite {
     public int spriteNum = 1;
     public boolean dead;
 
-    public Entity(float posX, float posY, int width, int height, int speed, BufferedImage spritesheet,
-            boolean isStatic, int maxFrames, int absoluteFrames, int stagger, int rows, int frameY) {
-        super(spritesheet, isStatic, maxFrames, absoluteFrames, stagger, rows, frameY);
+    public Entity(float posX, float posY, int width, int height, int speed, String spritesheetName, boolean isStatic,
+            double absoluteFrames, int stagger, int rows) {
+        super(spritesheetName, isStatic, absoluteFrames, stagger, rows);
         this.posX = posX;
         this.posY = posY;
         this.width = width;

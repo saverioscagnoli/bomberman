@@ -52,7 +52,7 @@ public class TileManager {
                     } else {
                         src = "w-t";
                     }
-                    tile = new Obstacle(x, y, true, true, false, AnimationManager.spritesheets.get(src));
+                    tile = new Obstacle(x, y, true, true, false, src, 1, 1, 1);
                     this.grid[i][j] = "W";
                     this.walls.add(tile);
                 } else if (i == this.grid.length - 1) {
@@ -63,23 +63,23 @@ public class TileManager {
                     } else {
                         src = "w-b";
                     }
-                    tile = new Obstacle(x, y, true, true, false, AnimationManager.spritesheets.get(src));
+                    tile = new Obstacle(x, y, true, true, false, src, 1, 1, 1);
                     this.grid[i][j] = "W";
                     this.walls.add(tile);
                 } else if (i % 2 == 0 && j % 2 == 0 && j != 0 && j < this.grid[i].length - 1) {
                     src = "w-center";
-                    tile = new Obstacle(x, y, true, true, false, AnimationManager.spritesheets.get(src));
+                    tile = new Obstacle(x, y, true, true, false, src, 1, 1, 1);
                     this.grid[i][j] = "W";
                     this.walls.add(tile);
                 } else {
                     if (j == 0) {
                         src = "w-l";
-                        tile = new Obstacle(x, y, true, true, false, AnimationManager.spritesheets.get(src));
+                        tile = new Obstacle(x, y, true, true, false, src, 1, 1, 1);
                         this.grid[i][j] = "W";
                         this.walls.add(tile);
                     } else if (j == this.grid[i].length - 1) {
                         src = "w-r";
-                        tile = new Obstacle(x, y, true, true, false, AnimationManager.spritesheets.get(src));
+                        tile = new Obstacle(x, y, true, true, false, src, 1, 1, 1);
                         this.grid[i][j] = "W";
                         this.walls.add(tile);
                     } else {
@@ -92,9 +92,9 @@ public class TileManager {
                                 animationName = "idle";
                                 src = "wd-1";
                             }
-                            tile = new Obstacle(x, y, true, false, true, AnimationManager.spritesheets.get(src));
+                            tile = new Obstacle(x, y, true, false, true, src, 6, 12, 3);
                             this.grid[i][j] = "WD";
-                            tile.setAnimation(AnimationManager.animations.get(src).get(animationName));
+                            tile.setAnimation(animationName);
                             this.walls.add(tile);
                         } else {
                             this.grid[i][j] = "N";
@@ -106,7 +106,7 @@ public class TileManager {
                 } else {
                     src = "basic-1";
                 }
-                this.addBasicTile(new Obstacle(x, y, false, true, false, AnimationManager.spritesheets.get(src)));
+                this.addBasicTile(new Obstacle(x, y, false, true, false, src, 1, 1, 1));
             }
         }
     }

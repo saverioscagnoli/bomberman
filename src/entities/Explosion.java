@@ -1,14 +1,13 @@
 package entities;
 
 import java.awt.Graphics2D;
-import managers.AnimationManager;
 import util.Consts;
 import util.Utils;
 
 public class Explosion extends Entity {
 
 	public Explosion(int posX, int posY) {
-		super(posX, posY, Consts.tileDims, Consts.tileDims, 0, AnimationManager.spritesheets.get("explosion"), false);
+		super(posX, posY, Consts.tileDims, Consts.tileDims, 0, "explosion", false, 9, 5, 7);
 
 		Utils.setTimeout(() -> this.die(), 500);
 	}
