@@ -17,6 +17,8 @@ public class Bomberman extends Entity {
 	public int lives;
 	public boolean stop;
 	private Controller controller;
+	private int gridX = 1;
+	private int gridY = 1;
 
 	public Bomberman(int posX, int posY) {
 		super(posX, posY, 30, 30, 5, new Sprite("bomberman", 6.3, 5, "down",
@@ -69,6 +71,25 @@ public class Bomberman extends Entity {
 		this.sprite.update(elapsed);
 
 		if (!controller.buttonPriorities.isEmpty()) {
+
+			TileManager tileManager = TileManager.build();
+			int prevX = gridX;
+			int prevY = gridY;
+			String prev = tileManager.grid[gridY][gridX];
+			this.gridX = (int) this.posX / Consts.tileDims;
+			this.gridY = (int) this.posY / Consts.tileDims;
+
+			if (prevX != gridX || prevY != gridY) {
+				String current = tileManager.grid[gridY][gridX]; // Store the current tile
+				if (!current.equals("C")) { // Check if the current position is not already "C"
+					tileManager.grid[prevY][prevX] = prev; // Restore the previous tile
+					prev = current; // Update the 'prev' variable with the original tile
+					tileManager.grid[gridY][gridX] = "C"; // Set the current position tile to "C"
+
+					System.out.println("prev: [" + prevX + ", " + prevY + "] new: [" + gridX + ", " + gridY + "]");
+					System.out.println("Previous tile: " + prev);
+				}
+			}
 			String direction = "";
 			this.stop = false;
 
