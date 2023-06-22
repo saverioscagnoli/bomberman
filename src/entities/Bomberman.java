@@ -69,6 +69,7 @@ public class Bomberman extends Entity {
 		// probabilmente si potrebbe anche comprimere un po'.
 
 		this.sprite.update(elapsed);
+		this.speed = 5;
 
 		if (!controller.buttonPriorities.isEmpty()) {
 
@@ -76,18 +77,28 @@ public class Bomberman extends Entity {
 			int prevX = gridX;
 			int prevY = gridY;
 			String prev = tileManager.grid[gridY][gridX];
-			this.gridX = (int) this.posX / Consts.tileDims;
-			this.gridY = (int) this.posY / Consts.tileDims;
+			this.gridX = this.posX / Consts.tileDims;
+			this.gridY = this.posY / Consts.tileDims;
 
 			if (prevX != gridX || prevY != gridY) {
 				String current = tileManager.grid[gridY][gridX]; // Store the current tile
 				if (!current.equals("C")) { // Check if the current position is not already "C"
 					tileManager.grid[prevY][prevX] = prev; // Restore the previous tile
-					prev = current; // Update the 'prev' variable with the original tile
-					tileManager.grid[gridY][gridX] = "C"; // Set the current position tile to "C"
 
-					System.out.println("prev: [" + prevX + ", " + prevY + "] new: [" + gridX + ", " + gridY + "]");
-					System.out.println("Previous tile: " + prev);
+					// Update the 'prev' variable with the original tile (before setting the current
+					// tile to "C")
+					prev = tileManager.grid[gridY][gridX];
+
+					// Restore previous tiles to their original content
+					for (int y = 0; y < tileManager.grid.length; y++) {
+						for (int x = 0; x < tileManager.grid[y].length; x++) {
+							if (tileManager.grid[y][x].equals("C")) {
+								tileManager.grid[y][x] = prev;
+							}
+						}
+					}
+
+					tileManager.grid[gridY][gridX] = "C"; // Set the current position tile to "C"
 				}
 			}
 			String direction = "";
@@ -95,55 +106,80 @@ public class Bomberman extends Entity {
 
 			switch (controller.buttonPriorities.get(0)) {
 				case "A":
-					for (Entity entity : CollisionChecker.adjacentEntities) {
-						if (entity == null)
-							continue;
-						if (CollisionChecker.checkCollision(entity, this, "left")) {
-							posX = entity.posX + entity.width + 2;
-							posX += speed;
-							break;
-						}
+					String leftTile = TileManager.build().grid[gridY][gridX - 1];
+					if (leftTile.equals("W")) {
+						this.speed = 0;
 					}
+					/*
+					 * for (Entity entity : CollisionChecker.adjacentEntities) {
+					 * if (entity == null)
+					 * continue;
+					 * if (CollisionChecker.checkCollision(entity, this, "left")) {
+					 * posX = entity.posX + entity.width + 2;
+					 * posX += speed;
+					 * break;
+					 * }
+					 * }
+					 */
 
+					// posX -= speed;
 					posX -= speed;
 					direction = "left";
 					break;
 				case "D":
-					for (Entity entity : CollisionChecker.adjacentEntities) {
-						if (entity == null)
-							continue;
-						if (CollisionChecker.checkCollision(entity, this, "right")) {
-							posX = entity.posX - width - 1;
-							posX -= speed;
-							break;
-						}
+					String rightTile = TileManager.build().grid[gridY][gridX + 1];
+					if (rightTile.equals("W")) {
+						this.speed = 0;
 					}
+					/*
+					 * for (Entity entity : CollisionChecker.adjacentEntities) {
+					 * if (entity == null)
+					 * continue;
+					 * if (CollisionChecker.checkCollision(entity, this, "right")) {
+					 * posX = entity.posX - width - 1;
+					 * posX -= speed;
+					 * break;
+					 * }
+					 * }
+					 */
 					posX += speed;
 					direction = "right";
 					break;
 				case "W":
-					for (Entity entity : CollisionChecker.adjacentEntities) {
-						if (entity == null)
-							continue;
-						if (CollisionChecker.checkCollision(entity, this, "up")) {
-							posY = entity.posY + entity.height + 2;
-							posY += speed;
-							break;
-						}
+					String upTile = TileManager.build().grid[gridY - 1][gridX];
+					if (upTile.equals("W")) {
+						this.speed = 0;
 					}
+					/*
+					 * for (Entity entity : CollisionChecker.adjacentEntities) {
+					 * if (entity == null)
+					 * continue;
+					 * if (CollisionChecker.checkCollision(entity, this, "up")) {
+					 * posY = entity.posY + entity.height + 2;
+					 * posY += speed;
+					 * break;
+					 * }
+					 * }
+					 */
 					posY -= speed;
 					direction = "up";
 					break;
 				case "S":
-					for (Entity entity : CollisionChecker.adjacentEntities) {
-						if (entity == null)
-							continue;
-						if (CollisionChecker.checkCollision(entity, this, "down")) {
-							posY = entity.posY - height - 1;
-							posY -= speed;
-							break;
-						}
+					String downTile = TileManager.build().grid[gridY + 1][gridX];
+					if (downTile.equals("W")) {
+						this.speed = 0;
 					}
+					/*
+					 * for (Entity entity : CollisionChecker.adjacentEntities) {
+					 * if (entity == null)
+					 * continue;
+					 * if (CollisionChecker.checkCollision(entity, this, "down")) {
+					 * posY = entity.posY - height - 1;
+					 * posY -= speed;
+					 * break;
+					 * }
+					 * }
+					 */
 					posY += speed;
 					direction = "down";
 					break;

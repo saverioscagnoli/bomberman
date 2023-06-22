@@ -1,11 +1,10 @@
 package entities;
 
 import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Optional;
+
 import loop.Loop;
 import managers.BombManager;
-import managers.EnemyManager;
 import managers.TileManager;
 import ui.Sprite;
 import ui.SpriteAnimation;
@@ -86,76 +85,44 @@ public class Bomb extends Entity {
 
 		// adds explosions in explosion matrix to entities
 		for (int i = 0; i < 4; i++) {
-			boolean hitWall = false;
 			for (int j = 0; j < r + 1; j++) {
 				Explosion ex = explosionMatrix[i][j];
 				if (ex != null) {
-					if (!this.checkSolid(ex.posX, ex.posY) && !hitWall) {
-						BombManager.build().addExplosion(ex);
+					int x = ex.posX / Consts.tileDims;
+					int y = ex.posY / Consts.tileDims;
+					String tile = TileManager.build().grid[y][x];
+					if (tile != "W") {
+						if (tile == "WD") {
+							Optional<Obstacle> wall = TileManager.build().walls
+									.stream()
+									.filter((w) -> w.posX == ex.posX && w.posY == ex.posY)
+									.findFirst();
+
+							if (wall.isPresent()) {
+								wall.get().die();
+							}
+							TileManager.build().grid[y][x] = "N";
+							break;
+						} else {
+							BombManager.build().addExplosion(ex);
+							if (tile == "B") {
+								Optional<Bomb> bomb = BombManager
+										.build().bombs
+										.stream()
+										.filter(b -> b.posX == ex.posX && b.posY == ex.posY)
+										.findFirst();
+
+								if (bomb.isPresent()) {
+									Utils.setTimeout(() -> bomb.get().explode(), 100);
+								}
+							}
+						}
 					} else {
-						hitWall = true;
 						break;
 					}
 				}
 			}
 		}
-	}
-
-	private boolean checkSolid(int posX, int posY) {
-		Collection<Entity> wallsAndEnemies = new ArrayList<>();
-		wallsAndEnemies.addAll(EnemyManager.getInstance().enemies);
-		wallsAndEnemies.addAll(TileManager.build().walls);
-		wallsAndEnemies.addAll(BombManager.build().bombs);
-		wallsAndEnemies.add(Loop.character);
-
-		for (Entity e : wallsAndEnemies) { // for every entity in the list
-			if (e.posX == posX && e.posY == posY) { // if the entity is in the same position as the explosion
-				if (e.isSolid) { // if the entity is solid
-					if (e instanceof Obstacle) {
-						Obstacle wall = (Obstacle) e; // cast the entity to an obstacle
-						if (wall.destructable) { // if the obstacle is destructable
-							wall.die(); // destroy the obstacle
-							int x = (int) wall.posX / Consts.tileDims;
-							int y = (int) wall.posY / Consts.tileDims;
-							TileManager.build().grid[y][x] = "N";
-
-							// have a 30% chance to drop a powerup when a wall is destroyed
-							/*
-							 * if (Math.random() < 0.3) {
-							 * PowerUp powerup = new PowerUp(wall.posX, wall.posY, Consts.tileDims,
-							 * Consts.tileDims, 0, "speed");
-							 * PowerupManager.getInstance().powerups.add(powerup);
-							 * }
-							 */
-						}
-					} else if (e instanceof Bomb) {
-						return false;
-					}
-					return true;
-				}
-			}
-
-			// check if the entity is an enemy. if it is, and the enemy and explosion
-			// overlap, kill it.
-			if (e instanceof Enemy) {
-				Enemy enemy = (Enemy) e;
-				// if the enemy and the explosion have aabb collision, damage it.
-				if ((enemy.posX < posX + Consts.tileDims && enemy.posX + enemy.width > posX
-						&& enemy.posY < posY + Consts.tileDims && enemy.posY + enemy.height > posY)) {
-					enemy.dealDamage(1);
-				}
-
-			}
-
-			if (e instanceof Bomberman) {
-				Bomberman player = (Bomberman) e;
-				if (player.posX < posX + Consts.tileDims && player.posX + player.width > posX
-						&& player.posY < posY + Consts.tileDims && player.posY + player.height > posY) {
-					player.dealDamage(1);
-				}
-			}
-		}
-		return false;
 	}
 
 	@Override

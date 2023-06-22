@@ -39,7 +39,7 @@ public class Denkyun extends Enemy {
 		// }
 
 		int randInt = Utils.rng(0, 100);
-		switch (this.direction) {
+		/* switch (this.direction) {
 			case "left":
 				if (Utils.enemyCollision(this, direction)) {
 					// 1/3 chance to go down, 1/3 chance to go up, 1/3 chance to go right
@@ -105,7 +105,7 @@ public class Denkyun extends Enemy {
 					this.posY += this.speed;
 				}
 				break;
-		}
+		} */
 	}
 
 	public void render(Graphics2D g2d) {

@@ -108,7 +108,7 @@ public class Loop extends JPanel implements Runnable {
 
 			// Sleep for a short duration to avoid high CPU usage
 			try {
-				Thread.sleep(1);
+				Thread.sleep(16);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -127,7 +127,7 @@ public class Loop extends JPanel implements Runnable {
 				bombManager.updateExplosions(elapsed);
 				enemyManager.updateEnemies(elapsed);
 				PowerupManager.UpdatePowerup(elapsed);
-				CollisionChecker.updateAdjacentEntities(character);
+				//CollisionChecker.updateAdjacentEntities(character);
 				break;
 		}
 		this.repaint();
