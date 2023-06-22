@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import entities.Enemy;
 import ui.Sprite;
 import ui.SpriteAnimation;
-import util.Utils;
 
 public class Denkyun extends Enemy {
 
@@ -38,74 +37,76 @@ public class Denkyun extends Enemy {
 		// }
 		// }
 
-		int randInt = Utils.rng(0, 100);
-		/* switch (this.direction) {
-			case "left":
-				if (Utils.enemyCollision(this, direction)) {
-					// 1/3 chance to go down, 1/3 chance to go up, 1/3 chance to go right
-					if (randInt < 33) {
-						this.direction = "down";
-						this.posX += this.speed;
-					} else if (randInt < 66) {
-						this.direction = "up";
-						this.posX += this.speed;
-					} else {
-						this.direction = "right";
-					}
-				} else {
-					this.posX -= this.speed;
-				}
-				break;
-			case "right":
-				if (Utils.enemyCollision(this, direction)) {
-					// 1/3 chance to go down, 1/3 chance to go up, 1/3 chance to go left
-					if (randInt < 33) {
-						this.direction = "down";
-						this.posX -= this.speed;
-					} else if (randInt < 66) {
-						this.direction = "up";
-						this.posX -= this.speed;
-					} else {
-						this.direction = "left";
-					}
-				} else {
-					this.posX += this.speed;
-				}
-				break;
-			case "up":
-				if (Utils.enemyCollision(this, direction)) {
-					// 1/3 chance to go left, 1/3 chance to go right, 1/3 chance to go down
-					if (randInt < 33) {
-						this.direction = "left";
-						this.posY += this.speed;
-					} else if (randInt < 66) {
-						this.direction = "right";
-						this.posY += this.speed;
-					} else {
-						this.direction = "down";
-					}
-				} else {
-					this.posY -= this.speed;
-				}
-				break;
-
-			case "down":
-				if (Utils.enemyCollision(this, direction)) {
-					// 1/3 chance to go left, 1/3 chance to go right, 1/3 chance to go up
-					if (randInt < 33) {
-						this.direction = "left";
-						this.posY -= this.speed;
-					} else if (randInt < 66) {
-						this.direction = "right";
-						this.posY -= this.speed;
-					} else {
-						this.direction = "up";
-					}
-				} else {
-					this.posY += this.speed;
-				}
-				break;
-		} */
+		// int randInt = Utils.rng(0, 100);
+		/*
+		 * switch (this.direction) {
+		 * case "left":
+		 * if (Utils.enemyCollision(this, direction)) {
+		 * // 1/3 chance to go down, 1/3 chance to go up, 1/3 chance to go right
+		 * if (randInt < 33) {
+		 * this.direction = "down";
+		 * this.posX += this.speed;
+		 * } else if (randInt < 66) {
+		 * this.direction = "up";
+		 * this.posX += this.speed;
+		 * } else {
+		 * this.direction = "right";
+		 * }
+		 * } else {
+		 * this.posX -= this.speed;
+		 * }
+		 * break;
+		 * case "right":
+		 * if (Utils.enemyCollision(this, direction)) {
+		 * // 1/3 chance to go down, 1/3 chance to go up, 1/3 chance to go left
+		 * if (randInt < 33) {
+		 * this.direction = "down";
+		 * this.posX -= this.speed;
+		 * } else if (randInt < 66) {
+		 * this.direction = "up";
+		 * this.posX -= this.speed;
+		 * } else {
+		 * this.direction = "left";
+		 * }
+		 * } else {
+		 * this.posX += this.speed;
+		 * }
+		 * break;
+		 * case "up":
+		 * if (Utils.enemyCollision(this, direction)) {
+		 * // 1/3 chance to go left, 1/3 chance to go right, 1/3 chance to go down
+		 * if (randInt < 33) {
+		 * this.direction = "left";
+		 * this.posY += this.speed;
+		 * } else if (randInt < 66) {
+		 * this.direction = "right";
+		 * this.posY += this.speed;
+		 * } else {
+		 * this.direction = "down";
+		 * }
+		 * } else {
+		 * this.posY -= this.speed;
+		 * }
+		 * break;
+		 * 
+		 * case "down":
+		 * if (Utils.enemyCollision(this, direction)) {
+		 * // 1/3 chance to go left, 1/3 chance to go right, 1/3 chance to go up
+		 * if (randInt < 33) {
+		 * this.direction = "left";
+		 * this.posY -= this.speed;
+		 * } else if (randInt < 66) {
+		 * this.direction = "right";
+		 * this.posY -= this.speed;
+		 * } else {
+		 * this.direction = "up";
+		 * }
+		 * } else {
+		 * this.posY += this.speed;
+		 * }
+		 * break;
+		 * }
+		 */
 	}
 
 	public void render(Graphics2D g2d) {

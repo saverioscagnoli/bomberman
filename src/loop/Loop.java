@@ -18,7 +18,6 @@ import managers.PowerupManager;
 import managers.TileManager;
 import ui.Button;
 import ui.Menus;
-import util.CollisionChecker;
 import util.Consts;
 
 public class Loop extends JPanel implements Runnable {
