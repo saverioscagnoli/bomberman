@@ -6,6 +6,7 @@ import ui.Sprite;
 import ui.SpriteAnimation;
 import loop.Controller;
 import managers.BombManager;
+import managers.TileManager;
 import util.*;
 
 public class Bomberman extends Entity {
@@ -43,9 +44,11 @@ public class Bomberman extends Entity {
 			return;
 		}
 		// if the bomb is already there, don't add it
-		if (bombManager.bombs.stream().anyMatch(b -> b.posX == pos[0] && b.posY == pos[1])) {
+		int i = pos[1] / Consts.tileDims;
+		int j = pos[0] / Consts.tileDims;
+		if (TileManager.build().grid[i][j] == "B")
 			return;
-		}
+
 		bombManager.addBomb(new Bomb(pos[0], pos[1], this.bombRadius));
 	}
 

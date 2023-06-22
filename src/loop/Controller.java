@@ -6,9 +6,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import entities.*;
-import managers.BombManager;
 import ui.Button;
 import ui.Menus;
 import util.*;
