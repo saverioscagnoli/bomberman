@@ -1,8 +1,14 @@
 package util;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -16,6 +22,10 @@ public abstract class Utils {
 	public static int rng(int min, int max) {
 		Random rnd = new Random();
 		return rnd.nextInt(min, max);
+	}
+
+	public static <T> T pick(T[] arr) {
+		return arr[rng(0, arr.length)];
 	}
 
 	public static int[] normalizePos(int x, int y) {
@@ -50,8 +60,8 @@ public abstract class Utils {
 				break;
 		}
 
-		ArrayList<Obstacle> obstacles = TileManager.getInstance().walls;
-		ArrayList<Bomb> bombs = BombManager.getInstance().bombs;
+		ArrayList<Obstacle> obstacles = TileManager.build().walls;
+		ArrayList<Bomb> bombs = BombManager.build().bombs;
 		ArrayList<Entity> obstaclesAndBombs = new ArrayList<>();
 		obstaclesAndBombs.addAll(obstacles);
 		obstaclesAndBombs.addAll(bombs);
@@ -92,6 +102,19 @@ public abstract class Utils {
 			e.printStackTrace();
 		}
 		return clip;
+	}
+
+	// Load an image from the given source
+	public static BufferedImage loadImage(String src) {
+		File path = new File(src);
+		BufferedImage img = null;
+		try {
+			InputStream stream = new FileInputStream(path);
+			img = ImageIO.read(stream);
+		} catch (IOException err) {
+			err.printStackTrace();
+		}
+		return img;
 	}
 
 }

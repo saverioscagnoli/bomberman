@@ -9,9 +9,16 @@ public class PowerUp extends Entity {
 	public final String name;
 	public boolean isPickedUp = false;
 
-	public PowerUp(float posX, float posY, int width, int height, int speed, String name) {
-		super(posX, posY, Consts.tileDims, Consts.tileDims, speed, "", true);
+	public PowerUp(String name, int posX,int posY) {
+		super(posX, posY, Consts.tileDims, Consts.tileDims, 0, null);
 		this.name = name;
+	}
+
+	public void die() {
+		this.dead = true;
+	}
+
+	public void update(int elapsed) {
 	}
 
 	public void onPickup(int time, Runnable buff, Runnable expire) {

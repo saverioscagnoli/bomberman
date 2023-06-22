@@ -6,9 +6,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import entities.*;
-import managers.BombManager;
 import ui.Button;
 import ui.Menus;
 import util.*;
@@ -20,6 +17,7 @@ import util.*;
  */
 
 public class Controller extends MouseAdapter implements KeyListener {
+    private static Controller instance = null;
 
     // variables for keys that are currently pressed
     private boolean wPressed = false;
@@ -32,21 +30,18 @@ public class Controller extends MouseAdapter implements KeyListener {
     public String latestHorizontalKey;
     public String latestVerticalKey;
 
-    private Loop loop;
-
-    public Controller(Loop loop) {
-        this.loop = loop;
-        loop.addMouseListener(new MouseAdapter() {
+    private Controller() {
+        Loop.build().addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 int x = e.getX();
                 int y = e.getY();
-                if (loop.gameState == Consts.MENU) {
+                if (Loop.build().gameState == Consts.MENU) {
                     for (Button btn : Menus.mainMenu.buttons) {
                         if (Utils.buttonClick(x, y, btn)) {
                             switch (btn.uuid) {
                                 case "s":
-                                    loop.setGameState(Consts.IN_GAME);
+                                    Loop.build().setGameState(Consts.IN_GAME);
                                     break;
                                 case "q":
                                     System.exit(0);
@@ -56,12 +51,12 @@ public class Controller extends MouseAdapter implements KeyListener {
                         }
                     }
                 }
-                if (loop.gameState == Consts.PAUSE) {
+                if (Loop.build().gameState == Consts.PAUSE) {
                     for (Button btn : Menus.pauseMenu.buttons) {
                         if (Utils.buttonClick(x, y, btn)) {
                             switch (btn.uuid) {
                                 case "r": {
-                                    loop.setGameState(Consts.IN_GAME);
+                                    Loop.build().setGameState(Consts.IN_GAME);
                                 }
                             }
                         }
@@ -71,17 +66,25 @@ public class Controller extends MouseAdapter implements KeyListener {
         });
     }
 
+    public static synchronized Controller build() {
+        if (instance == null) {
+            instance = new Controller();
+        }
+        return instance;
+    }
+
     // Method to update the variables based on the current key presses
     @Override
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
-
         switch (keyCode) {
             case KeyEvent.VK_W: {
+
                 wPressed = true;
                 latestVerticalKey = "W";
                 if (buttonPriorities.contains("W"))
                     break;
+                Loop.character.sprite.setAnimation("up");
                 buttonPriorities.add(0, "W");
                 break;
             }
@@ -91,6 +94,7 @@ public class Controller extends MouseAdapter implements KeyListener {
                 latestHorizontalKey = "A";
                 if (buttonPriorities.contains("A"))
                     break;
+                Loop.character.sprite.setAnimation("left");
                 buttonPriorities.add(0, "A");
                 break;
             }
@@ -100,6 +104,7 @@ public class Controller extends MouseAdapter implements KeyListener {
                 sPressed = true;
                 if (buttonPriorities.contains("S"))
                     break;
+                Loop.character.sprite.setAnimation("down");
                 buttonPriorities.add(0, "S");
                 break;
             }
@@ -109,22 +114,22 @@ public class Controller extends MouseAdapter implements KeyListener {
                 dPressed = true;
                 if (buttonPriorities.contains("D"))
                     break;
+                Loop.character.sprite.setAnimation("right");
                 buttonPriorities.add(0, "D");
                 break;
             }
 
             case KeyEvent.VK_SPACE: {
-                Bomberman character = Loop.character;
-                BombManager.getInstance().addBomb(character);
+                Loop.character.placeBomb();
                 Utils.playSound(Consts.soundPath + "place-bomb.wav");
                 break;
             }
 
             case KeyEvent.VK_ESCAPE: {
-                if (this.loop.gameState == Consts.IN_GAME) {
-                    this.loop.setGameState(Consts.PAUSE);
-                } else if (this.loop.gameState == Consts.PAUSE) {
-                    this.loop.setGameState(Consts.IN_GAME);
+                if (Loop.build().gameState == Consts.IN_GAME) {
+                    Loop.build().setGameState(Consts.PAUSE);
+                } else if (Loop.build().gameState == Consts.PAUSE) {
+                    Loop.build().setGameState(Consts.IN_GAME);
                 }
                 break;
             }
@@ -169,7 +174,6 @@ public class Controller extends MouseAdapter implements KeyListener {
                 latestHorizontalKey = "";
             }
         }
-
     }
 
     @Override

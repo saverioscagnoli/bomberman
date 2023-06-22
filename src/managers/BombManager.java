@@ -2,11 +2,7 @@ package managers;
 
 import java.util.ArrayList;
 import entities.Bomb;
-import entities.Bomberman;
 import entities.Explosion;
-import ui.SpriteAnimation;
-import util.Consts;
-import util.Utils;
 import java.awt.Graphics2D;
 
 public class BombManager {
@@ -19,35 +15,22 @@ public class BombManager {
 		this.explosions = new ArrayList<>();
 	}
 
-	public static synchronized BombManager getInstance() {
+	public static synchronized BombManager build() {
 		if (instance == null) {
 			instance = new BombManager();
 		}
 		return instance;
 	}
 
-	public void addBomb(Bomberman character) {
-		int x = (int) (character.posX + character.width * 0.5);
-		int y = (int) (character.posY + character.height * 0.5);
-		int[] pos = Utils.normalizePos(x, y);
-		if (this.bombs.size() >= character.maxBombs) {
-			return;
-		}
-		// if the bomb is already there, don't add it
-		if (this.bombs.stream().anyMatch(b -> b.posX == pos[0] && b.posY == pos[1])) {
-			return;
-		}
-		Bomb b = new Bomb(pos[0], pos[1], Consts.tileDims, Consts.tileDims, 0, character.bombRadius);
-		b.setScale(3f);
-		b.addAnimation("bomb", new SpriteAnimation(b.spritesheet, 1, 4, b.scale, 0, 4, 10));
-		this.bombs.add(b);
+	public void addBomb(Bomb bomb) {
+		this.bombs.add(bomb);
 	}
 
 	public void addExplosion(Explosion ex) {
 		this.explosions.add(ex);
 	}
 
-	private void updateExplosions() {
+	public void updateExplosions(int elapsed) {
 		ArrayList<Explosion> toRemove = new ArrayList<>();
 		int l = this.explosions.size();
 		for (int i = 0; i < l; i++) {
@@ -55,13 +38,13 @@ public class BombManager {
 			if (ex.dead) {
 				toRemove.add(ex);
 			} else {
-				ex.update();
+				ex.update(elapsed);
 			}
 		}
 		toRemove.forEach((ex) -> this.explosions.remove(ex));
 	}
 
-	public void updateBombs() {
+	public void updateBombs(int elapsed) {
 		ArrayList<Bomb> toRemove = new ArrayList<>();
 		int l = this.bombs.size();
 		for (int i = 0; i < l; i++) {
@@ -69,24 +52,23 @@ public class BombManager {
 			if (b.dead) {
 				toRemove.add(b);
 			} else {
-				b.update();
+				b.update(elapsed);
 			}
 		}
 		toRemove.forEach((b) -> this.bombs.remove(b));
-		this.updateExplosions();
+	}
+
+	public void drawExplosions(Graphics2D g2d) {
+		int l = this.explosions.size();
+		for (int i = 0; i < l; i++) {
+			this.explosions.get(i).render(g2d);
+		}
 	}
 
 	public void drawBombs(Graphics2D g2d) {
 		int l = this.bombs.size();
 		for (int i = 0; i < l; i++) {
-			Bomb b = bombs.get(i);
-			b.render(g2d);
-		}
-
-		int l2 = this.explosions.size();
-		for (int i = 0; i < l2; i++) {
-			Explosion ex = this.explosions.get(i);
-			ex.render(g2d);
+			bombs.get(i).render(g2d);
 		}
 	}
 }
