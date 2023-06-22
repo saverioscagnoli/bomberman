@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import entities.Obstacle;
+import ui.Sprite;
+import ui.SpriteAnimation;
 import util.Consts;
 import util.Utils;
 
@@ -24,7 +26,7 @@ public class TileManager {
         this.setTiles();
     }
 
-    public static synchronized TileManager getInstance() {
+    public static synchronized TileManager build() {
         if (instance == null) {
             instance = new TileManager();
         }
@@ -52,7 +54,7 @@ public class TileManager {
                     } else {
                         src = "w-t";
                     }
-                    tile = new Obstacle(x, y, true, true, false, src, 1, 1, 1);
+                    tile = new Obstacle(x, y, true, src);
                     this.grid[i][j] = "W";
                     this.walls.add(tile);
                 } else if (i == this.grid.length - 1) {
@@ -63,38 +65,42 @@ public class TileManager {
                     } else {
                         src = "w-b";
                     }
-                    tile = new Obstacle(x, y, true, true, false, src, 1, 1, 1);
+                    tile = new Obstacle(x, y, true, src);
                     this.grid[i][j] = "W";
                     this.walls.add(tile);
                 } else if (i % 2 == 0 && j % 2 == 0 && j != 0 && j < this.grid[i].length - 1) {
                     src = "w-center";
-                    tile = new Obstacle(x, y, true, true, false, src, 1, 1, 1);
+                    tile = new Obstacle(x, y, true, src);
                     this.grid[i][j] = "W";
                     this.walls.add(tile);
                 } else {
                     if (j == 0) {
                         src = "w-l";
-                        tile = new Obstacle(x, y, true, true, false, src, 1, 1, 1);
+                        tile = new Obstacle(x, y, true, src);
                         this.grid[i][j] = "W";
                         this.walls.add(tile);
                     } else if (j == this.grid[i].length - 1) {
                         src = "w-r";
-                        tile = new Obstacle(x, y, true, true, false, src, 1, 1, 1);
+                        tile = new Obstacle(x, y, true, src);
                         this.grid[i][j] = "W";
                         this.walls.add(tile);
                     } else {
                         if (shouldSpawnObstacle) {
                             src = "wd-1";
-                            String animationName = null;
+                            String animName = null;
                             if (i == 1 || this.grid[i - 1][j] == "W") {
-                                animationName = "idle-edge";
+                                animName = "idle-edge";
                             } else {
-                                animationName = "idle";
+                                animName = "idle";
                                 src = "wd-1";
                             }
-                            tile = new Obstacle(x, y, true, false, true, src, 6, 12, 3);
+                            tile = new Obstacle(x, y, true, false, true, new Sprite(src, 6, 3, animName,
+                                    new SpriteAnimation[] {
+                                            new SpriteAnimation("idle", 4, 0, 10),
+                                            new SpriteAnimation("idle-edge", 4, 1, 10),
+                                            new SpriteAnimation("death", 6, 2, 10)
+                                    }, 1));
                             this.grid[i][j] = "WD";
-                            tile.setAnimation(animationName);
                             this.walls.add(tile);
                         } else {
                             this.grid[i][j] = "N";
@@ -106,19 +112,19 @@ public class TileManager {
                 } else {
                     src = "basic-1";
                 }
-                this.addBasicTile(new Obstacle(x, y, false, true, false, src, 1, 1, 1));
+                this.addBasicTile(new Obstacle(x, y, false, src));
             }
         }
     }
 
-    public void updateTiles() {
+    public void updateTiles(int elapsed) {
         ArrayList<Obstacle> toRemove = new ArrayList<>();
         for (Obstacle tile : this.walls) {
             if (tile.destructable) {
                 if (tile.dead) {
                     toRemove.add(tile);
                 } else {
-                    tile.update();
+                    tile.update(elapsed);
                 }
             }
         }

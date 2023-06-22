@@ -71,13 +71,13 @@ public class PowerupManager {
 		}
 	}
 
-	public static void UpdatePowerup() {
+	public static void UpdatePowerup(int elapsed) {
 		for (PowerUp p : PowerupManager.getInstance().powerups) {
 			if (p.dead) {
 				PowerupManager.getInstance().powerups.remove(p);
 				break;
 			} else {
-				p.update();
+				p.update(elapsed);
 			}
 		}
 	}

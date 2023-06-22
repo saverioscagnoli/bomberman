@@ -16,7 +16,8 @@ class Main {
         win.setPreferredSize(new Dimension(Consts.screenWidth + 16, Consts.screenHeight + 35));
         win.setResizable(false);
         win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Loop loop = new Loop();
+        Loop loop = Loop.build();
+        loop.start();
         Menus.mainMenu = new MainMenu(loop);
         Menus.pauseMenu = new PauseMenu(loop);
 

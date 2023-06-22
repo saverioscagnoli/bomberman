@@ -27,7 +27,7 @@ public class EnemyManager {
 			int x = Utils.rng(Consts.tileDims + 1, Consts.screenWidth - Consts.tileDims);
 			int y = Utils.rng(Consts.tileDims + 1, Consts.screenHeight - Consts.tileDims);
 			int[] pos = Utils.normalizePos(x, y);
-			String[][] grid = TileManager.getInstance().grid;
+			String[][] grid = TileManager.build().grid;
 			while (grid[y / Consts.tileDims][x / Consts.tileDims] == "WD"
 					|| grid[y / Consts.tileDims][x / Consts.tileDims] == "W") {
 				x = Utils.rng(Consts.tileDims + 1, Consts.screenWidth - Consts.tileDims);
@@ -39,7 +39,7 @@ public class EnemyManager {
 		}
 	}
 
-	public void updateEnemies() {
+	public void updateEnemies(int elapsed) {
 		ArrayList<Enemy> toRemove = new ArrayList<>();
 		int l = enemies.size();
 		for (int i = 0; i < l; i++) {
@@ -47,7 +47,7 @@ public class EnemyManager {
 			if (e.dead) {
 				toRemove.add(e);
 			} else {
-				e.update();
+				e.update(elapsed);
 			}
 		}
 

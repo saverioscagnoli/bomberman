@@ -2,22 +2,27 @@ package entities.enemies;
 
 import java.awt.Graphics2D;
 import entities.Enemy;
+import ui.Sprite;
+import ui.SpriteAnimation;
 import util.Utils;
 
 public class Denkyun extends Enemy {
 
-	public Denkyun(float posX, float posY, int width, int height, int speed) {
-		super(posX, posY, 47, 47, 1, "enemy-1");
+	public Denkyun(int posX, int posY, int width, int height, int speed) {
+		super(posX, posY, width, height, speed, new Sprite("enemy-1", 4, 4, "down", new SpriteAnimation[] {
+				new SpriteAnimation("down", 4, 0, 5),
+				new SpriteAnimation("up", 4, 1, 5),
+				new SpriteAnimation("left", 4, 2, 5),
+				new SpriteAnimation("right", 4, 3, 5)
+		}, 2.5f));
 		this.health = 2;
 		this.direction = "left";
-		super.setAnimation(direction);
-		super.setScale(2.5f);
 	}
 
-	public void update() {
+	public void update(int elapsed) {
 		// the enemy moves in a direction until it hits a wall, then it changes
 		// direction
-		super.updateSprite();
+		super.update(elapsed);
 
 		// TODO : USARE CODICE INTERSEZIONE PER PROSSIMI NEMICI :
 		// int[] prova = { (int) this.posX, (int) this.posY };
@@ -47,7 +52,6 @@ public class Denkyun extends Enemy {
 					} else {
 						this.direction = "right";
 					}
-					this.setAnimation(direction);
 				} else {
 					this.posX -= this.speed;
 				}
@@ -64,7 +68,6 @@ public class Denkyun extends Enemy {
 					} else {
 						this.direction = "left";
 					}
-					this.setAnimation(direction);
 				} else {
 					this.posX += this.speed;
 				}
@@ -81,7 +84,6 @@ public class Denkyun extends Enemy {
 					} else {
 						this.direction = "down";
 					}
-					this.setAnimation(direction);
 				} else {
 					this.posY -= this.speed;
 				}
@@ -99,7 +101,6 @@ public class Denkyun extends Enemy {
 					} else {
 						this.direction = "up";
 					}
-					this.setAnimation(direction);
 				} else {
 					this.posY += this.speed;
 				}
@@ -109,6 +110,6 @@ public class Denkyun extends Enemy {
 
 	public void render(Graphics2D g2d) {
 		// draw hitbox as blue box (debug purpose)
-		super.drawSprite(g2d, (int) this.posX, (int) this.posY - 15);
+		this.sprite.draw(g2d, posX, posY);
 	}
 }

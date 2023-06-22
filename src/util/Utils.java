@@ -24,6 +24,10 @@ public abstract class Utils {
 		return rnd.nextInt(min, max);
 	}
 
+	public static <T> T pick(T[] arr) {
+		return arr[rng(0, arr.length)];
+	}
+
 	public static int[] normalizePos(int x, int y) {
 		int gridX = ((int) (x - (x % Consts.tileDims)));
 		int gridY = ((int) (y - (y % Consts.tileDims)));
@@ -56,8 +60,8 @@ public abstract class Utils {
 				break;
 		}
 
-		ArrayList<Obstacle> obstacles = TileManager.getInstance().walls;
-		ArrayList<Bomb> bombs = BombManager.getInstance().bombs;
+		ArrayList<Obstacle> obstacles = TileManager.build().walls;
+		ArrayList<Bomb> bombs = BombManager.build().bombs;
 		ArrayList<Entity> obstaclesAndBombs = new ArrayList<>();
 		obstaclesAndBombs.addAll(obstacles);
 		obstaclesAndBombs.addAll(bombs);
@@ -100,19 +104,17 @@ public abstract class Utils {
 		return clip;
 	}
 
-	  // Load an image from the given source
-  public static BufferedImage loadImage(String src) {
-    File path = new File(src);
-    BufferedImage img = null;
-    try {
-      InputStream stream = new FileInputStream(path);
-      img = ImageIO.read(stream);
-    } catch (IOException err) {
-      err.printStackTrace();
-    }
-    return img;
-  }
-
-
+	// Load an image from the given source
+	public static BufferedImage loadImage(String src) {
+		File path = new File(src);
+		BufferedImage img = null;
+		try {
+			InputStream stream = new FileInputStream(path);
+			img = ImageIO.read(stream);
+		} catch (IOException err) {
+			err.printStackTrace();
+		}
+		return img;
+	}
 
 }

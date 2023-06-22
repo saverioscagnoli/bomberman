@@ -22,10 +22,13 @@ import util.CollisionChecker;
 import util.Consts;
 
 public class Loop extends JPanel implements Runnable {
+	private static Loop instance = null;
 	private Thread thread; // Thread for the game loop
 	private boolean open; // Flag to start adn stop the game loop
 	private final int FPS = 60; // Frames per second (Editable as needed)
 	private final double conversionToSec = 1000000000.0;
+
+	private int elapsed = 0;
 
 	public static EnemyManager enemyManager;
 	public static TileManager tileManager;
@@ -33,13 +36,12 @@ public class Loop extends JPanel implements Runnable {
 
 	public int gameState = Consts.MENU;
 	public ArrayList<Button> buttons;
-	public Controller keyHandler; // Delcaring keyhandler
 	public static Bomberman character;
 	public float dt = 0;
 
 	private Font customFont;
 
-	public Loop() {
+	private Loop() {
 		try {
 			customFont = Font.createFont(Font.TRUETYPE_FONT, new File("assets/customFont.ttf")).deriveFont(20f);
 			System.out.println("Font loaded");
@@ -47,25 +49,28 @@ public class Loop extends JPanel implements Runnable {
 			// Handle exception
 			System.out.println("Font not found");
 		}
-		AnimationManager animationManager = AnimationManager.getInstance();
-		animationManager.init();
+		AnimationManager.build();
 		this.buttons = new ArrayList<Button>();
 
-		keyHandler = new Controller(this); // Create an instance of KeyHandler and passes the gameloop to it
-		character = new Bomberman(48, 48, 30, 30, 5, keyHandler, this);
-
-		tileManager = TileManager.getInstance();
+		tileManager = TileManager.build();
 		enemyManager = EnemyManager.getInstance();
 		enemyManager.instanciateEnemies(3);
-		bombManager = BombManager.getInstance();
-
-		this.addKeyListener(keyHandler); // Add KeyHandler as a key listener
+		bombManager = BombManager.build();
+		this.elapsed = 0;
 		this.setFocusable(true); // Make the GameLoop focusable
 		this.setDoubleBuffered(true);
-		this.start();
+	}
+
+	public static synchronized Loop build() {
+		if (instance == null) {
+			instance = new Loop();
+		}
+		return instance;
 	}
 
 	public void start() {
+		character = new Bomberman(50, 50);
+		this.addKeyListener(Controller.build()); // Add KeyHandler as a key listener
 		this.thread = new Thread(this);
 		this.open = true; // Set flag to open to start the loop
 		this.thread.start();
@@ -115,11 +120,13 @@ public class Loop extends JPanel implements Runnable {
 			case Consts.MENU:
 				break;
 			case Consts.IN_GAME: // In game
-				character.update();
-				tileManager.updateTiles();
-				bombManager.updateBombs();
-				enemyManager.updateEnemies();
-				PowerupManager.UpdatePowerup();
+				this.elapsed++;
+				character.update(elapsed);
+				tileManager.updateTiles(elapsed);
+				bombManager.updateBombs(elapsed);
+				bombManager.updateExplosions(elapsed);
+				enemyManager.updateEnemies(elapsed);
+				PowerupManager.UpdatePowerup(elapsed);
 				CollisionChecker.updateAdjacentEntities(character);
 				break;
 		}
@@ -141,6 +148,7 @@ public class Loop extends JPanel implements Runnable {
 				tileManager.drawBasicTiles(g2d);
 				character.render(g2d);
 				bombManager.drawBombs(g2d);
+				bombManager.drawExplosions(g2d);
 				enemyManager.drawEnemies(g2d);
 				PowerupManager.RenderPowerup(g2d);
 
