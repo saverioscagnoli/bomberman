@@ -19,6 +19,7 @@ public class Bomberman extends Entity {
 	private Controller controller;
 	private int gridX = 1;
 	private int gridY = 1;
+	private String prevTile = "W";
 
 	public Bomberman(int posX, int posY) {
 		super(posX, posY, 30, 30, 5, new Sprite("bomberman", 6.3, 5, "down",
@@ -74,32 +75,19 @@ public class Bomberman extends Entity {
 		if (!controller.buttonPriorities.isEmpty()) {
 
 			TileManager tileManager = TileManager.build();
-			int prevX = gridX;
-			int prevY = gridY;
-			String prev = tileManager.grid[gridY][gridX];
-			this.gridX = this.posX / Consts.tileDims;
-			this.gridY = this.posY / Consts.tileDims;
 
-			if (prevX != gridX || prevY != gridY) {
-				String current = tileManager.grid[gridY][gridX]; // Store the current tile
-				if (!current.equals("C")) { // Check if the current position is not already "C"
-					tileManager.grid[prevY][prevX] = prev; // Restore the previous tile
+			int prevX = this.gridX;
+			int prevY = this.gridY;
+			int[] normPos = Utils.normalizePos((int) (this.posX + this.width * 0.5), (int) (this.posY + this.height * 0.5));
+			this.gridX = normPos[0] / Consts.tileDims;
+			this.gridY = normPos[1] / Consts.tileDims;
 
-					// Update the 'prev' variable with the original tile (before setting the current
-					// tile to "C")
-					prev = tileManager.grid[gridY][gridX];
-
-					// Restore previous tiles to their original content
-					for (int y = 0; y < tileManager.grid.length; y++) {
-						for (int x = 0; x < tileManager.grid[y].length; x++) {
-							if (tileManager.grid[y][x].equals("C")) {
-								tileManager.grid[y][x] = prev;
-							}
-						}
-					}
-
-					tileManager.grid[gridY][gridX] = "C"; // Set the current position tile to "C"
+			if (prevX != this.gridX || prevY != this.gridY) {
+				if (tileManager.grid[prevY][prevX] == "C") {
+					tileManager.grid[prevY][prevX] = this.prevTile;
 				}
+				this.prevTile = tileManager.grid[this.gridY][this.gridX];
+				tileManager.grid[this.gridY][this.gridX] = "C";
 			}
 			String direction = "";
 			this.stop = false;
