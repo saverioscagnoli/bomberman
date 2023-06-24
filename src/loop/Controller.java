@@ -41,6 +41,7 @@ public class Controller extends MouseAdapter implements KeyListener {
                         if (Utils.buttonClick(x, y, btn)) {
                             switch (btn.uuid) {
                                 case "s":
+                                    Utils.createFrame();
                                     Loop.build().setGameState(Consts.IN_GAME);
                                     break;
                                 case "q":
