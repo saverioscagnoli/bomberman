@@ -1,5 +1,6 @@
 package util;
 
+import java.awt.EventQueue;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
-
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -16,6 +16,7 @@ import entities.*;
 import managers.BombManager;
 import managers.TileManager;
 import ui.Button;
+import util.debug.DebugWindow;
 
 public abstract class Utils {
 
@@ -115,6 +116,15 @@ public abstract class Utils {
 			err.printStackTrace();
 		}
 		return img;
+	}
+
+	public static void createFrame() {
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				new DebugWindow();
+			}
+		});
 	}
 
 }
