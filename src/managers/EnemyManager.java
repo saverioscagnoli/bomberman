@@ -15,7 +15,7 @@ public class EnemyManager {
 		this.enemies = new ArrayList<>();
 	}
 
-	public static synchronized EnemyManager getInstance() {
+	public static synchronized EnemyManager build() {
 		if (instance == null) {
 			instance = new EnemyManager();
 		}

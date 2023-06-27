@@ -38,7 +38,7 @@ public class CollisionChecker {
 
 		ArrayList<Entity> obstaclesAndPowerups = new ArrayList<>();
 		obstaclesAndPowerups.addAll(TileManager.build().walls);
-		obstaclesAndPowerups.addAll(PowerupManager.getInstance().powerups);
+		obstaclesAndPowerups.addAll(PowerupManager.build().powerups);
 		obstaclesAndPowerups.addAll(BombManager.build().bombs);
 
 		for (Entity tile : obstaclesAndPowerups) {

@@ -3,7 +3,7 @@ package entities;
 import java.awt.Graphics2D;
 import java.util.Optional;
 
-import loop.Loop;
+import core.Loop;
 import managers.BombManager;
 import managers.TileManager;
 import ui.Sprite;
@@ -46,7 +46,7 @@ public class Bomb extends Entity {
 		this.exploded = true;
 		this.die();
 		Explosion[][] explosionMatrix = new Explosion[4][5];
-		int r = Loop.character.bombRadius;
+		int r = Loop.build().bomberman.bombRadius;
 
 		Utils.playSound(Consts.soundPath + "bomb-explosion.wav");
 		for (int rad = 1; rad < r + 1; rad++) { // for the length of the bomb radius
