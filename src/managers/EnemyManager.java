@@ -4,8 +4,15 @@ import java.util.ArrayList;
 import entities.Enemy;
 import entities.enemies.Denkyun;
 import util.Consts;
+import util.TileType;
 import util.Utils;
 import java.awt.Graphics2D;
+
+/*
+ * This class manages all the enemies. 
+ * it has an array list which contains all the enemies, 
+ * and updates, draws all the enemies at the same time. 
+ */
 
 public class EnemyManager {
 	public static EnemyManager instance = null;
@@ -22,14 +29,15 @@ public class EnemyManager {
 		return instance;
 	}
 
+	/* The function that instanciates all the enemies at random positions. */
 	public void instanciateEnemies(int n) {
 		for (int i = 0; i < n; i++) {
 			int x = Utils.rng(Consts.tileDims + 1, Consts.screenWidth - Consts.tileDims);
 			int y = Utils.rng(Consts.tileDims + 1, Consts.screenHeight - Consts.tileDims);
 			int[] pos = Utils.normalizePos(x, y);
-			String[][] grid = TileManager.build().grid;
-			while (grid[y / Consts.tileDims][x / Consts.tileDims] == "WD"
-					|| grid[y / Consts.tileDims][x / Consts.tileDims] == "W") {
+			TileType[][] grid = TileManager.build().grid;
+			while (grid[y / Consts.tileDims][x / Consts.tileDims] == TileType.Obstacle
+					|| grid[y / Consts.tileDims][x / Consts.tileDims] == TileType.Wall) {
 				x = Utils.rng(Consts.tileDims + 1, Consts.screenWidth - Consts.tileDims);
 				y = Utils.rng(Consts.tileDims + 1, Consts.screenHeight - Consts.tileDims);
 				pos = Utils.normalizePos(x, y);

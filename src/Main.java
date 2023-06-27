@@ -15,7 +15,7 @@ class Main {
 
         win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         win.setResizable(false);
-        win.setPreferredSize(new Dimension(Consts.screenWidth, Consts.screenHeight + 150));
+        win.setPreferredSize(new Dimension(Consts.screenWidth, Consts.screenHeight + 120));
 
         Container cp = win.getContentPane();
 

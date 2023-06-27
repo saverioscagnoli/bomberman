@@ -10,18 +10,39 @@ import managers.TileManager;
 import util.*;
 
 public class Bomberman extends Entity {
+	/* The bomb radius, so how much tile it takes to end the explosion */
 	public int bombRadius;
+
+	/* How many bombs the player can place at the same time */
 	public int maxBombs;
+
+	/* The hp of the player */
 	public int health;
+
+	/* A flag to determine if the player is immune, and will not take damage */
 	public boolean immune;
+
+	/* The lives of the player */
 	public int lives;
+
+	/* A flag to stop the animation if the player is not moving */
 	public boolean stop;
+
+	/* The keyboard keys pressed, determines movement, see Controller.java */
 	public ArrayList<String> keys;
+
+	/* The indexes on the grid */
 	private int gridX = 1;
 	private int gridY = 1;
-	private String prevTile = "W";
+
+	/* The tile on which the player was */
+	private TileType prevTile = TileType.Wall;
+
+	/* The score of the player */
+	public int score;
 
 	public Bomberman(int posX, int posY) {
+		/* Pass everything to the superclass Entity */
 		super(posX, posY, 30, 30, 5, new Sprite("bomberman", 6.3, 5, "down",
 				new SpriteAnimation[] {
 						new SpriteAnimation("left", 3, 0, 10),
@@ -30,16 +51,23 @@ public class Bomberman extends Entity {
 						new SpriteAnimation("up", 3, 3, 10),
 				},
 				2.5f));
+
+		/* Set the props to their initial states */
 		this.keys = new ArrayList<>();
 		this.health = 3;
-		this.maxBombs = 3;
-		this.bombRadius = 2;
+		this.maxBombs = 1;
+		this.bombRadius = 1;
+		this.lives = 5;
+		this.score = 0;
 	}
 
 	public void die() {
 		this.dead = true;
 	}
 
+	/*
+	 * Place the bomb at a normalised given position, and set the grid tile to bomb
+	 */
 	public void placeBomb() {
 		BombManager bombManager = BombManager.build();
 		int[] pos = Utils.normalizePos(this.posX, this.posY);
@@ -49,12 +77,13 @@ public class Bomberman extends Entity {
 		// if the bomb is already there, don't add it
 		int i = pos[1] / Consts.tileDims;
 		int j = pos[0] / Consts.tileDims;
-		if (TileManager.build().grid[i][j] == "B")
+		if (TileManager.build().grid[i][j] == TileType.Bomb)
 			return;
 
 		bombManager.addBomb(new Bomb(pos[0], pos[1], this.bombRadius));
 	}
 
+	/* Damage the player */
 	public void dealDamage(int damage) {
 		if (!immune) {
 			health -= damage;
@@ -76,26 +105,28 @@ public class Bomberman extends Entity {
 
 			TileManager tileManager = TileManager.build();
 
+			/* Update the player position on the grid */
 			int prevX = this.gridX;
 			int prevY = this.gridY;
 			int[] normPos = Utils.normalizePos((int) (this.posX + this.width * 0.5), (int) (this.posY + this.height * 0.5));
 			this.gridX = normPos[0] / Consts.tileDims;
 			this.gridY = normPos[1] / Consts.tileDims;
 
+			/* Reset the tile on which the player was to what was originally */
 			if (prevX != this.gridX || prevY != this.gridY) {
-				if (tileManager.grid[prevY][prevX] == "C") {
+				if (tileManager.grid[prevY][prevX] == TileType.Bomberman) {
 					tileManager.grid[prevY][prevX] = this.prevTile;
 				}
 				this.prevTile = tileManager.grid[this.gridY][this.gridX];
-				tileManager.grid[this.gridY][this.gridX] = "C";
+				tileManager.grid[this.gridY][this.gridX] = TileType.Bomberman;
 			}
 			String direction = "";
 			this.stop = false;
 
 			switch (this.keys.get(0)) {
 				case "A":
-					String leftTile = TileManager.build().grid[gridY][gridX - 1];
-					if (leftTile.equals("W")) {
+					TileType leftTile = TileManager.build().grid[gridY][gridX - 1];
+					if (leftTile == TileType.Wall) {
 						this.speed = 0;
 					}
 					/*
@@ -115,8 +146,8 @@ public class Bomberman extends Entity {
 					direction = "left";
 					break;
 				case "D":
-					String rightTile = TileManager.build().grid[gridY][gridX + 1];
-					if (rightTile.equals("W")) {
+					TileType rightTile = TileManager.build().grid[gridY][gridX + 1];
+					if (rightTile == TileType.Wall) {
 						this.speed = 0;
 					}
 					/*
@@ -134,8 +165,8 @@ public class Bomberman extends Entity {
 					direction = "right";
 					break;
 				case "W":
-					String upTile = TileManager.build().grid[gridY - 1][gridX];
-					if (upTile.equals("W")) {
+					TileType upTile = TileManager.build().grid[gridY - 1][gridX];
+					if (upTile == TileType.Wall) {
 						this.speed = 0;
 					}
 					/*
@@ -153,8 +184,8 @@ public class Bomberman extends Entity {
 					direction = "up";
 					break;
 				case "S":
-					String downTile = TileManager.build().grid[gridY + 1][gridX];
-					if (downTile.equals("W")) {
+					TileType downTile = TileManager.build().grid[gridY + 1][gridX];
+					if (downTile == TileType.Wall) {
 						this.speed = 0;
 					}
 					/*
@@ -173,6 +204,7 @@ public class Bomberman extends Entity {
 					break;
 			}
 		} else {
+			/* Stop the animation */
 			this.stop = true;
 			this.sprite.current = 1;
 		}
@@ -181,19 +213,21 @@ public class Bomberman extends Entity {
 	public void render(Graphics2D g2d) {
 		this.sprite.draw(g2d, (int) this.posX, (int) this.posY - 30);
 
-		//WritableRaster raster = this.sprite.spritesheet.getRaster();
+		// WritableRaster raster = this.sprite.spritesheet.getRaster();
 
-		/* for (int i = 0; i < this.sprite.spritesheet.getWidth(); i++) {
-			for (int j = 0; j < this.sprite.spritesheet.getHeight(); j++) {
-				int[] pixels = raster.getPixel(i, j, (int[]) null);
-				if (pixels[0] == 0 && pixels[1] == 0 && pixels[2] == 0)
-					continue;
-				pixels[0] = 255;
-				pixels[1] = 255;
-				pixels[2] = 255;
-				raster.setPixel(i, j, pixels);
-			}
-		} */
+		/*
+		 * for (int i = 0; i < this.sprite.spritesheet.getWidth(); i++) {
+		 * for (int j = 0; j < this.sprite.spritesheet.getHeight(); j++) {
+		 * int[] pixels = raster.getPixel(i, j, (int[]) null);
+		 * if (pixels[0] == 0 && pixels[1] == 0 && pixels[2] == 0)
+		 * continue;
+		 * pixels[0] = 255;
+		 * pixels[1] = 255;
+		 * pixels[2] = 255;
+		 * raster.setPixel(i, j, pixels);
+		 * }
+		 * }
+		 */
 
 		// draw the health bar above the player with 5 squares for each health point
 

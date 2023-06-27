@@ -112,6 +112,7 @@ public class Controller extends MouseAdapter implements KeyListener {
             this.bomberman.keys.remove("W");
             if (sPressed) {
                 latestVerticalKey = "S";
+                this.bomberman.sprite.setAnimation("down");
             } else {
                 latestVerticalKey = "";
             }
@@ -120,6 +121,7 @@ public class Controller extends MouseAdapter implements KeyListener {
             this.bomberman.keys.remove("A");
             if (dPressed) {
                 latestHorizontalKey = "D";
+                this.bomberman.sprite.setAnimation("right");
             } else {
                 latestHorizontalKey = "";
             }
@@ -128,6 +130,7 @@ public class Controller extends MouseAdapter implements KeyListener {
             this.bomberman.keys.remove("S");
             if (wPressed) {
                 latestVerticalKey = "W";
+                this.bomberman.sprite.setAnimation("up");
             } else {
                 latestVerticalKey = "";
             }
@@ -136,6 +139,7 @@ public class Controller extends MouseAdapter implements KeyListener {
             this.bomberman.keys.remove("D");
             if (aPressed) {
                 latestHorizontalKey = "A";
+                this.bomberman.sprite.setAnimation("left");
             } else {
                 latestHorizontalKey = "";
             }

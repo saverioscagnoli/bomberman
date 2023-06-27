@@ -8,52 +8,85 @@ import managers.EnemyManager;
 import managers.SoundManager;
 import managers.PowerupManager;
 import managers.TileManager;
-
 import java.awt.*;
-
 import util.Consts;
 import util.GameState;
 import util.Utils;
 
 public class Loop extends JPanel implements Runnable {
+  /* The instance for the singleton */
   private static Loop instance = null;
+
+  /* The time to update the game loop */
   private static final long TARGET_FRAME_TIME = 1_000_000_000 / 60;
+
+  /* The container of 2 JPanels while playing: The points overlay and the game */
   private static JPanel container;
+
+  /* The separate thread to use for the game loop */
   private Thread thread;
+
+  /* A flag to see if the thread is running */
   private boolean running;
+
+  /* A flag to check if the controller has been added to the Loop */
   private boolean added;
 
+  /* The JPanel that contains points and lives */
+  private JPanel overlay;
+
+  /* The main menu background image saved to improve performance */
   private BufferedImage menuBg;
+
+  /* The elapsed frames from the start of the game */
   private int elapsed;
 
+  /* The current game state. See GameState.java */
   public GameState gameState;
+
+  /* The instance of the player character */
   public Bomberman bomberman;
+
+  /* The managers to use, saved so we don't have to build them every time */
   public TileManager tileManager;
   public BombManager bombManager;
   public EnemyManager enemyManager;
   public PowerupManager powerupManager;
   public SoundManager musicManager;
 
+  /* First constructor */
   private Loop() {
+    /* Set all the variables to their initial states */
     this.gameState = GameState.Menu;
     this.menuBg = Utils.loadImage("assets/title-screen.png");
     this.elapsed = 0;
     this.running = false;
     this.added = false;
 
+    /* Build all the managers */
     this.tileManager = TileManager.build();
     this.bombManager = BombManager.build();
     this.enemyManager = EnemyManager.build();
     this.powerupManager = PowerupManager.build();
     this.musicManager = SoundManager.build();
+
+    /* Create the player character */
     this.bomberman = new Bomberman(50, 50);
 
+    /* Set the panel */
     this.setPreferredSize(new Dimension(Consts.screenWidth, Consts.screenHeight));
     this.setFocusable(true);
+
+    /* Create the main menu */
     this.createMainMenu();
   }
 
+  /*
+   * Second constructor. This will be called only the first time the loop is
+   * built
+   */
   private Loop(JPanel c) {
+    /* Set all the variables to their initial state */
     container = c;
     this.gameState = GameState.Menu;
     this.menuBg = Utils.loadImage("assets/title-screen.png");
@@ -61,6 +94,7 @@ public class Loop extends JPanel implements Runnable {
     this.running = false;
     this.added = false;
 
+    /* Build all the managers */
     this.tileManager = TileManager.build();
     this.bombManager = BombManager.build();
     this.enemyManager = EnemyManager.build();
@@ -68,11 +102,15 @@ public class Loop extends JPanel implements Runnable {
     this.musicManager = SoundManager.build();
     this.bomberman = new Bomberman(50, 50);
 
+    /* Set the panel */
     this.setPreferredSize(new Dimension(Consts.screenWidth, Consts.screenHeight));
     this.setFocusable(true);
+
+    /* Create the main menu */
     this.createMainMenu();
   }
 
+  /* The function to call the first constructor. used for singleton. */
   public static Loop build() {
     if (instance == null) {
       instance = new Loop();
@@ -80,6 +118,7 @@ public class Loop extends JPanel implements Runnable {
     return instance;
   }
 
+  /* The function to call the second constructor. used for singleton. */
   public static Loop build(JPanel c) {
     if (instance == null) {
       instance = new Loop(c);
@@ -87,14 +126,17 @@ public class Loop extends JPanel implements Runnable {
     return instance;
   }
 
+  /* The function that creates the overlay with points and lives */
   private void createOverlay() {
     JPanel overlay = new JPanel();
-    overlay.setPreferredSize(new Dimension(Consts.screenWidth, 150));
-    overlay.setBackground(Color.BLACK);
+    overlay.setPreferredSize(new Dimension(Consts.screenWidth, 120));
     container.add(overlay, BorderLayout.NORTH);
-
+    overlay.setFont(Utils.loadFont(60f));
+    overlay.setBackground(Color.decode("#FC8400"));
+    this.overlay = overlay;
   }
 
+  /* The function that creates the main menu */
   private void createMainMenu() {
     this.removeAll();
 
@@ -112,11 +154,13 @@ public class Loop extends JPanel implements Runnable {
     this.repaint();
   }
 
+  /* The function that takes in a new state and replaces the old one */
   public void setState(GameState state) {
     this.gameState = state;
     this.updateState();
   }
 
+  /* The function that takes care of what happens when updating the state */
   public void updateState() {
     this.removeAll();
 
@@ -126,21 +170,28 @@ public class Loop extends JPanel implements Runnable {
         break;
       }
       case InGame: {
+        /* Start the thread and resume all the bombs */
         this.start();
         this.createOverlay();
+        this.bombManager.resumeBombs();
         break;
       }
       case Pause: {
+        /* Stop the thread and pause all the bombs */
         this.stop();
+        this.bombManager.pauseBombs();
         break;
       }
     }
 
     this.revalidate();
     this.repaint();
+
+    /* Play the music according to the game state */
     this.musicManager.ost(this.gameState);
   }
 
+  /* The function that takes care of creating the thread and starting it */
   private void start() {
     if (!this.added) {
       this.addKeyListener(Controller.build());
@@ -151,6 +202,7 @@ public class Loop extends JPanel implements Runnable {
     this.thread.start();
   }
 
+  /* The function that takes care of stopping the thread */
   public void stop() {
     this.running = false;
     try {
@@ -160,6 +212,7 @@ public class Loop extends JPanel implements Runnable {
     }
   }
 
+  /* The game loop. */
   @Override
   public void run() {
     long currentTime = System.nanoTime();
@@ -178,11 +231,11 @@ public class Loop extends JPanel implements Runnable {
       accumulator += frameTime;
 
       while (accumulator >= TARGET_FRAME_TIME) {
-        update();
+        this.update();
         accumulator -= TARGET_FRAME_TIME;
       }
 
-      repaint();
+      this.repaint();
 
       // Sleep to control frame rate
       long sleepTime = (TARGET_FRAME_TIME - (System.nanoTime() - currentTime)) / 1_000_000;
@@ -196,6 +249,7 @@ public class Loop extends JPanel implements Runnable {
     }
   }
 
+  /* The function that updates the game logic and sprites */
   private void update() {
     this.elapsed++;
     bomberman.update(elapsed);
@@ -206,12 +260,14 @@ public class Loop extends JPanel implements Runnable {
     PowerupManager.UpdatePowerup(elapsed);
   }
 
+  /* The function that renders everything needed on screen */
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2d = (Graphics2D) g;
-    g2d.clearRect(0, 0, getWidth(), getHeight());
+    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+    /* Render according to the game state */
     switch (this.gameState) {
       case Menu: {
         g2d.drawImage(this.menuBg, 0, 0, this.getWidth(), this.getHeight(), null);
@@ -219,6 +275,7 @@ public class Loop extends JPanel implements Runnable {
       }
       case InGame:
       case Pause: {
+        /* Draw everything the game needs */
         tileManager.drawObstacles(g2d);
         tileManager.drawBasicTiles(g2d);
         bomberman.render(g2d);
@@ -227,12 +284,37 @@ public class Loop extends JPanel implements Runnable {
         enemyManager.drawEnemies(g2d);
         PowerupManager.RenderPowerup(g2d);
 
-        // draw player lives number in top left corner
-        g2d.setColor(Color.BLACK);
-        g2d.drawString("Lives: " + bomberman.lives, 10, 20);
-        g2d.dispose();
+        /* Draw the overlay */
+        Graphics2D og2d = (Graphics2D) this.overlay.getGraphics();
+        Color orangeColor = Color.decode("#FC8400");
+        og2d.setColor(orangeColor);
+        if (this.gameState == GameState.Pause) {
+          /* Draw a "pause" when the game is paused */
+          int x = (int) (this.overlay.getWidth() * 0.5);
+          int y = (int) (this.overlay.getHeight() * 0.5);
+          og2d.setColor(Color.BLACK);
+          og2d.drawString("PAUSE!", x - 90, y + 15);
+        } else {
+          /* Draw the points and lives */
+          og2d.setColor(Color.BLACK);
+          og2d.drawString("" + this.bomberman.lives, 50, 75);
+          og2d.drawString("" + this.bomberman.score, this.getWidth() - 75, 75);
+        }
+
+        /* Draw the line at the bottom of the overlay to separate the game */
+        int x1 = 0;
+        int x2 = this.overlay.getWidth();
+        int y1 = this.overlay.getHeight();
+        int y2 = y1;
+
+        og2d.setStroke(new BasicStroke(10));
+        og2d.setColor(Color.BLACK);
+        og2d.drawLine(x1, y1, x2, y2);
+
+        og2d.dispose();
         break;
       }
     }
+    g2d.dispose();
   }
 }

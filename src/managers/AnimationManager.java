@@ -5,6 +5,7 @@ import java.util.HashMap;
 import util.Consts;
 import util.Utils;
 
+/* THIS CLASS PRE-LOADS EVERY SPRITE FOR EVERYTHING, TO PREVENT PERFORMANCE ISSUES */
 public class AnimationManager {
   private static AnimationManager instance = null;
   public HashMap<String, BufferedImage> spriteMap = new HashMap<>();

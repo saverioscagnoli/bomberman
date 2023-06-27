@@ -1,50 +1,87 @@
 package entities;
 
 import java.awt.Graphics2D;
-import java.util.Optional;
-
 import core.Loop;
 import managers.BombManager;
 import managers.TileManager;
 import ui.Sprite;
 import ui.SpriteAnimation;
 import util.Consts;
+import util.TileType;
 import util.Utils;
 
 public class Bomb extends Entity {
-	public boolean exploded;
+	/* The time that takes for the bomb to explode */
+	private static final int DELAY = 3000;
+
+	/* The time in milliseconds when which the bomb was placed */
+	private long createdAt;
+
+	/* The time in milliseconds that will set if the game is paused */
+	private long pausedAt;
 
 	public Bomb(int posX, int posY, int bombRadius) {
+		/* Pass everything to the entity superclass */
 		super(posX, posY, Consts.tileDims, Consts.tileDims, 0,
 				new Sprite("bomb", 4, 1, "idle",
 						new SpriteAnimation[] { new SpriteAnimation("idle", 4, 0, 10) },
 						1));
 
-		Utils.setTimeout(() -> this.explode(), 3000);
+		/* Set the bomb in the grid */
 		int i = posY / Consts.tileDims;
 		int j = posX / Consts.tileDims;
-		TileManager.build().grid[i][j] = "B";
+		TileManager.build().grid[i][j] = TileType.Bomb;
+
+		/* Set the bomb properties */
 		this.isSolid = true;
-		this.exploded = false;
+		this.createdAt = System.currentTimeMillis();
+		this.pausedAt = 0;
 	}
 
+	/* Set the paused time of the bomb to now */
+	public void pause() {
+		this.pausedAt = System.currentTimeMillis();
+	}
+
+	/* Compensate the createdAt prop by adding how the time the game was paused */
+	public void resume() {
+		if (this.pausedAt != 0) {
+			this.createdAt += System.currentTimeMillis() - this.pausedAt;
+			this.pausedAt = 0;
+		}
+	}
+
+	/* Detect if the game was paused and return the time accordingly */
+	private long getElapsedTime() {
+		if (this.pausedAt != 0) {
+			return this.pausedAt - this.createdAt;
+		} else {
+			return System.currentTimeMillis() - this.createdAt;
+		}
+	}
+
+	/* Makes the bomb explode and resets the tile on the grid */
 	public void die() {
+		this.explode();
 		this.dead = true;
 		int i = posY / Consts.tileDims;
 		int j = posX / Consts.tileDims;
-		TileManager.build().grid[i][j] = "N";
+		TileManager.build().grid[i][j] = TileType.Empty;
 	}
 
 	@Override
 	public void update(int elapsed) {
+		/* If the time from the placing on the bomb is greater than the delay, die */
+		if (!this.dead && this.getElapsedTime() >= DELAY) {
+			this.die();
+		}
 		this.sprite.update(elapsed);
 	}
 
 	public void explode() {
-		if (this.exploded)
+		/* If the bomb already exploded (touched by another bomb) */
+		if (this.dead)
 			return;
-		this.exploded = true;
-		this.die();
 		Explosion[][] explosionMatrix = new Explosion[4][5];
 		int r = Loop.build().bomberman.bombRadius;
 
@@ -90,31 +127,29 @@ public class Bomb extends Entity {
 				if (ex != null) {
 					int x = ex.posX / Consts.tileDims;
 					int y = ex.posY / Consts.tileDims;
-					String tile = TileManager.build().grid[y][x];
-					if (tile != "W") {
-						if (tile == "WD") {
-							Optional<Obstacle> wall = TileManager.build().walls
+					TileType tile = TileManager.build().grid[y][x];
+					if (tile != TileType.Wall) {
+						/* If the tile was a an obstacle, find the instance and destroy it */
+						if (tile == TileType.Obstacle) {
+							TileManager.build().walls
 									.stream()
 									.filter((w) -> w.posX == ex.posX && w.posY == ex.posY)
-									.findFirst();
+									.findFirst()
+									.ifPresent(w -> w.sprite.setAnimation("death"));
 
-							if (wall.isPresent()) {
-								wall.get().die();
-							}
-							TileManager.build().grid[y][x] = "N";
+							/* Set the grid position to empty */
+							TileManager.build().grid[y][x] = TileType.Empty;
 							break;
 						} else {
 							BombManager.build().addExplosion(ex);
-							if (tile == "B") {
-								Optional<Bomb> bomb = BombManager
+							/* If the tile was a bomb, find the instance and destroy it */
+							if (tile == TileType.Bomb) {
+								BombManager
 										.build().bombs
 										.stream()
 										.filter(b -> b.posX == ex.posX && b.posY == ex.posY)
-										.findFirst();
-
-								if (bomb.isPresent()) {
-									Utils.setTimeout(() -> bomb.get().explode(), 100);
-								}
+										.findFirst()
+										.ifPresent(b -> Utils.setTimeout(() -> b.die(), 100));
 							}
 						}
 					} else {

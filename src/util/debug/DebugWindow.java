@@ -2,6 +2,7 @@ package util.debug;
 
 import javax.swing.JFrame;
 
+/* Create a new window for debugging purposes */
 public class DebugWindow extends JFrame {
   public DebugWindow() {
     super("Debug Window");

@@ -8,8 +8,13 @@ import util.Utils;
 
 public class Enemy extends Entity {
 
+	/* The direction of the enemy */
 	protected String direction;
+
+	/* The hp of the enemy */
 	public int health;
+
+	/* A flag to determine if the enemy is immune, and will not take damage */
 	public boolean immune = false;
 
 	public Enemy(int posX, int posY, int width, int height, int speed, Sprite sprite) {
@@ -25,6 +30,7 @@ public class Enemy extends Entity {
 		this.dead = true;
 	}
 
+	/* Deals damage to the enemy */
 	public void dealDamage(int damage) {
 		if (!immune) {
 			health -= damage;
