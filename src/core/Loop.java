@@ -108,6 +108,8 @@ public class Loop extends JPanel implements Runnable {
 
     /* Create the main menu */
     this.createMainMenu();
+    this.enemyManager.instanciateEnemies(2);
+    System.out.println(this.enemyManager.enemies.size());
   }
 
   /* The function to call the first constructor. used for singleton. */

@@ -63,7 +63,7 @@ public class Sprite {
    * Draw the sprite, if the parameter dims: [width, height] is passed, it will be
    * drawn with that dimensions, ignoring the scale of the sprite.
    */
-  public void draw(Graphics2D g2d, int x, int y, int... dims) {
+  public void draw(Graphics2D g2d, double x, double y, int... dims) {
     int width = (int) (this.width * this.scale);
     int height = (int) (this.height * this.scale);
 
@@ -75,6 +75,6 @@ public class Sprite {
     int frameX = this.current * this.width;
     int frameY = this.currentAnimation.frameY * this.height;
     BufferedImage frame = this.spritesheet.getSubimage(frameX, frameY, this.width, this.height);
-    g2d.drawImage(frame, x, y, width, height, null);
+    g2d.drawImage(frame, (int) x, (int) y, width, height, null);
   }
 }
