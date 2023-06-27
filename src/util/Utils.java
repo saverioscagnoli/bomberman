@@ -15,7 +15,6 @@ import javax.sound.sampled.Clip;
 import entities.*;
 import managers.BombManager;
 import managers.TileManager;
-import ui.Button;
 import util.debug.DebugWindow;
 
 public abstract class Utils {
@@ -76,10 +75,6 @@ public abstract class Utils {
 		return false;
 	}
 
-	public static boolean buttonClick(int mouseX, int mouseY, Button btn) {
-		return ((mouseX >= btn.x && mouseX <= btn.x + btn.width) && (mouseY >= btn.y && mouseY <= btn.y + btn.height));
-	}
-
 	public static void setTimeout(Runnable runnable, int delay) {
 		new Thread(() -> {
 			try {
@@ -118,7 +113,7 @@ public abstract class Utils {
 		return img;
 	}
 
-	public static void createFrame() {
+	public static void createDebugWindow() {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {

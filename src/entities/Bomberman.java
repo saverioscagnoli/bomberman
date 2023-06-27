@@ -2,9 +2,9 @@ package entities;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 import ui.Sprite;
 import ui.SpriteAnimation;
-import loop.Controller;
 import managers.BombManager;
 import managers.TileManager;
 import util.*;
@@ -16,7 +16,7 @@ public class Bomberman extends Entity {
 	public boolean immune;
 	public int lives;
 	public boolean stop;
-	private Controller controller;
+	public ArrayList<String> keys;
 	private int gridX = 1;
 	private int gridY = 1;
 	private String prevTile = "W";
@@ -30,7 +30,7 @@ public class Bomberman extends Entity {
 						new SpriteAnimation("up", 3, 3, 10),
 				},
 				2.5f));
-		this.controller = Controller.build();
+		this.keys = new ArrayList<>();
 		this.health = 3;
 		this.maxBombs = 3;
 		this.bombRadius = 2;
@@ -72,7 +72,7 @@ public class Bomberman extends Entity {
 		this.sprite.update(elapsed);
 		this.speed = 5;
 
-		if (!controller.buttonPriorities.isEmpty()) {
+		if (!this.keys.isEmpty()) {
 
 			TileManager tileManager = TileManager.build();
 
@@ -92,7 +92,7 @@ public class Bomberman extends Entity {
 			String direction = "";
 			this.stop = false;
 
-			switch (controller.buttonPriorities.get(0)) {
+			switch (this.keys.get(0)) {
 				case "A":
 					String leftTile = TileManager.build().grid[gridY][gridX - 1];
 					if (leftTile.equals("W")) {
@@ -180,6 +180,21 @@ public class Bomberman extends Entity {
 
 	public void render(Graphics2D g2d) {
 		this.sprite.draw(g2d, (int) this.posX, (int) this.posY - 30);
+
+		//WritableRaster raster = this.sprite.spritesheet.getRaster();
+
+		/* for (int i = 0; i < this.sprite.spritesheet.getWidth(); i++) {
+			for (int j = 0; j < this.sprite.spritesheet.getHeight(); j++) {
+				int[] pixels = raster.getPixel(i, j, (int[]) null);
+				if (pixels[0] == 0 && pixels[1] == 0 && pixels[2] == 0)
+					continue;
+				pixels[0] = 255;
+				pixels[1] = 255;
+				pixels[2] = 255;
+				raster.setPixel(i, j, pixels);
+			}
+		} */
+
 		// draw the health bar above the player with 5 squares for each health point
 
 		// draw the hitbox as a gray square
