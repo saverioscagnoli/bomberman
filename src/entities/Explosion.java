@@ -20,6 +20,7 @@ public class Explosion extends Entity {
 	@Override
 	public void update(int elapsed) {
 		this.sprite.update(elapsed);
+		/* If the animation is finished, die */
 		if (this.sprite.current == this.sprite.currentAnimation.maxFrames - 1) {
 			this.die();
 		}

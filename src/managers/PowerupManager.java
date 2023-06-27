@@ -6,6 +6,12 @@ import java.util.ArrayList;
 
 import entities.*;
 
+/*
+ * This class manages all the powerups. 
+ * it has an array list which contains all the powerups, 
+ * and updates, draws all thepowerups at the same time. 
+ */
+
 public class PowerupManager {
 
 	public static PowerupManager instance = null;

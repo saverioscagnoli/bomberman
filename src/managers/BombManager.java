@@ -5,6 +5,13 @@ import entities.Bomb;
 import entities.Explosion;
 import java.awt.Graphics2D;
 
+/*
+ * 
+ * This class manages all the bombs. 
+ * it has an array list which contains all the bombs, 
+ * and updates, draws, pauses and resumes all the bombs at the same time. 
+ */
+
 public class BombManager {
 	private static BombManager instance = null;
 	public ArrayList<Bomb> bombs;
@@ -28,6 +35,18 @@ public class BombManager {
 
 	public void addExplosion(Explosion ex) {
 		this.explosions.add(ex);
+	}
+
+	public void pauseBombs() {
+		for (Bomb b : this.bombs) {
+			b.pause();
+		}
+	}
+
+	public void resumeBombs() {
+		for (Bomb b : this.bombs) {
+			b.resume();
+		}
 	}
 
 	public void updateExplosions(int elapsed) {

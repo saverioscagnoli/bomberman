@@ -3,10 +3,15 @@ package util.debug;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-
 import javax.swing.JPanel;
-
 import managers.TileManager;
+import util.TileType;
+
+/* 
+ * This class draws on a secondary JFrame. 
+ * It draws the grid and its components as colored squares, 
+ * which will be useful to see what's actually happening under the hood. 
+ */
 
 public class DrawPane extends JPanel implements Runnable {
   private Thread thread;
@@ -47,27 +52,29 @@ public class DrawPane extends JPanel implements Runnable {
   }
 
   public void paintComponent(Graphics g) {
-    String[][] grid = TileManager.build().grid;
+    TileType[][] grid = TileManager.build().grid;
     Graphics2D g2d = (Graphics2D) g;
     for (int i = 0; i < grid.length; i++) {
       for (int j = 0; j < grid[i].length; j++) {
-        String n = grid[i][j];
+        TileType n = grid[i][j];
 
         switch (n) {
-          case "N":
+          case Empty:
             g2d.setColor(Color.GRAY);
             break;
-          case "W":
+          case Wall:
             g2d.setColor(Color.RED);
             break;
-          case "WD":
+          case Obstacle:
             g2d.setColor(Color.ORANGE);
             break;
-          case "B":
+          case Bomb:
             g2d.setColor(Color.BLACK);
             break;
-          case "C":
+          case Bomberman:
             g2d.setColor(Color.GREEN);
+            break;
+          default:
             break;
         }
 

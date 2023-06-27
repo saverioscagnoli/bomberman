@@ -1,6 +1,7 @@
 package util;
 
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,15 +20,18 @@ import util.debug.DebugWindow;
 
 public abstract class Utils {
 
+	/* Random integer generator */
 	public static int rng(int min, int max) {
 		Random rnd = new Random();
 		return rnd.nextInt(min, max);
 	}
 
+	/* Picks a random element from any array */
 	public static <T> T pick(T[] arr) {
 		return arr[rng(0, arr.length)];
 	}
 
+	/* Normalise any coordinates to the nearest number of 48 (tileDims) */
 	public static int[] normalizePos(int x, int y) {
 		int gridX = ((int) (x - (x % Consts.tileDims)));
 		int gridY = ((int) (y - (y % Consts.tileDims)));
@@ -35,6 +39,7 @@ public abstract class Utils {
 		return gridArray;
 	}
 
+	/* Normalises the position of any entity */
 	public static int[] normalizeEntityPos(Entity entity) {
 		int pX = (int) (entity.posX + entity.width * 0.5);
 		int pY = (int) (entity.posY + entity.height * 0.5);
@@ -60,7 +65,7 @@ public abstract class Utils {
 				break;
 		}
 
-		ArrayList<Obstacle> obstacles = TileManager.build().walls;
+		ArrayList<Tile> obstacles = TileManager.build().walls;
 		ArrayList<Bomb> bombs = BombManager.build().bombs;
 		ArrayList<Entity> obstaclesAndBombs = new ArrayList<>();
 		obstaclesAndBombs.addAll(obstacles);
@@ -75,6 +80,10 @@ public abstract class Utils {
 		return false;
 	}
 
+	/*
+	 * A setTimeout function. Similar to javascript, it executes a given function
+	 * with a delay of a specific time in milliseconds.
+	 */
 	public static void setTimeout(Runnable runnable, int delay) {
 		new Thread(() -> {
 			try {
@@ -86,6 +95,7 @@ public abstract class Utils {
 		}).start();
 	}
 
+	/* A function that plays a sound given its path */
 	public static Clip playSound(String src) {
 		Clip clip = null;
 		try {
@@ -100,7 +110,7 @@ public abstract class Utils {
 		return clip;
 	}
 
-	// Load an image from the given source
+	/* Loads an image from a given path */
 	public static BufferedImage loadImage(String src) {
 		File path = new File(src);
 		BufferedImage img = null;
@@ -113,6 +123,18 @@ public abstract class Utils {
 		return img;
 	}
 
+	/* Loads a custom font */
+	public static Font loadFont(float size) {
+		Font font = null;
+		try {
+			font = Font.createFont(Font.TRUETYPE_FONT, new File("assets/customFont.ttf")).deriveFont(size);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return font;
+	}
+
+	/* Creates new JFrame for debugging purposes. See DebugWindow.java */
 	public static void createDebugWindow() {
 		EventQueue.invokeLater(new Runnable() {
 			@Override

@@ -5,6 +5,8 @@ import util.Consts;
 import util.GameState;
 import util.Utils;
 
+/* This class manages all the sounds */
+
 public class SoundManager {
     private static SoundManager instance = null;
     private Clip clip;
@@ -21,6 +23,7 @@ public class SoundManager {
         return instance;
     }
 
+    /* Play a sound based on the gamestate */
     public void ost(GameState gameState) {
         this.clip.stop();
         switch (gameState) {

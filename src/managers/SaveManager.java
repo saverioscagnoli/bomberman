@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/* This class manages all the saved data. things like wins, losses */ 
 public abstract class SaveManager {
   public static HashMap<String, String> readProgress() {
     HashMap<String, String> data = new HashMap<String, String>();
