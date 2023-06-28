@@ -144,4 +144,8 @@ public abstract class Utils {
 		});
 	}
 
+	public static int lerp(int a, int b, double t) {
+		return (int) (a + (b - a) * t);
+	}
+
 }

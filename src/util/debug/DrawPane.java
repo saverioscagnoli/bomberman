@@ -74,6 +74,9 @@ public class DrawPane extends JPanel implements Runnable {
           case Bomberman:
             g2d.setColor(Color.GREEN);
             break;
+          case Enemy: 
+            g2d.setColor(Color.CYAN);
+            break;
           default:
             break;
         }
