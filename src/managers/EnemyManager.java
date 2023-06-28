@@ -3,10 +3,6 @@ package managers;
 import java.util.ArrayList;
 import entities.Enemy;
 import entities.bosses.ClownMask;
-import entities.enemies.Denkyun;
-import util.Consts;
-import util.TileType;
-import util.Utils;
 import java.awt.Graphics2D;
 
 /*
@@ -51,7 +47,7 @@ public class EnemyManager {
 		 * }
 		 */
 
-		this.enemies.add(new ClownMask(100, 100));
+		this.enemies.add(new ClownMask(300, 300));
 	}
 
 	public void updateEnemies(int elapsed) {
@@ -73,7 +69,9 @@ public class EnemyManager {
 		int l = enemies.size();
 		for (int i = 0; i < l; i++) {
 			Enemy e = enemies.get(i);
-			e.render(g2d);
+			if (!e.dead) {
+				e.render(g2d);
+			}
 		}
 	}
 }

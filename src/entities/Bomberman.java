@@ -3,6 +3,8 @@ package entities;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+
+import core.Loop;
 import ui.Sprite;
 import ui.SpriteAnimation;
 import managers.BombManager;
@@ -49,6 +51,7 @@ public class Bomberman extends Entity {
 						new SpriteAnimation("down", 3, 1, 10),
 						new SpriteAnimation("right", 3, 2, 10),
 						new SpriteAnimation("up", 3, 3, 10),
+						new SpriteAnimation("death", 6, 4, 10)
 				},
 				2.5f));
 
@@ -62,7 +65,10 @@ public class Bomberman extends Entity {
 	}
 
 	public void die() {
+		this.sprite.setAnimation("death");
 		this.dead = true;
+		Loop.build().removeController();
+		this.sprite.width = (int) (this.sprite.spritesheet.getWidth() / 6);
 	}
 
 	/*
@@ -94,10 +100,18 @@ public class Bomberman extends Entity {
 
 	public void update(int elapsed) {
 
+		if (this.dead) {
+			if (this.sprite.current < this.sprite.currentAnimation.maxFrames - 1) {
+				this.sprite.update(elapsed);
+			} else {
+				this.sprite.current = this.sprite.currentAnimation.maxFrames - 1;
+			}
+			return;
+		}
+
 		// TODO: sarebbe un po' piu organizzato creare un metodo fatto apposta nel
 		// collision checker per il movimento del player.
 		// probabilmente si potrebbe anche comprimere un po'.
-
 		this.sprite.update(elapsed);
 		this.speed = 5;
 

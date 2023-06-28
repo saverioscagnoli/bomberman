@@ -45,5 +45,6 @@ public class AnimationManager {
     spriteMap.put("w-tr", Utils.loadImage(Consts.tilesPath + "w-tr.png"));
     spriteMap.put("w-center", Utils.loadImage(Consts.tilesPath + "w-center.png"));
     spriteMap.put("clown-mask", Utils.loadImage(Consts.enemiesPath + "clown-mask.png"));
+    spriteMap.put("clown-bullet", Utils.loadImage(Consts.enemiesPath + "clown-bullet.png"));
   }
 }

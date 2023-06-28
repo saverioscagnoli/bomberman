@@ -193,10 +193,18 @@ public class Loop extends JPanel implements Runnable {
     this.musicManager.ost(this.gameState);
   }
 
+  public void addController() {
+    this.addKeyListener(Controller.build());
+  }
+
+  public void removeController() {
+    this.removeKeyListener(Controller.build());
+  }
+
   /* The function that takes care of creating the thread and starting it */
   private void start() {
     if (!this.added) {
-      this.addKeyListener(Controller.build());
+      this.addController();
       this.added = true;
     }
     this.running = true;
@@ -280,10 +288,10 @@ public class Loop extends JPanel implements Runnable {
         /* Draw everything the game needs */
         tileManager.drawObstacles(g2d);
         tileManager.drawBasicTiles(g2d);
-        bomberman.render(g2d);
         bombManager.drawBombs(g2d);
         bombManager.drawExplosions(g2d);
         enemyManager.drawEnemies(g2d);
+        bomberman.render(g2d);
         PowerupManager.RenderPowerup(g2d);
 
         /* Draw the overlay */

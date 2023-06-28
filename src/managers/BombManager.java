@@ -80,14 +80,20 @@ public class BombManager {
 	public void drawExplosions(Graphics2D g2d) {
 		int l = this.explosions.size();
 		for (int i = 0; i < l; i++) {
-			this.explosions.get(i).render(g2d);
+			Explosion ex = this.explosions.get(i);
+			if (!ex.dead) {
+				ex.render(g2d);
+			}
 		}
 	}
 
 	public void drawBombs(Graphics2D g2d) {
 		int l = this.bombs.size();
 		for (int i = 0; i < l; i++) {
-			bombs.get(i).render(g2d);
+			Bomb b = this.bombs.get(i);
+			if (!b.dead) {
+				b.render(g2d);
+			}
 		}
 	}
 }
