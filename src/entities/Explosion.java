@@ -27,7 +27,7 @@ public class Explosion extends Entity {
 	public void update(int elapsed) {
 		this.sprite.update(elapsed);
 
-		if (this.isBoss) {
+		if (this.isBoss && EnemyManager.build().enemies.size() > 0) {
 			Enemy b = EnemyManager.build().enemies.get(0);
 			int thisLeft = this.posX;
 			int thisRight = this.posX + this.width;

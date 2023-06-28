@@ -55,6 +55,12 @@ public class ClownMask extends Enemy {
         double absDy = Math.abs(dy);
         double maxAbs = Math.max(absDx, absDy);
 
+        if (Math.sqrt(dx * dx + dy * dy) < 100) {
+          if (!bomberman.dead) {
+            bomberman.die();
+          }
+        }
+
         double offsetX = (dx / maxAbs) * this.speed;
         double offsetY = (dy / maxAbs) * this.speed;
 
