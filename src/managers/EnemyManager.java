@@ -47,7 +47,7 @@ public class EnemyManager {
 		 * }
 		 */
 
-		this.enemies.add(new ClownMask(300, 300));
+//		this.enemies.add(new ClownMask(300, 300));
 	}
 
 	public void updateEnemies(int elapsed) {

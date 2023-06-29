@@ -42,6 +42,7 @@ public class Bomberman extends Entity {
 
 	/* The score of the player */
 	public int score;
+	public String direction;
 
 	public Bomberman(int posX, int posY) {
 		/* Pass everything to the superclass Entity */
@@ -102,6 +103,8 @@ public class Bomberman extends Entity {
 
 	public void update(int elapsed) {
 
+		CollisionChecker.build().Collision_To_check();
+
 		if (this.dead) {
 			if (this.sprite.current < this.sprite.currentAnimation.maxFrames - 1) {
 				this.sprite.update(elapsed);
@@ -130,6 +133,8 @@ public class Bomberman extends Entity {
 
 			TileManager tileManager = TileManager.build();
 
+
+
 			/* Update the player position on the grid */
 			int prevX = this.gridX;
 			int prevY = this.gridY;
@@ -145,85 +150,30 @@ public class Bomberman extends Entity {
 				this.prevTile = tileManager.grid[this.gridY][this.gridX];
 				tileManager.grid[this.gridY][this.gridX] = TileType.Bomberman;
 			}
-			String direction = "";
+			direction = "";
 			this.stop = false;
 
 			switch (this.keys.get(0)) {
 				case "A":
-					TileType leftTile = TileManager.build().grid[gridY][gridX - 1];
-					if (leftTile == TileType.Wall) {
-						this.speed = 0;
-					}
-					/*
-					 * for (Entity entity : CollisionChecker.adjacentEntities) {
-					 * if (entity == null)
-					 * continue;
-					 * if (CollisionChecker.checkCollision(entity, this, "left")) {
-					 * posX = entity.posX + entity.width + 2;
-					 * posX += speed;
-					 * break;
-					 * }
-					 * }
-					 */
 
-					// posX -= speed;
 					posX -= speed;
 					direction = "left";
 					break;
+
 				case "D":
-					TileType rightTile = TileManager.build().grid[gridY][gridX + 1];
-					if (rightTile == TileType.Wall) {
-						this.speed = 0;
-					}
-					/*
-					 * for (Entity entity : CollisionChecker.adjacentEntities) {
-					 * if (entity == null)
-					 * continue;
-					 * if (CollisionChecker.checkCollision(entity, this, "right")) {
-					 * posX = entity.posX - width - 1;
-					 * posX -= speed;
-					 * break;
-					 * }
-					 * }
-					 */
+
 					posX += speed;
 					direction = "right";
 					break;
+
 				case "W":
-					TileType upTile = TileManager.build().grid[gridY - 1][gridX];
-					if (upTile == TileType.Wall) {
-						this.speed = 0;
-					}
-					/*
-					 * for (Entity entity : CollisionChecker.adjacentEntities) {
-					 * if (entity == null)
-					 * continue;
-					 * if (CollisionChecker.checkCollision(entity, this, "up")) {
-					 * posY = entity.posY + entity.height + 2;
-					 * posY += speed;
-					 * break;
-					 * }
-					 * }
-					 */
+
 					posY -= speed;
 					direction = "up";
 					break;
+
 				case "S":
-					TileType downTile = TileManager.build().grid[gridY + 1][gridX];
-					if (downTile == TileType.Wall) {
-						this.speed = 0;
-					}
-					/*
-					 * for (Entity entity : CollisionChecker.adjacentEntities) {
-					 * if (entity == null)
-					 * continue;
-					 * if (CollisionChecker.checkCollision(entity, this, "down")) {
-					 * posY = entity.posY - height - 1;
-					 * posY -= speed;
-					 * break;
-					 * }
-					 * }
-					 */
+
 					posY += speed;
 					direction = "down";
 					break;

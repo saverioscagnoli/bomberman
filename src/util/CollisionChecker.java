@@ -1,122 +1,100 @@
 package util;
 
-import entities.Entity;
-import java.util.ArrayList;
+
+import core.Loop;
 import entities.Bomberman;
-import entities.PowerUp;
-import managers.BombManager;
-import managers.PowerupManager;
 import managers.TileManager;
+import entities.Entity;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class CollisionChecker {
-	// array for the 3x3 grid around the character
+
+	private static CollisionChecker instance = null;
 	public static Entity[] adjacentEntities = new Entity[9];
 
-	public static void updateAdjacentEntities(Bomberman character) {
-		// reset the array
-		for (int i = 0; i < adjacentEntities.length; i++) {
-			adjacentEntities[i] = null;
+	private boolean vertical_align;
+	private boolean horizontal_align;
+	private int hor_maxDistance;
+	private int vert_maxDistance;
+	private final Bomberman loop_Bomberman = Loop.build().bomberman;
+	private int savedPlayerX;
+	private int savedPlayerY;
+
+	private CollisionChecker() {
+		hor_maxDistance = Consts.tileDims - Loop.build().bomberman.width;
+		vert_maxDistance = Consts.tileDims - Loop.build().bomberman.height;
+		this.horizontal_align = true;
+		this.vertical_align = true;
+	}
+
+	public static CollisionChecker build() {
+		if (instance == null) {
+			instance = new CollisionChecker();
 		}
+		return instance;
+	}
 
-		// get the normalized position of the character
-		int[] normalizedPos = Utils.normalizeEntityPos(character);
+	public void Collision_To_check() {
 
-		// create an array with the coordinates of the 8 surrounding grid squares
-		int[][] surroundingGridSquares = {
-				{ normalizedPos[0] - Consts.tileDims, normalizedPos[1] - Consts.tileDims },
-				{ normalizedPos[0], normalizedPos[1] - Consts.tileDims },
-				{ normalizedPos[0] + Consts.tileDims, normalizedPos[1] - Consts.tileDims },
-				{ normalizedPos[0] - Consts.tileDims, normalizedPos[1] },
-				{ normalizedPos[0] + Consts.tileDims, normalizedPos[1] },
-				{ normalizedPos[0] - Consts.tileDims, normalizedPos[1] + Consts.tileDims },
-				{ normalizedPos[0], normalizedPos[1] + Consts.tileDims },
-				{ normalizedPos[0] + Consts.tileDims, normalizedPos[1] + Consts.tileDims },
-				{ normalizedPos[0], normalizedPos[1] } };
 
-		// loop through the entities and check if they are in any of the surrounding
-		// grid squares
+		
+		if (horizontal_align) { // se il player nell'ultimo check era allineato orizzontalmente
+			// controllare se lo é ancora
+			boolean newHorizontal_align = loop_Bomberman.posX % 48 <= hor_maxDistance;
+			if (!newHorizontal_align) { // se si é disallineato
+				// salvare la posizione in cui era prima
+				int[] savedPos = Utils.normalizeEntityPos(loop_Bomberman);
 
-		ArrayList<Entity> obstaclesAndPowerups = new ArrayList<>();
-		obstaclesAndPowerups.addAll(TileManager.build().walls);
-		obstaclesAndPowerups.addAll(PowerupManager.build().powerups);
-		obstaclesAndPowerups.addAll(BombManager.build().bombs);
+				// in base alla direzione, salvare anche l'array
+				int[][] tilesToCheck;
+				if (Objects.equals(loop_Bomberman.direction, "right")){ // if going left
+					tilesToCheck = new int[][]{savedPos, {savedPos[1], (savedPos[0] + 48)}};
+				}
 
-		for (Entity tile : obstaclesAndPowerups) {
-			for (int i = 0; i < surroundingGridSquares.length; i++) {
-				if (tile.posX == surroundingGridSquares[i][0] && tile.posY == surroundingGridSquares[i][1]) {
-					adjacentEntities[i] = tile;
+				else { // if going right
+					tilesToCheck = new int[][]{savedPos, {savedPos[1], (savedPos[0] - 48)}};
+				}
+
+				System.out.println(Arrays.deepToString(tilesToCheck));
+				horizontal_align = false;
+			}
+		}
+		if (vertical_align) {
+			boolean newVertical_align = loop_Bomberman.posY % 48 <= vert_maxDistance;
+			if (!newVertical_align) {
+
+				int[] savedPos = Utils.normalizeEntityPos(loop_Bomberman);
+
+				int[][] tilesToCheck;
+				if (Objects.equals(loop_Bomberman.direction, "up")){ // if going up
+					tilesToCheck = new int[][]{savedPos, {(savedPos[1] - 48), savedPos[0]}};
+				}
+
+				else {
+					tilesToCheck = new int[][]{savedPos, {(savedPos[1] + 48), savedPos[0]}};
+				}
+
+				System.out.println(Arrays.deepToString(tilesToCheck));
+				vertical_align = false;
+			}
+		}
+			horizontal_align = loop_Bomberman.posX % 48 <= hor_maxDistance;
+			vertical_align = loop_Bomberman.posY % 48 <= vert_maxDistance;
+
+//		 se tutti e due sono negativi o se tutti e due positivi non devi checkare nulla
+
+			if ((horizontal_align && vertical_align) || (!horizontal_align && !vertical_align)) {
+//				System.out.println("non a cavallo fra due tile");
+			}
+
+			if (horizontal_align ^ vertical_align) {
+				if (horizontal_align) {
+					// se il player é disallineato orizzontalmente, bisogna checkare le 2 tile sopra e sotto
+
 				}
 			}
 		}
-
-		// print adjacent tiles (DEBUG)
-		/*
-		 * for (int i = 0; i < adjacentEntities.length; i++) {
-		 * if (adjacentEntities[i] != null) {
-		 * System.out.println("adjacentEntities[" + i + "] = " +
-		 * adjacentEntities[i].getClass().getSimpleName());
-		 * }
-		 * }
-		 */
 	}
-
-	// function to check collision between an entity and a square's coordinates
-	public static boolean checkCollision(Entity entity, Bomberman character, String direction) {
-		// based on the direction, a future collision is checked. in case it will
-		// happen, the function returns true
-
-		// if the player's normalized position is on top of a powerup square, the
-		// powerup is collected, activate the onpickup function
-		if (entity instanceof PowerUp) {
-			if (Utils.normalizeEntityPos(character)[0] == entity.posX
-					&& Utils.normalizeEntityPos(character)[1] == entity.posY) {
-				PowerUp powerup = (PowerUp) entity;
-				PowerupManager.HandlePowerup(powerup, character);
-			}
-		}
-
-		if (!entity.isSolid)
-			return false;
-
-		// TODO : risolvere coding horror
-		switch (direction) {
-			case "up":
-				if (entity.posY + entity.height + character.speed >= character.posY
-						&& entity.posY + entity.height <= character.posY) {
-					if (entity.posX + entity.width >= character.posX
-							&& entity.posX <= character.posX + character.width) {
-						return true;
-					}
-				}
-				break;
-			case "down":
-				if (entity.posY - character.speed <= character.posY + character.height
-						&& entity.posY >= character.posY + character.height) {
-					if (entity.posX + entity.width >= character.posX
-							&& entity.posX <= character.posX + character.width) {
-						return true;
-					}
-				}
-				break;
-			case "left":
-				if (entity.posX + entity.width + character.speed >= character.posX
-						&& entity.posX + entity.width <= character.posX) {
-					if (entity.posY + entity.height >= character.posY
-							&& entity.posY <= character.posY + character.height) {
-						return true;
-					}
-				}
-				break;
-			case "right":
-				if (entity.posX - character.speed <= character.posX + character.width
-						&& entity.posX >= character.posX + character.width) {
-					if (entity.posY + entity.height >= character.posY
-							&& entity.posY <= character.posY + character.height) {
-						return true;
-					}
-				}
-				break;
-		}
-		return false;
-	}
-}
