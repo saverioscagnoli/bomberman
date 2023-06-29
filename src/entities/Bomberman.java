@@ -65,6 +65,8 @@ public class Bomberman extends Entity {
 	}
 
 	public void die() {
+		this.keys.clear();
+		this.lives--;
 		this.sprite.setAnimation("death");
 		this.dead = true;
 		Loop.build().removeController();
@@ -105,6 +107,15 @@ public class Bomberman extends Entity {
 				this.sprite.update(elapsed);
 			} else {
 				this.sprite.current = this.sprite.currentAnimation.maxFrames - 1;
+				if (this.lives > 0) {
+					this.posX = 50;
+					this.posY = 50;
+					this.dead = false;
+					this.sprite.setAnimation("down");
+					Loop.build().addController();
+					this.sprite.width = (int) (this.sprite.spritesheet.getWidth() / 6.3);
+				}
+
 			}
 			return;
 		}

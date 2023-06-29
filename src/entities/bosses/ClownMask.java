@@ -42,6 +42,8 @@ public class ClownMask extends Enemy {
 
   private void move() {
     Bomberman bomberman = Loop.build().bomberman;
+    if (bomberman.dead)
+      return;
     double targetX = bomberman.posX + bomberman.sprite.width * 0.5 - width * 0.5;
     double targetY = bomberman.posY + bomberman.sprite.height * 0.5 - height * 0.5;
 
