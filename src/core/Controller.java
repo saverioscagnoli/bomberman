@@ -28,14 +28,14 @@ public class Controller extends MouseAdapter implements KeyListener {
     private Loop loop;
     private Bomberman bomberman;
 
-    private Controller() {
-        this.loop = Loop.build();
-        this.bomberman = Loop.build().bomberman;
+    private Controller(Loop loop) {
+        this.loop = loop;
+        this.bomberman = loop.bomberman;
     }
 
-    public static synchronized Controller build() {
+    public static synchronized Controller build(Loop loop) {
         if (instance == null) {
-            instance = new Controller();
+            instance = new Controller(loop);
         }
         return instance;
     }
@@ -88,15 +88,6 @@ public class Controller extends MouseAdapter implements KeyListener {
             case KeyEvent.VK_SPACE: {
                 this.bomberman.placeBomb();
                 Utils.playSound(Consts.soundPath + "place-bomb.wav");
-                break;
-            }
-
-            case KeyEvent.VK_ESCAPE: {
-                if (this.loop.gameState == GameState.InGame) {
-                    this.loop.setState(GameState.Pause);
-                } else if (this.loop.gameState == GameState.Pause) {
-                    this.loop.setState(GameState.InGame);
-                }
                 break;
             }
         }

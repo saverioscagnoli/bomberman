@@ -29,14 +29,13 @@ public class Loop extends JPanel implements Runnable {
   /* A flag to see if the thread is running */
   private boolean running;
 
-  /* A flag to check if the controller has been added to the Loop */
-  private boolean added;
-
   /* The JPanel that contains points and lives */
   private JPanel overlay;
 
   /* The main menu background image saved to improve performance */
   private BufferedImage menuBg;
+  private BufferedImage menuArrow;
+  public int arrowY;
 
   /* The elapsed frames from the start of the game */
   private int elapsed;
@@ -54,35 +53,11 @@ public class Loop extends JPanel implements Runnable {
   public PowerupManager powerupManager;
   public SoundManager musicManager;
 
-  /* First constructor */
-  private Loop() {
-    /* Set all the variables to their initial states */
-    this.gameState = GameState.Menu;
-    this.menuBg = Utils.loadImage("assets/title-screen.png");
-    this.elapsed = 0;
-    this.running = false;
-    this.added = false;
-
-    /* Build all the managers */
-    this.tileManager = TileManager.build();
-    this.bombManager = BombManager.build();
-    this.enemyManager = EnemyManager.build();
-    this.powerupManager = PowerupManager.build();
-    this.musicManager = SoundManager.build();
-
-    /* Create the player character */
-    this.bomberman = new Bomberman(50, 50);
-
-    /* Set the panel */
-    this.setPreferredSize(new Dimension(Consts.screenWidth, Consts.screenHeight));
-    this.setFocusable(true);
-
-    /* Create the main menu */
-    this.createMainMenu();
-  }
+  private Controller controller;
+  private MenuHandler menuHandler;
 
   /*
-   * Second constructor. This will be called only the first time the loop is
+   * constructor. This will be called only the first time the loop is
    * built
    */
   private Loop(JPanel c) {
@@ -90,9 +65,10 @@ public class Loop extends JPanel implements Runnable {
     container = c;
     this.gameState = GameState.Menu;
     this.menuBg = Utils.loadImage("assets/title-screen.png");
+    this.menuArrow = Utils.loadImage("assets/menu-arrow.png");
+    this.arrowY = 555;
     this.elapsed = 0;
     this.running = false;
-    this.added = false;
 
     /* Build all the managers */
     this.tileManager = TileManager.build();
@@ -109,14 +85,12 @@ public class Loop extends JPanel implements Runnable {
     /* Create the main menu */
     this.createMainMenu();
     this.enemyManager.instanciateEnemies(2);
-    System.out.println(this.enemyManager.enemies.size());
+    this.controller = Controller.build(this);
+    this.menuHandler = MenuHandler.build(this);
+    this.addKeyListener(this.menuHandler);
   }
 
-  /* The function to call the first constructor. used for singleton. */
   public static Loop build() {
-    if (instance == null) {
-      instance = new Loop();
-    }
     return instance;
   }
 
@@ -141,16 +115,7 @@ public class Loop extends JPanel implements Runnable {
   /* The function that creates the main menu */
   private void createMainMenu() {
     this.removeAll();
-
-    JButton startButton = new JButton("Start");
-    startButton.setBounds(0, 0, 100, 50);
-
-    startButton.addActionListener(e -> {
-      this.setState(GameState.InGame);
-    });
-
-    this.setLayout(null);
-    this.add(startButton);
+    this.addKeyListener(this.menuHandler);
 
     this.revalidate();
     this.repaint();
@@ -194,19 +159,16 @@ public class Loop extends JPanel implements Runnable {
   }
 
   public void addController() {
-    this.addKeyListener(Controller.build());
+    this.addKeyListener(this.controller);
   }
 
   public void removeController() {
-    this.removeKeyListener(Controller.build());
+    this.removeKeyListener(this.controller);
   }
 
   /* The function that takes care of creating the thread and starting it */
   private void start() {
-    if (!this.added) {
-      this.addController();
-      this.added = true;
-    }
+    this.addController();
     this.running = true;
     this.thread = new Thread(this);
     this.thread.start();
@@ -214,6 +176,7 @@ public class Loop extends JPanel implements Runnable {
 
   /* The function that takes care of stopping the thread */
   public void stop() {
+    this.removeController();
     this.running = false;
     try {
       this.thread.join();
@@ -280,7 +243,9 @@ public class Loop extends JPanel implements Runnable {
     /* Render according to the game state */
     switch (this.gameState) {
       case Menu: {
+
         g2d.drawImage(this.menuBg, 0, 0, this.getWidth(), this.getHeight(), null);
+        g2d.drawImage(this.menuArrow, 190, this.arrowY, 30, 50, null);
         break;
       }
       case InGame:
