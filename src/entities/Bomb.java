@@ -20,6 +20,9 @@ public class Bomb extends Entity {
 	/* The time in milliseconds that will set if the game is paused */
 	private long pausedAt;
 
+	private int gridX;
+	private int gridY;
+
 	public Bomb(int posX, int posY, int bombRadius) {
 		/* Pass everything to the entity superclass */
 		super(posX, posY, Consts.tileDims, Consts.tileDims, 0,
@@ -28,9 +31,8 @@ public class Bomb extends Entity {
 						1));
 
 		/* Set the bomb in the grid */
-		int i = posY / Consts.tileDims;
-		int j = posX / Consts.tileDims;
-		TileManager.build().grid[i][j] = TileType.Bomb;
+		this.gridX = posX / Consts.tileDims;
+		this.gridY = posY / Consts.tileDims;
 
 		/* Set the bomb properties */
 		this.isSolid = true;
@@ -74,7 +76,9 @@ public class Bomb extends Entity {
 		/* If the time from the placing on the bomb is greater than the delay, die */
 		if (!this.dead && this.getElapsedTime() >= DELAY) {
 			this.die();
+			return;
 		}
+		TileManager.build().grid[this.gridY][this.gridX] = TileType.Bomb;
 		this.sprite.update(elapsed);
 	}
 

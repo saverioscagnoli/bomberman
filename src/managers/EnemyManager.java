@@ -3,6 +3,11 @@ package managers;
 import java.util.ArrayList;
 import entities.Enemy;
 import entities.bosses.ClownMask;
+import entities.enemies.Denkyun;
+import util.Consts;
+import util.TileType;
+import util.Utils;
+
 import java.awt.Graphics2D;
 
 /*
@@ -28,26 +33,24 @@ public class EnemyManager {
 
 	/* The function that instanciates all the enemies at random positions. */
 	public void instanciateEnemies(int n) {
-		/*
-		 * for (int i = 0; i < n; i++) {
-		 * int x = Utils.rng(Consts.tileDims + 1, Consts.screenWidth - Consts.tileDims);
-		 * int y = Utils.rng(Consts.tileDims + 1, Consts.screenHeight -
-		 * Consts.tileDims);
-		 * int[] pos = Utils.normalizePos(x, y);
-		 * TileType[][] grid = TileManager.build().grid;
-		 * while (grid[y / Consts.tileDims][x / Consts.tileDims] == TileType.Obstacle
-		 * || grid[y / Consts.tileDims][x / Consts.tileDims] == TileType.Wall) {
-		 * x = Utils.rng(Consts.tileDims + 1, Consts.screenWidth - Consts.tileDims);
-		 * y = Utils.rng(Consts.tileDims + 1, Consts.screenHeight - Consts.tileDims);
-		 * pos = Utils.normalizePos(x, y);
-		 * }
-		 * Enemy e = new Denkyun(pos[0], pos[1], Consts.tileDims - 2, Consts.tileDims -
-		 * 2, 1);
-		 * enemies.add(e);
-		 * }
-		 */
 
-//		this.enemies.add(new ClownMask(300, 300));
+		for (int i = 0; i < n; i++) {
+			int x = Utils.rng(Consts.tileDims + 1, Consts.screenWidth - Consts.tileDims);
+			int y = Utils.rng(Consts.tileDims + 1, Consts.screenHeight -
+					Consts.tileDims);
+			int[] pos = Utils.normalizePos(x, y);
+			TileType[][] grid = TileManager.build().grid;
+			while (grid[y / Consts.tileDims][x / Consts.tileDims] == TileType.Obstacle
+					|| grid[y / Consts.tileDims][x / Consts.tileDims] == TileType.Wall) {
+				x = Utils.rng(Consts.tileDims + 1, Consts.screenWidth - Consts.tileDims);
+				y = Utils.rng(Consts.tileDims + 1, Consts.screenHeight - Consts.tileDims);
+				pos = Utils.normalizePos(x, y);
+			}
+			Enemy e = new Denkyun(pos[0], pos[1], 1);
+			enemies.add(e);
+		}
+
+		// this.enemies.add(new ClownMask(300, 300));
 	}
 
 	public void updateEnemies(int elapsed) {

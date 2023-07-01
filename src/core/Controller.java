@@ -25,11 +25,9 @@ public class Controller extends MouseAdapter implements KeyListener {
     public String latestHorizontalKey;
     public String latestVerticalKey;
 
-    private Loop loop;
     private Bomberman bomberman;
 
     private Controller(Loop loop) {
-        this.loop = loop;
         this.bomberman = loop.bomberman;
     }
 

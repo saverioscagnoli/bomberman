@@ -2,6 +2,7 @@ package managers;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import entities.Tile;
 import ui.Sprite;
@@ -175,9 +176,13 @@ public class TileManager {
 
     /* Draw all the tiles at once */
     public void drawBasicTiles(Graphics2D g2d) {
-        for (Tile tile : this.walls) {
-            if (!tile.dead) {
-                tile.render(g2d);
+        Iterator<Tile> it = this.walls.iterator();
+        while (it.hasNext()) {
+            Tile walls = it.next();
+            if (!walls.dead) {
+                walls.render(g2d);
+            } else {
+                it.remove();
             }
         }
     }

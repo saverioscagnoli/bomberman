@@ -38,7 +38,7 @@ public class Bomberman extends Entity {
 	private int gridY = 1;
 
 	/* The tile on which the player was */
-	private TileType prevTile = TileType.Wall;
+	private TileType prevTile = TileType.Empty;
 
 	/* The score of the player */
 	public int score;
@@ -133,8 +133,6 @@ public class Bomberman extends Entity {
 
 			TileManager tileManager = TileManager.build();
 
-
-
 			/* Update the player position on the grid */
 			int prevX = this.gridX;
 			int prevY = this.gridY;
@@ -148,7 +146,6 @@ public class Bomberman extends Entity {
 					tileManager.grid[prevY][prevX] = this.prevTile;
 				}
 				this.prevTile = tileManager.grid[this.gridY][this.gridX];
-				tileManager.grid[this.gridY][this.gridX] = TileType.Bomberman;
 			}
 			direction = "";
 			this.stop = false;
@@ -183,6 +180,12 @@ public class Bomberman extends Entity {
 			this.stop = true;
 			this.sprite.current = 1;
 		}
+
+		if (this.prevTile == TileType.Enemy) {
+			this.prevTile = TileType.Empty;
+		}
+
+		TileManager.build().grid[this.gridY][this.gridX] = TileType.Bomberman;
 	}
 
 	public void render(Graphics2D g2d) {
@@ -208,8 +211,8 @@ public class Bomberman extends Entity {
 
 		// draw the hitbox as a gray square
 
-		 g2d.setColor(Color.GRAY);
-		 g2d.fillRect(posX, posY, width, height);
+		g2d.setColor(Color.GRAY);
+		g2d.fillRect(posX, posY, width, height);
 
 		g2d.setColor(Color.RED);
 		g2d.fillRect((int) posX - 15, (int) posY - 20, 5 * 10, 5);

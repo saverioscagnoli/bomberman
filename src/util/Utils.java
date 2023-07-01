@@ -49,7 +49,7 @@ public abstract class Utils {
 	public static boolean enemyCollision(Enemy enemy, String direction) {
 		// if the enemy's normalized position is just about to hit a solid entity,
 		// change direction
-		int[] normalizedPos = { (int) enemy.posX, (int) enemy.posY };
+		int[] normalizedPos = normalizeEntityPos(enemy);
 		switch (direction) {
 			case "left":
 				normalizedPos[0] -= enemy.width;
@@ -65,11 +65,11 @@ public abstract class Utils {
 				break;
 		}
 
-		ArrayList<Tile> obstacles = TileManager.build().walls;
 		ArrayList<Bomb> bombs = BombManager.build().bombs;
+		ArrayList<Tile> walls = TileManager.build().walls;
 		ArrayList<Entity> obstaclesAndBombs = new ArrayList<>();
-		obstaclesAndBombs.addAll(obstacles);
 		obstaclesAndBombs.addAll(bombs);
+		obstaclesAndBombs.addAll(walls);
 
 		for (Entity e : obstaclesAndBombs) {
 			if (e.posX == normalizedPos[0] && e.posY == normalizedPos[1]) {

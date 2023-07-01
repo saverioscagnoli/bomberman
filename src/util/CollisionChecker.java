@@ -66,7 +66,7 @@ public class CollisionChecker {
 					occupiedTiles = new int[][]{savedPos, {savedPos[0]-48, savedPos[1]}};
 				}
 
-				System.out.println(Arrays.deepToString(occupiedTiles));
+				//System.out.println(Arrays.deepToString(occupiedTiles));
 
 				upSolid = (
 						Arrays.asList(SolidTiles).contains(TileManager.build().grid[occupiedTiles[0][1]/48-1][occupiedTiles[0][0]/48])
@@ -80,7 +80,7 @@ public class CollisionChecker {
 						Arrays.asList(SolidTiles).contains(TileManager.build().grid[occupiedTiles[1][1]/48+1][occupiedTiles[1][0]/48])
 						);
 
-			System.out.println("upsolid : " + upSolid + " downsolid : "+ downSolid);
+			// System.out.println("upsolid : " + upSolid + " downsolid : "+ downSolid);
 		}
 
 		if (old_verticalAlign && !newVertical_align) { // se il player si é disallineato verticalmente
@@ -107,7 +107,7 @@ public class CollisionChecker {
 						||
 						Arrays.asList(SolidTiles).contains(TileManager.build().grid[occupiedTiles[1][1]/48][occupiedTiles[1][0]/48-1])
 						);
-			System.out.println("rightsolid : " + rightSolid + " leftsolid : "+ leftSolid);
+			//System.out.println("rightsolid : " + rightSolid + " leftsolid : "+ leftSolid);
 		}
 
 		if ((!old_verticalAlign && newVertical_align) || (!old_horizontalAlign && newHorizontal_align)){
@@ -121,7 +121,7 @@ public class CollisionChecker {
 			leftSolid = Arrays.asList(SolidTiles).contains(gameGrid[(savedPos[1])/48][(savedPos[0])/48-1]);
 
 
-			System.out.println("up : " + upSolid + " right : "+ rightSolid + " down : "+downSolid+" left : "+leftSolid);
+			//System.out.println("up : " + upSolid + " right : "+ rightSolid + " down : "+downSolid+" left : "+leftSolid);
 		}
 
 		// save the directions for the next cycle
