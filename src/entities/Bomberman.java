@@ -207,10 +207,10 @@ public class Bomberman extends Entity {
 		// draw the health bar above the player with 5 squares for each health point
 
 		// draw the hitbox as a gray square
-		/*
-		 * g2d.setColor(Color.GRAY);
-		 * g2d.fillRect(posX, posY, width, height)
-		 */;
+
+		 g2d.setColor(Color.GRAY);
+		 g2d.fillRect(posX, posY, width, height);
+
 		g2d.setColor(Color.RED);
 		g2d.fillRect((int) posX - 15, (int) posY - 20, 5 * 10, 5);
 		g2d.setColor(Color.GREEN);
