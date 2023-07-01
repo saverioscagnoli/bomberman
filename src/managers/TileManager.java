@@ -2,130 +2,170 @@ package managers;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Iterator;
 
-import entities.Obstacle;
+import entities.Tile;
+import ui.Sprite;
 import ui.SpriteAnimation;
 import util.Consts;
+import util.TileType;
 import util.Utils;
 
-//TODO: ottimizza na cifra
+/* This classe manages the tiles: updating, drawing, animating etc. It also takes care of the creation of the levels */
 
 public class TileManager {
+    /* Instance for the singleton */
     public static TileManager instance = null;
-    public String[][] grid;
-    public ArrayList<Obstacle> walls;
-    public ArrayList<Obstacle> basicTiles;
+
+    /* A grid of tiles: this is important because it is the "field" for the game */
+    public TileType[][] grid;
+
+    /* An arraylist that contains SOLID walls */
+    public ArrayList<Tile> walls;
+
+    /* An arraylist that contains only the backround tiles */
+    public ArrayList<Tile> basicTiles;
 
     private TileManager() {
+        /* Set all the initial properties */
         int rows = (int) Consts.screenWidth / Consts.tileDims;
         int cols = (int) Consts.screenHeight / Consts.tileDims;
-        this.grid = new String[cols][rows];
+        this.grid = new TileType[cols][rows];
         this.walls = new ArrayList<>();
         this.basicTiles = new ArrayList<>();
+
+        /* Set the tiles */
         this.setTiles();
     }
 
-    public static synchronized TileManager getInstance() {
+    /* Singleton */
+    public static synchronized TileManager build() {
         if (instance == null) {
             instance = new TileManager();
         }
         return instance;
     }
 
-    public void addBasicTile(Obstacle tile) {
+    public void addBasicTile(Tile tile) {
         this.basicTiles.add(tile);
     }
 
+    /*
+     * This function takes care of genrating the tiles, the onbstacles, and specific
+     * tiles like edge tiles or shadow tiles
+     */
     private void setTiles() {
+        /* Loop through the grid (a matrix) */
         for (int i = 0; i < this.grid.length; i++) {
             for (int j = 0; j < this.grid[i].length; j++) {
+                /* Get the x and y coordinates */
                 int x = j * Consts.tileDims;
                 int y = i * Consts.tileDims;
+
+                /* Check if we should spawn an obstacle */
                 boolean shouldSpawnObstacle = Utils.rng(1, 10) == 5;
-                Obstacle tile = null;
+
+                Tile tile = null;
                 String src = null;
 
+                /* If it is on the first horizontal iteration, set the top walls */
                 if (i == 0) {
                     if (j == 0) {
-                        src = Consts.tilesPath + "w-tl.png";
+                        src = "w-tl";
                     } else if (j == this.grid[i].length - 1) {
-                        src = Consts.tilesPath + "w-tr.png";
+                        src = "w-tr";
                     } else {
-                        src = Consts.tilesPath + "w-t.png";
+                        src = "w-t";
                     }
-                    tile = new Obstacle(x, y, true, true, false, src);
-                    this.grid[i][j] = "W";
+                    tile = new Tile(x, y, true, src);
+                    this.grid[i][j] = TileType.Wall;
                     this.walls.add(tile);
+                    /* If it is on the last horizontal iteration, set the bottom wall */
                 } else if (i == this.grid.length - 1) {
                     if (j == 0) {
-                        src = Consts.tilesPath + "w-bl.png";
+                        src = "w-bl";
                     } else if (j == this.grid[i].length - 1) {
-                        src = Consts.tilesPath + "w-br.png";
+                        src = "w-br";
                     } else {
-                        src = Consts.tilesPath + "w-b.png";
+                        src = "w-b";
                     }
-                    tile = new Obstacle(x, y, true, true, false, src);
-                    this.grid[i][j] = "W";
+                    tile = new Tile(x, y, true, src);
+                    this.grid[i][j] = TileType.Wall;
                     this.walls.add(tile);
+                    /* If any iteration is on an index divisible by 2, set a wall (grid pattern) */
                 } else if (i % 2 == 0 && j % 2 == 0 && j != 0 && j < this.grid[i].length - 1) {
-                    src = Consts.tilesPath + "w-center.png";
-                    tile = new Obstacle(x, y, true, true, false, src);
-                    this.grid[i][j] = "W";
+                    src = "w-center";
+                    tile = new Tile(x, y, true, src);
+                    this.grid[i][j] = TileType.Wall;
                     this.walls.add(tile);
                 } else {
+                    /* On the first vertical iteration, set the left walls */
                     if (j == 0) {
-                        src = Consts.tilesPath + "w-l.png";
-                        tile = new Obstacle(x, y, true, true, false, src);
-                        this.grid[i][j] = "W";
+                        src = "w-l";
+                        tile = new Tile(x, y, true, src);
+                        this.grid[i][j] = TileType.Wall;
                         this.walls.add(tile);
+                        /* On the last vertical iteration, set the right walls */
                     } else if (j == this.grid[i].length - 1) {
-                        src = Consts.tilesPath + "w-r.png";
-                        tile = new Obstacle(x, y, true, true, false, src);
-                        this.grid[i][j] = "W";
+                        src = "w-r";
+                        tile = new Tile(x, y, true, src);
+                        this.grid[i][j] = TileType.Wall;
                         this.walls.add(tile);
                     } else {
+                        /* If we should spawn an obstacle, set it */
                         if (shouldSpawnObstacle) {
-                            src = Consts.tilesPath + "wd-1.png";
-                            String animationName = null;
-                            if (i == 1 || this.grid[i - 1][j] == "W") {
-                                animationName = "idle-edge";
+                            src = "wd-1";
+                            String animName = null;
+                            /*
+                             * Set if it is the obstacle sprite at the edge of the map. See:
+                             * assets/tiles/idle-edge.png
+                             */
+                            if (i == 1 || this.grid[i - 1][j] == TileType.Wall) {
+                                animName = "idle-edge";
                             } else {
-                                animationName = "idle";
-                                src = Consts.tilesPath + "wd-1.png";
+                                animName = "idle";
+                                src = "wd-1";
                             }
-                            tile = new Obstacle(x, y, true, false, true, src);
-                            tile.addAnimation("idle",
-                                    new SpriteAnimation(tile.spritesheet, 3, 6, tile.scale, 0, 4, 10));
-                            tile.addAnimation("idle-edge",
-                                    new SpriteAnimation(tile.spritesheet, 3, 6, tile.scale, 1, 4, 10));
-                            tile.addAnimation("death",
-                                    new SpriteAnimation(tile.spritesheet, 3, 6, tile.scale, 2, 6, 10));
-                            this.grid[i][j] = "WD";
-                            tile.setAnimation(animationName);
+                            tile = new Tile(x, y, true, false, true, new Sprite(src, 6, 3, animName,
+                                    new SpriteAnimation[] {
+                                            new SpriteAnimation("idle", 4, 0, 10),
+                                            new SpriteAnimation("idle-edge", 4, 1, 10),
+                                            new SpriteAnimation("death", 6, 2, 10)
+                                    }, 1));
+                            this.grid[i][j] = TileType.Obstacle;
                             this.walls.add(tile);
                         } else {
-                            this.grid[i][j] = "N";
+                            /* If it doesn't have anything, then it's an empty tile */
+                            this.grid[i][j] = TileType.Empty;
                         }
                     }
                 }
-                if (i == 1 || (i > 0 && this.grid[i - 1][j] == "W")) {
-                    src = Consts.tilesPath + "basic-1-edge.png";
+                /* Check if it needs to be the edge tile. See assets/tiles/basic-1-edge.png */
+                if (i == 1 || (i > 0 && this.grid[i - 1][j] == TileType.Wall)) {
+                    src = "basic-1-edge";
+                    /*
+                     * Check if there is an obstacle on the tile above. If yes, set a shadow tile.
+                     * See assets/tiles/basic-1-shadow.png
+                     */
+                } else if (i > 1 && this.grid[i - 1][j] == TileType.Obstacle) {
+                    src = "basic-1-shadow";
                 } else {
-                    src = Consts.tilesPath + "basic-1.png";
+                    src = "basic-1";
                 }
-                this.addBasicTile(new Obstacle(x, y, false, true, false, src));
+                this.addBasicTile(new Tile(x, y, false, src));
             }
         }
     }
 
-    public void updateTiles() {
-        ArrayList<Obstacle> toRemove = new ArrayList<>();
-        for (Obstacle tile : this.walls) {
+    /* Update all the tiles at once */
+    public void updateTiles(int elapsed) {
+        ArrayList<Tile> toRemove = new ArrayList<>();
+        for (Tile tile : this.walls) {
             if (tile.destructable) {
                 if (tile.dead) {
                     toRemove.add(tile);
                 } else {
-                    tile.update();
+                    tile.update(elapsed);
                 }
             }
         }
@@ -134,16 +174,22 @@ public class TileManager {
         });
     }
 
+    /* Draw all the tiles at once */
     public void drawBasicTiles(Graphics2D g2d) {
-        for (Obstacle tile : this.walls) {
-            if (!tile.dead) {
-                tile.render(g2d);
+        Iterator<Tile> it = this.walls.iterator();
+        while (it.hasNext()) {
+            Tile walls = it.next();
+            if (!walls.dead) {
+                walls.render(g2d);
+            } else {
+                it.remove();
             }
         }
     }
 
+    /* Draw all the obstacles at once */
     public void drawObstacles(Graphics2D g2d) {
-        for (Obstacle basicTile : this.basicTiles) {
+        for (Tile basicTile : this.basicTiles) {
             if (!basicTile.dead) {
                 basicTile.render(g2d);
             }

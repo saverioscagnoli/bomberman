@@ -2,106 +2,79 @@ package ui;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-
-import javax.imageio.ImageIO;
+import managers.AnimationManager;
 
 public class Sprite {
-  // The image used for the sprite
+  /* A buffered image for the spritesheet */
   public BufferedImage spritesheet;
 
-  // The scaling factor for the sprite
+  /* Width and height of the sprite */
+  public int width, height;
+
+  /* The current frame of the animation */
+  public int current;
+
+  /* The scale of the sprite */
   public float scale;
 
-  // Determines if the sprite has animations
-  public boolean isAnimated;
-
-  // Determines if the sprite is static (non-animated)
-  public boolean isStatic;
-
-  // The currently active animation for the sprite
+  /* The current animation of the sprite (every animation can have different ) */
   public SpriteAnimation currentAnimation;
 
-  // A map of animation names to SpriteAnimation objects
-  private HashMap<String, SpriteAnimation> map;
+  /* The array of animations */
+  public SpriteAnimation[] animations;
 
-  // The number of frames that have elapsed for the current animation
-  private int elapsedFrames;
-
-  public Sprite(String src, boolean isStatic) {
-    // Load the image from the given source
-    BufferedImage img = this.loadImage(src);
-
-    // Initialize the sprite properties
-    this.spritesheet = img;
-    this.map = new HashMap<>();
-    this.elapsedFrames = 0;
-    this.scale = 1;
-    this.isAnimated = true;
-    this.isStatic = isStatic;
-  }
-
-  // Add an animation to the sprite
-  public void addAnimation(String name, SpriteAnimation anim) {
-    if (this.map.size() == 0) {
-      // If this is the first animation added, set it as the current animation
-      this.currentAnimation = anim;
-    }
-    this.map.put(name, anim);
-  }
-
-  // Set the current animation for the sprite
-  public void setAnimation(String name) {
-    this.currentAnimation = this.map.get(name);
-  }
-
-  // Load an image from the given source
-  private BufferedImage loadImage(String src) {
-    File path = new File(src);
-    BufferedImage img = null;
-    try {
-      InputStream stream = new FileInputStream(path);
-      img = ImageIO.read(stream);
-    } catch (IOException err) {
-      err.printStackTrace();
-    }
-    return img;
-  }
-
-  // Set the scaling factor for the sprite
-  public void setScale(float scale) {
+  public Sprite(String spriteName, double abs, int rows, String currentAnimName, SpriteAnimation[] anims, float scale) {
+    /* Set all the properties to their initial values */
+    this.spritesheet = AnimationManager.build().getSprite(spriteName);
+    this.width = (int) (this.spritesheet.getWidth() / abs);
+    this.height = this.spritesheet.getHeight() / rows;
     this.scale = scale;
-  }
-
-  // Update the sprite's animation
-  public void updateSprite() {
-    if (this.isAnimated && !this.isStatic) {
-      this.elapsedFrames++;
-      this.currentAnimation.animate(this.elapsedFrames);
+    this.current = 0;
+    this.animations = anims;
+    if (this.animations != null) {
+      this.setAnimation(currentAnimName);
     }
   }
 
-  // Draw the sprite on the given graphics context at the specified position
-  public void drawSprite(Graphics2D g2d, int x, int y, int... dims) {
-    if (this.isStatic) {
-      // If the sprite is static, draw the whole spritesheet or use custom dimensions
-      // if provided
-      int width = this.spritesheet.getWidth();
-      int height = this.spritesheet.getHeight();
-      if (dims.length == 2) {
-        width = dims[0];
-        height = dims[1];
+  /* Set the current animation, given its name */
+  public void setAnimation(String name) {
+    for (SpriteAnimation a : this.animations) {
+      if (a.name == name) {
+        this.currentAnimation = a;
+        this.current = 0;
+        break;
       }
-      int scaledX = (int) (width * this.scale);
-      int scaledY = (int) (height * this.scale);
-      g2d.drawImage(this.spritesheet, x, y, scaledX, scaledY, null);
-    } else {
-      // If the sprite is animated, delegate drawing to the current animation
-      this.currentAnimation.draw(g2d, x, y, this.spritesheet, dims);
     }
+  }
+
+  /* Update the sprite */
+  public void update(int elapsed) {
+    /* Slow down the animtion by staggering it */
+    if (elapsed % this.currentAnimation.stagger == 0) {
+      /*
+       * Set the current frame to the next, or if the frame has reached the max frames
+       * of the animation, reset it to 0
+       */
+      this.current = (this.current + 1) % this.currentAnimation.maxFrames;
+    }
+  }
+
+  /*
+   * Draw the sprite, if the parameter dims: [width, height] is passed, it will be
+   * drawn with that dimensions, ignoring the scale of the sprite.
+   */
+  public void draw(Graphics2D g2d, double x, double y, int... dims) {
+    int width = (int) (this.width * this.scale);
+    int height = (int) (this.height * this.scale);
+
+    if (dims.length == 2) {
+      width = dims[0];
+      height = dims[1];
+    }
+
+    int frameX = this.current * this.width;
+    int frameY = this.currentAnimation.frameY * this.height;
+    BufferedImage frame = this.spritesheet.getSubimage(frameX, frameY, this.width, this.height);
+    g2d.drawImage(frame, (int) x, (int) y, width, height, null);
   }
 }

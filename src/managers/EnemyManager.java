@@ -1,70 +1,59 @@
 package managers;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import entities.Enemy;
+import entities.bosses.ClownMask;
 import entities.enemies.Denkyun;
-import entities.enemies.Puropen;
-import ui.SpriteAnimation;
 import util.Consts;
+import util.TileType;
 import util.Utils;
+
 import java.awt.Graphics2D;
+
+/*
+ * This class manages all the enemies. 
+ * it has an array list which contains all the enemies, 
+ * and updates, draws all the enemies at the same time. 
+ */
 
 public class EnemyManager {
 	public static EnemyManager instance = null;
 	public ArrayList<Enemy> enemies;
 
-	private HashMap<Integer, HashMap<String, SpriteAnimation>> animations;
-	private static String[] srcs = { Consts.enemiesPath + "enemy-1.png" };
-
 	private EnemyManager() {
 		this.enemies = new ArrayList<>();
-		this.animations = new HashMap<>();
-		this.createAnimations();
 	}
 
-	public static synchronized EnemyManager getInstance() {
+	public static synchronized EnemyManager build() {
 		if (instance == null) {
 			instance = new EnemyManager();
 		}
 		return instance;
 	}
 
-	private void createAnimations() {
-		Enemy enemy1 = new Enemy(0, 0, Consts.tileDims, Consts.tileDims, 1, srcs[0]);
-		enemy1.setScale(2.5f);
-		HashMap<String, SpriteAnimation> animMap = new HashMap<>();
-		animMap.put("down", new SpriteAnimation(enemy1.spritesheet, 4, 4, enemy1.scale, 0, 4, 5));
-		animMap.put("up", new SpriteAnimation(enemy1.spritesheet, 4, 4, enemy1.scale, 1, 4, 5));
-		animMap.put("left", new SpriteAnimation(enemy1.spritesheet, 4, 4, enemy1.scale, 2, 4, 5));
-		animMap.put("right", new SpriteAnimation(enemy1.spritesheet, 4, 4, enemy1.scale, 3, 4, 5));
-		this.animations.put(0, animMap);
-	}
-
+	/* The function that instanciates all the enemies at random positions. */
 	public void instanciateEnemies(int n) {
+
 		for (int i = 0; i < n; i++) {
-			int num = Utils.rng(0, srcs.length);
-			String src = srcs[num];
-			HashMap<String, SpriteAnimation> animMap = this.animations.get(num);
 			int x = Utils.rng(Consts.tileDims + 1, Consts.screenWidth - Consts.tileDims);
-			int y = Utils.rng(Consts.tileDims + 1, Consts.screenHeight - Consts.tileDims);
+			int y = Utils.rng(Consts.tileDims + 1, Consts.screenHeight -
+					Consts.tileDims);
 			int[] pos = Utils.normalizePos(x, y);
-			String[][] grid = TileManager.getInstance().grid;
-			while (grid[y / Consts.tileDims][x / Consts.tileDims] == "WD"
-					|| grid[y / Consts.tileDims][x / Consts.tileDims] == "W") {
+			TileType[][] grid = TileManager.build().grid;
+			while (grid[y / Consts.tileDims][x / Consts.tileDims] == TileType.Obstacle
+					|| grid[y / Consts.tileDims][x / Consts.tileDims] == TileType.Wall) {
 				x = Utils.rng(Consts.tileDims + 1, Consts.screenWidth - Consts.tileDims);
 				y = Utils.rng(Consts.tileDims + 1, Consts.screenHeight - Consts.tileDims);
 				pos = Utils.normalizePos(x, y);
 			}
-			Enemy e = new Denkyun(pos[0], pos[1], Consts.tileDims - 2, Consts.tileDims - 2, 1, src);
-			animMap.forEach((k, v) -> {
-				e.addAnimation(k, v);
-			});
+			Enemy e = new Denkyun(pos[0], pos[1], 1);
 			enemies.add(e);
 		}
+
+		// this.enemies.add(new ClownMask(300, 300));
 	}
 
-	public void updateEnemies() {
+	public void updateEnemies(int elapsed) {
 		ArrayList<Enemy> toRemove = new ArrayList<>();
 		int l = enemies.size();
 		for (int i = 0; i < l; i++) {
@@ -72,7 +61,7 @@ public class EnemyManager {
 			if (e.dead) {
 				toRemove.add(e);
 			} else {
-				e.update();
+				e.update(elapsed);
 			}
 		}
 
@@ -83,7 +72,9 @@ public class EnemyManager {
 		int l = enemies.size();
 		for (int i = 0; i < l; i++) {
 			Enemy e = enemies.get(i);
-			e.render(g2d);
+			if (!e.dead) {
+				e.render(g2d);
+			}
 		}
 	}
 }

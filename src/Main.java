@@ -1,31 +1,39 @@
+import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.io.IOException;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import loop.Loop;
-import managers.MusicManager;
-import ui.MainMenu;
-import ui.Menus;
-import ui.PauseMenu;
+import javax.swing.JPanel;
+import core.Loop;
 import util.Consts;
+import util.Utils;
 
 class Main {
     public static void main(String[] args) throws IOException {
-        // Enabling OpenGL Drivers. Only tested on my machine, but
-        // incredible performance gain!
-        System.setProperty("sun.java2d.opengl", "true");
-        JFrame win = new JFrame("bomberman");
-        win.setPreferredSize(new Dimension(Consts.screenWidth + 16, Consts.screenHeight + 35));
-        win.setResizable(false);
-        win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Loop loop = new Loop();
-        Menus.mainMenu = new MainMenu(loop);
-        Menus.pauseMenu = new PauseMenu(loop);
+        JFrame win = new JFrame("Super Bomberman");
 
-        win.add(loop);
+        win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        win.setResizable(false);
+        win.setPreferredSize(new Dimension(Consts.screenWidth, Consts.screenHeight + 120));
+
+        Container cp = win.getContentPane();
+
+        JPanel container = new JPanel();
+        Loop loop = Loop.build(container);
+        container.setLayout(new BorderLayout());
+        container.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        container.add(loop);
+
+        cp.setLayout(new BorderLayout());
+
+        cp.add(container, BorderLayout.CENTER);
+
         win.pack();
         win.setLocationRelativeTo(null);
         win.setVisible(true);
+
         loop.requestFocus();
-        MusicManager.getInstance();
+        Utils.createDebugWindow();
     }
 }

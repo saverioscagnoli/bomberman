@@ -1,4 +1,4 @@
-package entities.enemies;
+/* package entities.enemies;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -8,8 +8,8 @@ import util.Utils;
 
 public class Puropen extends Enemy {
 
-	public Puropen(float posX, float posY, int width, int height, int speed, String src) {
-		super(posX, posY, 47, 47, 1, src);
+	public Puropen(int posX, int posY, int width, int height, int speed, String src) {
+		super(posX, posY, 47, 47, 1, null);
 		this.health = 1;
 		this.direction = "left";
 	}
@@ -49,7 +49,7 @@ public class Puropen extends Enemy {
 				break;
 		}
 		this.isAnimated = true;
-		this.setAnimation(direction);
+		// this.setAnimation(direction);
 	}
 
 	public void render(Graphics2D g2d) {
@@ -67,3 +67,4 @@ public class Puropen extends Enemy {
 	}
 
 }
+ */

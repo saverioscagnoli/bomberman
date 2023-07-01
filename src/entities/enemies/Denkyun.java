@@ -1,116 +1,148 @@
 package entities.enemies;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import entities.Enemy;
+import managers.TileManager;
+import ui.Sprite;
+import ui.SpriteAnimation;
+import util.Consts;
+import util.TileType;
 import util.Utils;
 
 public class Denkyun extends Enemy {
+	private int gridX;
+	private int gridY;
+	private TileType prevTile;
 
-	public Denkyun(float posX, float posY, int width, int height, int speed, String src) {
-		super(posX, posY, 47, 47, 1, src);
+	public Denkyun(int posX, int posY, int speed) {
+		super(posX, posY, Consts.tileDims, Consts.tileDims, speed,
+				new Sprite("enemy-1", 4, 4, "left", new SpriteAnimation[] {
+						new SpriteAnimation("down", 4, 0, 3),
+						new SpriteAnimation("up", 4, 1, 3),
+						new SpriteAnimation("left", 4, 2, 3),
+						new SpriteAnimation("right", 4, 3, 3)
+				}, 2.5f));
 		this.health = 2;
-
+		this.direction = Utils.pick(new String[] { "up", "down", "left", "right" });
+		this.sprite.setAnimation(this.direction);
+		this.gridX = posX / Consts.tileDims;
+		this.gridY = posY / Consts.tileDims;
+		this.prevTile = TileType.Empty;
 	}
 
-	public void update() {
+	private boolean collide() {
+		TileType[][] grid = TileManager.build().grid;
+		HashMap<String, TileType> map = new HashMap<>();
+
+		map.put("up", grid[this.gridY - 1][this.gridX]);
+		map.put("down", grid[this.gridY + 1][this.gridX]);
+		map.put("left", grid[this.gridY][this.gridX - 1]);
+		map.put("right", grid[this.gridY][this.gridX + 1]);
+
+		ArrayList<TileType> solid = new ArrayList<>();
+		solid.add(TileType.Obstacle);
+		solid.add(TileType.Wall);
+		solid.add(TileType.Bomb);
+		solid.add(TileType.Enemy);
+
+		return solid.contains(map.get(this.direction));
+	}
+
+	public void update(int elapsed) {
 		// the enemy moves in a direction until it hits a wall, then it changes
 		// direction
-		super.updateSprite();
+		super.update(elapsed);
 
-		// TODO : USARE CODICE INTERSEZIONE PER PROSSIMI NEMICI :
-		// int[] prova = { (int) this.posX, (int) this.posY };
-		// int[] normPos = Utils.normalizeEntityPos(this);
-		// boolean intersection = (normPos[0] == prova[0] && normPos[1] == prova[1]);
-		// if (intersection == true) {
-		// if (Utils.rng(0, 100) < 10) {
-		// this.direction = "up";
-		// } else {
-		// this.direction = "down"; fixare sto else di merda che non serve a nulla,
-		// bisogna mettere uno switch
-
-		// }
-		// }
-
-		int[] nPos = Utils.normalizeEntityPos(this);
-		int randInt = Utils.rng(0, 100);
 		switch (this.direction) {
-			case "left":
-				if (Utils.enemyCollision(this, direction)) {
-					// 1/3 chance to go down, 1/3 chance to go up, 1/3 chance to go right
-					if (randInt < 33) {
-						this.direction = "down";
-						this.posX += this.speed;
-					} else if (randInt < 66) {
-						this.direction = "up";
-						this.posX += this.speed;
+			case "up": {
+				if (this.collide()) {
+					int edge = this.gridY * Consts.tileDims;
+					if (this.posY <= edge) {
+						this.direction = Utils.pick(new String[] { "left", "right", "down" });
+						this.sprite.setAnimation(this.direction);
 					} else {
-						this.direction = "right";
+						this.posY -= this.speed;
 					}
-					this.setAnimation(direction);
-				} else {
-					this.posX -= this.speed;
-				}
-				break;
-			case "right":
-				if (Utils.enemyCollision(this, direction)) {
-					// 1/3 chance to go down, 1/3 chance to go up, 1/3 chance to go left
-					if (randInt < 33) {
-						this.direction = "down";
-						this.posX -= this.speed;
-					} else if (randInt < 66) {
-						this.direction = "up";
-						this.posX -= this.speed;
-					} else {
-						this.direction = "left";
-					}
-					this.setAnimation(direction);
-				} else {
-					this.posX += this.speed;
-				}
-				break;
-			case "up":
-				if (Utils.enemyCollision(this, direction)) {
-					// 1/3 chance to go left, 1/3 chance to go right, 1/3 chance to go down
-					if (randInt < 33) {
-						this.direction = "left";
-						this.posY += this.speed;
-					} else if (randInt < 66) {
-						this.direction = "right";
-						this.posY += this.speed;
-					} else {
-						this.direction = "down";
-					}
-					this.setAnimation(direction);
 				} else {
 					this.posY -= this.speed;
 				}
 				break;
-
-			case "down":
-				if (Utils.enemyCollision(this, direction)) {
-					// 1/3 chance to go left, 1/3 chance to go right, 1/3 chance to go up
-					if (randInt < 33) {
-						this.direction = "left";
-						this.posY -= this.speed;
-					} else if (randInt < 66) {
-						this.direction = "right";
-						this.posY -= this.speed;
+			}
+			case "down": {
+				if (this.collide()) {
+					int edge = this.gridY * Consts.tileDims + Consts.tileDims;
+					if (this.posY + this.height >= edge) {
+						this.direction = Utils.pick(new String[] { "left", "right", "up" });
+						this.sprite.setAnimation(this.direction);
 					} else {
-						this.direction = "up";
+						this.posY += this.speed;
 					}
-					this.setAnimation(direction);
 				} else {
 					this.posY += this.speed;
 				}
 				break;
+			}
+			case "left": {
+				if (this.collide()) {
+					int edge = this.gridX * Consts.tileDims;
+					if (this.posX <= edge) {
+						this.direction = Utils.pick(new String[] { "up", "down", "right" });
+						this.sprite.setAnimation(this.direction);
+					} else {
+						this.posX -= this.speed;
+					}
+				} else {
+					this.posX -= this.speed;
+				}
+				break;
+			}
+			case "right": {
+				if (this.collide()) {
+					int edge = this.gridX * Consts.tileDims + Consts.tileDims;
+					if (this.posX + this.width >= edge) {
+						this.direction = Utils.pick(new String[] { "up", "down", "left" });
+						this.sprite.setAnimation(this.direction);
+					} else {
+						this.posX += this.speed;
+					}
+				} else {
+					this.posX += this.speed;
+				}
+				break;
+			}
 		}
+
+		TileManager tileManager = TileManager.build();
+
+		int prevX = this.gridX;
+		int prevY = this.gridY;
+		int x = (int) (this.posX + this.width * 0.5);
+		int y = (int) (this.posY + this.height * 0.5);
+		int[] normPos = Utils.normalizePos(x, y);
+
+		this.gridX = normPos[0] / Consts.tileDims;
+		this.gridY = normPos[1] / Consts.tileDims;
+
+		if (prevX != this.gridX || prevY != this.gridY) {
+			if (tileManager.grid[prevY][prevX] == TileType.Enemy) {
+				tileManager.grid[prevY][prevX] = this.prevTile;
+			}
+			this.prevTile = tileManager.grid[this.gridY][this.gridX];
+		}
+
+		if (this.prevTile == TileType.Bomberman) {
+			this.prevTile = TileType.Empty;
+		}
+
+		tileManager.grid[this.gridY][this.gridX] = TileType.Enemy;
+
 	}
 
 	public void render(Graphics2D g2d) {
 		// draw hitbox as blue box (debug purpose)
-		super.drawSprite(g2d, (int) this.posX, (int) this.posY - 15);
+		this.sprite.draw(g2d, posX - 5, posY - 15);
 	}
 }

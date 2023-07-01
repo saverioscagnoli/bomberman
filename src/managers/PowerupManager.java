@@ -6,6 +6,12 @@ import java.util.ArrayList;
 
 import entities.*;
 
+/*
+ * This class manages all the powerups. 
+ * it has an array list which contains all the powerups, 
+ * and updates, draws all thepowerups at the same time. 
+ */
+
 public class PowerupManager {
 
 	public static PowerupManager instance = null;
@@ -15,7 +21,7 @@ public class PowerupManager {
 		this.powerups = new ArrayList<>();
 	}
 
-	public static synchronized PowerupManager getInstance() {
+	public static synchronized PowerupManager build() {
 		if (instance == null) {
 			instance = new PowerupManager();
 		}
@@ -49,7 +55,7 @@ public class PowerupManager {
 
 			case "rain": {
 				Runnable onPickup = () -> {
-					for (Enemy e : EnemyManager.getInstance().enemies) {
+					for (Enemy e : EnemyManager.build().enemies) {
 						if (e instanceof Enemy) {
 							Enemy enemy = (Enemy) e;
 							enemy.dealDamage((int) enemy.health / 2);
@@ -66,18 +72,18 @@ public class PowerupManager {
 
 	public static void RenderPowerup(Graphics2D g2d) {
 		// draw an orange rectangle for the powerup
-		for (PowerUp p : PowerupManager.getInstance().powerups) {
+		for (PowerUp p : PowerupManager.build().powerups) {
 			p.render(g2d);
 		}
 	}
 
-	public static void UpdatePowerup() {
-		for (PowerUp p : PowerupManager.getInstance().powerups) {
+	public static void UpdatePowerup(int elapsed) {
+		for (PowerUp p : PowerupManager.build().powerups) {
 			if (p.dead) {
-				PowerupManager.getInstance().powerups.remove(p);
+				PowerupManager.build().powerups.remove(p);
 				break;
 			} else {
-				p.update();
+				p.update(elapsed);
 			}
 		}
 	}

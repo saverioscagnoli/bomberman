@@ -1,16 +1,9 @@
-package loop;
+package core;
 
-import java.util.LinkedList;
-import java.util.List;
+import entities.Bomberman;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import entities.*;
-import managers.BombManager;
-import ui.Button;
-import ui.Menus;
 import util.*;
 
 /**
@@ -20,112 +13,79 @@ import util.*;
  */
 
 public class Controller extends MouseAdapter implements KeyListener {
+    private static Controller instance = null;
 
     // variables for keys that are currently pressed
     private boolean wPressed = false;
     private boolean aPressed = false;
     private boolean sPressed = false;
     private boolean dPressed = false;
-    public List<String> buttonPriorities = new LinkedList<>();
 
     // variables for determining the latest key pressed for each direction
     public String latestHorizontalKey;
     public String latestVerticalKey;
 
-    private Loop loop;
+    private Bomberman bomberman;
 
-    public Controller(Loop loop) {
-        this.loop = loop;
-        loop.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                int x = e.getX();
-                int y = e.getY();
-                if (loop.gameState == Consts.MENU) {
-                    for (Button btn : Menus.mainMenu.buttons) {
-                        if (Utils.buttonClick(x, y, btn)) {
-                            switch (btn.uuid) {
-                                case "s":
-                                    loop.setGameState(Consts.IN_GAME);
-                                    break;
-                                case "q":
-                                    System.exit(0);
-                                    break;
+    private Controller(Loop loop) {
+        this.bomberman = loop.bomberman;
+    }
 
-                            }
-                        }
-                    }
-                }
-                if (loop.gameState == Consts.PAUSE) {
-                    for (Button btn : Menus.pauseMenu.buttons) {
-                        if (Utils.buttonClick(x, y, btn)) {
-                            switch (btn.uuid) {
-                                case "r": {
-                                    loop.setGameState(Consts.IN_GAME);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        });
+    public static synchronized Controller build(Loop loop) {
+        if (instance == null) {
+            instance = new Controller(loop);
+        }
+        return instance;
     }
 
     // Method to update the variables based on the current key presses
     @Override
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
-
         switch (keyCode) {
             case KeyEvent.VK_W: {
                 wPressed = true;
                 latestVerticalKey = "W";
-                if (buttonPriorities.contains("W"))
+                if (this.bomberman.keys.contains("W"))
                     break;
-                buttonPriorities.add(0, "W");
+                this.bomberman.sprite.setAnimation("up");
+                this.bomberman.keys.add(0, "W");
                 break;
             }
 
             case KeyEvent.VK_A: {
                 aPressed = true;
                 latestHorizontalKey = "A";
-                if (buttonPriorities.contains("A"))
+                if (this.bomberman.keys.contains("A"))
                     break;
-                buttonPriorities.add(0, "A");
+                this.bomberman.sprite.setAnimation("left");
+                this.bomberman.keys.add(0, "A");
                 break;
             }
 
             case KeyEvent.VK_S: {
                 latestVerticalKey = "S";
                 sPressed = true;
-                if (buttonPriorities.contains("S"))
+                if (this.bomberman.keys.contains("S"))
                     break;
-                buttonPriorities.add(0, "S");
+                this.bomberman.sprite.setAnimation("down");
+                this.bomberman.keys.add(0, "S");
                 break;
             }
 
             case KeyEvent.VK_D: {
                 latestHorizontalKey = "D";
                 dPressed = true;
-                if (buttonPriorities.contains("D"))
+                if (this.bomberman.keys.contains("D"))
                     break;
-                buttonPriorities.add(0, "D");
+                this.bomberman.sprite.setAnimation("right");
+                this.bomberman.keys.add(0, "D");
                 break;
             }
 
             case KeyEvent.VK_SPACE: {
-                Bomberman character = Loop.character;
-                BombManager.getInstance().addBomb(character);
+                this.bomberman.placeBomb();
                 Utils.playSound(Consts.soundPath + "place-bomb.wav");
-                break;
-            }
-
-            case KeyEvent.VK_ESCAPE: {
-                if (this.loop.gameState == Consts.IN_GAME) {
-                    this.loop.setGameState(Consts.PAUSE);
-                } else if (this.loop.gameState == Consts.PAUSE) {
-                    this.loop.setGameState(Consts.IN_GAME);
-                }
                 break;
             }
         }
@@ -138,38 +98,41 @@ public class Controller extends MouseAdapter implements KeyListener {
 
         if (keyCode == KeyEvent.VK_W) {
             wPressed = false;
-            buttonPriorities.remove("W");
+            this.bomberman.keys.remove("W");
             if (sPressed) {
                 latestVerticalKey = "S";
+                this.bomberman.sprite.setAnimation("down");
             } else {
                 latestVerticalKey = "";
             }
         } else if (keyCode == KeyEvent.VK_A) {
             aPressed = false;
-            buttonPriorities.remove("A");
+            this.bomberman.keys.remove("A");
             if (dPressed) {
                 latestHorizontalKey = "D";
+                this.bomberman.sprite.setAnimation("right");
             } else {
                 latestHorizontalKey = "";
             }
         } else if (keyCode == KeyEvent.VK_S) {
             sPressed = false;
-            buttonPriorities.remove("S");
+            this.bomberman.keys.remove("S");
             if (wPressed) {
                 latestVerticalKey = "W";
+                this.bomberman.sprite.setAnimation("up");
             } else {
                 latestVerticalKey = "";
             }
         } else if (keyCode == KeyEvent.VK_D) {
             dPressed = false;
-            buttonPriorities.remove("D");
+            this.bomberman.keys.remove("D");
             if (aPressed) {
                 latestHorizontalKey = "A";
+                this.bomberman.sprite.setAnimation("left");
             } else {
                 latestHorizontalKey = "";
             }
         }
-
     }
 
     @Override

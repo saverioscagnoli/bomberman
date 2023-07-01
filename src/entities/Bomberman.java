@@ -2,41 +2,97 @@ package entities;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import loop.Loop;
+import java.util.ArrayList;
+
+import core.Loop;
+import ui.Sprite;
 import ui.SpriteAnimation;
-import loop.Controller;
+import managers.BombManager;
+import managers.TileManager;
 import util.*;
 
 public class Bomberman extends Entity {
+	/* The bomb radius, so how much tile it takes to end the explosion */
+	public int bombRadius;
 
-	Controller keyHandler;
-	Loop gameLoop;
-	public int bombRadius, maxBombs;
+	/* How many bombs the player can place at the same time */
+	public int maxBombs;
+
+	/* The hp of the player */
 	public int health;
+
+	/* A flag to determine if the player is immune, and will not take damage */
 	public boolean immune;
+
+	/* The lives of the player */
 	public int lives;
 
-	public Bomberman(float posX, float posY, int width, int height, int speed, Controller keyHandler,
-			Loop gameLoop) {
-		super(posX, posY, width, height, speed, "assets/bomberman.png", false);
+	/* A flag to stop the animation if the player is not moving */
+	public boolean stop;
 
+	/* The keyboard keys pressed, determines movement, see Controller.java */
+	public ArrayList<String> keys;
+
+	/* The indexes on the grid */
+	private int gridX = 1;
+	private int gridY = 1;
+
+	/* The tile on which the player was */
+	private TileType prevTile = TileType.Empty;
+
+	/* The score of the player */
+	public int score;
+	public String direction;
+
+	public Bomberman(int posX, int posY) {
+		/* Pass everything to the superclass Entity */
+		super(posX, posY, 30, 30, 5, new Sprite("bomberman", 6.3, 5, "down",
+				new SpriteAnimation[] {
+						new SpriteAnimation("left", 3, 0, 10),
+						new SpriteAnimation("down", 3, 1, 10),
+						new SpriteAnimation("right", 3, 2, 10),
+						new SpriteAnimation("up", 3, 3, 10),
+						new SpriteAnimation("death", 6, 4, 10)
+				},
+				2.5f));
+
+		/* Set the props to their initial states */
+		this.keys = new ArrayList<>();
+		this.health = 3;
 		this.maxBombs = 3;
-		this.gameLoop = gameLoop;
-		this.keyHandler = keyHandler;
-		this.bombRadius = 3;
-		this.health = 5;
-		this.immune = false;
-		this.lives = 3;
-		this.direction = "up";
-
-		super.setScale(2.5f);
-		super.addAnimation("left", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 0, 3, 10));
-		super.addAnimation("down", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 1, 3, 10));
-		super.addAnimation("right", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 2, 3, 10));
-		super.addAnimation("up", new SpriteAnimation(this.spritesheet, 5, 6.3, this.scale, 3, 3, 10));
-
+		this.bombRadius = 2;
+		this.lives = 5;
+		this.score = 0;
 	}
 
+	public void die() {
+		this.keys.clear();
+		this.lives--;
+		this.sprite.setAnimation("death");
+		this.dead = true;
+		Loop.build().removeController();
+		this.sprite.width = (int) (this.sprite.spritesheet.getWidth() / 6);
+	}
+
+	/*
+	 * Place the bomb at a normalised given position, and set the grid tile to bomb
+	 */
+	public void placeBomb() {
+		BombManager bombManager = BombManager.build();
+		int[] pos = Utils.normalizePos(this.posX, this.posY);
+		if (bombManager.bombs.size() >= this.maxBombs) {
+			return;
+		}
+		// if the bomb is already there, don't add it
+		int i = pos[1] / Consts.tileDims;
+		int j = pos[0] / Consts.tileDims;
+		if (TileManager.build().grid[i][j] == TileType.Bomb)
+			return;
+
+		bombManager.addBomb(new Bomb(pos[0], pos[1], this.bombRadius));
+	}
+
+	/* Damage the player */
 	public void dealDamage(int damage) {
 		if (!immune) {
 			health -= damage;
@@ -45,86 +101,118 @@ public class Bomberman extends Entity {
 		}
 	}
 
-	public void update() {
+	public void update(int elapsed) {
+
+		CollisionChecker.build().Collision_To_check();
+
+		if (this.dead) {
+			if (this.sprite.current < this.sprite.currentAnimation.maxFrames - 1) {
+				this.sprite.update(elapsed);
+			} else {
+				this.sprite.current = this.sprite.currentAnimation.maxFrames - 1;
+				if (this.lives > 0) {
+					this.posX = 50;
+					this.posY = 50;
+					this.dead = false;
+					this.sprite.setAnimation("down");
+					Loop.build().addController();
+					this.sprite.width = (int) (this.sprite.spritesheet.getWidth() / 6.3);
+				}
+
+			}
+			return;
+		}
 
 		// TODO: sarebbe un po' piu organizzato creare un metodo fatto apposta nel
 		// collision checker per il movimento del player.
 		// probabilmente si potrebbe anche comprimere un po'.
+		this.sprite.update(elapsed);
+		this.speed = 5;
 
-		super.updateSprite();
+		if (!this.keys.isEmpty()) {
 
-		if (!keyHandler.buttonPriorities.isEmpty()) {
+			TileManager tileManager = TileManager.build();
 
-			super.isAnimated = true;
-			switch (keyHandler.buttonPriorities.get(0)) {
+			/* Update the player position on the grid */
+			int prevX = this.gridX;
+			int prevY = this.gridY;
+			int[] normPos = Utils.normalizePos((int) (this.posX + this.width * 0.5), (int) (this.posY + this.height * 0.5));
+			this.gridX = normPos[0] / Consts.tileDims;
+			this.gridY = normPos[1] / Consts.tileDims;
+
+			/* Reset the tile on which the player was to what was originally */
+			if (prevX != this.gridX || prevY != this.gridY) {
+				if (tileManager.grid[prevY][prevX] == TileType.Bomberman) {
+					tileManager.grid[prevY][prevX] = this.prevTile;
+				}
+				this.prevTile = tileManager.grid[this.gridY][this.gridX];
+			}
+			direction = "";
+			this.stop = false;
+
+			switch (this.keys.get(0)) {
 				case "A":
-					for (Entity entity : CollisionChecker.adjacentEntities) {
-						if (entity == null)
-							continue;
-						if (CollisionChecker.checkCollision(entity, this, "left")) {
-							posX = entity.posX + entity.width + 2;
-							posX += speed;
-							break;
-						}
-					}
+
 					posX -= speed;
 					direction = "left";
 					break;
+
 				case "D":
-					for (Entity entity : CollisionChecker.adjacentEntities) {
-						if (entity == null)
-							continue;
-						if (CollisionChecker.checkCollision(entity, this, "right")) {
-							posX = entity.posX - width - 1;
-							posX -= speed;
-							break;
-						}
-					}
+
 					posX += speed;
 					direction = "right";
 					break;
+
 				case "W":
-					for (Entity entity : CollisionChecker.adjacentEntities) {
-						if (entity == null)
-							continue;
-						if (CollisionChecker.checkCollision(entity, this, "up")) {
-							posY = entity.posY + entity.height + 2;
-							posY += speed;
-							break;
-						}
-					}
+
 					posY -= speed;
 					direction = "up";
 					break;
+
 				case "S":
-					for (Entity entity : CollisionChecker.adjacentEntities) {
-						if (entity == null)
-							continue;
-						if (CollisionChecker.checkCollision(entity, this, "down")) {
-							posY = entity.posY - height - 1;
-							posY -= speed;
-							break;
-						}
-					}
+
 					posY += speed;
 					direction = "down";
 					break;
 			}
-
-			super.setAnimation(direction);
 		} else {
-			super.isAnimated = false;
-			super.currentAnimation.currentFrame = 1;
+			/* Stop the animation */
+			this.stop = true;
+			this.sprite.current = 1;
 		}
+
+		if (this.prevTile == TileType.Enemy) {
+			this.prevTile = TileType.Empty;
+		}
+
+		TileManager.build().grid[this.gridY][this.gridX] = TileType.Bomberman;
 	}
 
 	public void render(Graphics2D g2d) {
-		super.drawSprite(g2d, (int) this.posX, (int) this.posY - 30);
+		this.sprite.draw(g2d, (int) this.posX, (int) this.posY - 30);
+
+		// WritableRaster raster = this.sprite.spritesheet.getRaster();
+
+		/*
+		 * for (int i = 0; i < this.sprite.spritesheet.getWidth(); i++) {
+		 * for (int j = 0; j < this.sprite.spritesheet.getHeight(); j++) {
+		 * int[] pixels = raster.getPixel(i, j, (int[]) null);
+		 * if (pixels[0] == 0 && pixels[1] == 0 && pixels[2] == 0)
+		 * continue;
+		 * pixels[0] = 255;
+		 * pixels[1] = 255;
+		 * pixels[2] = 255;
+		 * raster.setPixel(i, j, pixels);
+		 * }
+		 * }
+		 */
+
 		// draw the health bar above the player with 5 squares for each health point
 
 		// draw the hitbox as a gray square
-		// g2d.setColor(Color.GRAY);
-		// g2d.fillRect((int) posX, (int) posY, width, height);
+
+		g2d.setColor(Color.GRAY);
+		g2d.fillRect(posX, posY, width, height);
 
 		g2d.setColor(Color.RED);
 		g2d.fillRect((int) posX - 15, (int) posY - 20, 5 * 10, 5);

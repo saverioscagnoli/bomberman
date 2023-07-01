@@ -4,33 +4,27 @@ import java.awt.Graphics2D;
 
 import ui.Sprite;
 
-public class Entity extends Sprite {
+public abstract class Entity {
     public boolean isSolid = false;
-    public float posX, posY;
+    public int posX, posY;
     public int width, height;
     public int speed;
-    public String direction;
-    public int spriteCounter = 0;
-    public int spriteNum = 1;
+    public Sprite sprite;
     public boolean dead;
 
-    public Entity(float posX, float posY, int width, int height, int speed, String src, boolean isStatic) {
-        super(src, isStatic);
+    public Entity(int posX, int posY, int width, int height, int speed, Sprite sprite) {
         this.posX = posX;
         this.posY = posY;
         this.width = width;
         this.height = height;
         this.speed = speed;
+        this.sprite = sprite;
         this.dead = false;
     }
 
-    public void die() {
-        this.dead = true;
-    }
+    public abstract void die();
 
-    public void update() {
-    }
+    public abstract void update(int elapsed);
 
-    public void render(Graphics2D g2d) {
-    }
+    public abstract void render(Graphics2D g2d);
 }
