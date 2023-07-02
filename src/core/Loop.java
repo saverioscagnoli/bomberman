@@ -287,6 +287,7 @@ public class Loop extends JPanel implements Runnable {
         og2d.drawLine(x1, y1, x2, y2);
 
         og2d.dispose();
+        System.out.println(bomberman.lives);
         break;
       }
     }
