@@ -1,9 +1,13 @@
 package entities;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
-
+import core.Loop;
+import entities.enemies.Denkyun;
+import managers.TileManager;
 import ui.Sprite;
+import ui.SpriteAnimation;
+import util.Consts;
+import util.TileType;
 import util.Utils;
 
 public class Enemy extends Entity {
@@ -11,11 +15,16 @@ public class Enemy extends Entity {
 	/* The direction of the enemy */
 	protected String direction;
 
+	protected int gridX;
+	protected int gridY;
+
 	/* The hp of the enemy */
 	public int health;
 
 	/* A flag to determine if the enemy is immune, and will not take damage */
 	public boolean immune = false;
+
+	protected boolean stop = false;
 
 	public Enemy(int posX, int posY, int width, int height, int speed, Sprite sprite) {
 		super(posX, posY, width, height, speed, sprite);
@@ -24,39 +33,50 @@ public class Enemy extends Entity {
 		// sets a random direction between right, left, up, down
 		String[] directions = { "right", "left", "up", "down" };
 		this.direction = Utils.pick(directions);
+		this.stop = false;
+
+		this.gridX = posX / Consts.tileDims;
+		this.gridY = posY / Consts.tileDims;
 	}
 
 	public void die() {
 		this.dead = true;
+		TileManager.build().grid[this.gridY][this.gridX] = TileType.Empty;
 	}
 
 	/* Deals damage to the enemy */
 	public void dealDamage(int damage) {
-		if (!immune) {
-			health -= damage;
-			immune = true;
-			Utils.setTimeout(() -> immune = false, 100);
-			System.out.println(this + " health: " + health);
-			if (health <= 0) {
-				this.die();
-			}
+		if (immune || this.dead)
+			return;
+		health -= damage;
+		immune = true;
+		Utils.setTimeout(() -> immune = false, 100);
+		System.out.println(this + " health: " + health);
+		if (health <= 0) {
+			this.stop = true;
+			Utils.setTimeout(() -> {
+				Utils.playSound("assets/sounds/enemy-dies.wav");
+				this.sprite = new Sprite("enemy-explosion", 7.9, 1, "explosion", new SpriteAnimation[] {
+						new SpriteAnimation("explosion", 7, 0, 7)
+				}, 2.5f);
+				Denkyun e = (Denkyun) this;
+				Loop.build().bomberman.score += e.score;
+				Loop.build().overlay.repaint();
+			}, 1000);
 		}
+
 	}
 
 	public void update(int elapsed) {
+		if (this.sprite.currentAnimation.name == "explosion"
+				&& this.sprite.current == this.sprite.currentAnimation.maxFrames - 1) {
+			this.die();
+			return;
+		}
 		this.sprite.update(elapsed);
 	}
 
 	public void render(Graphics2D g2d) {
-		this.sprite.draw(g2d, (int) this.posX, (int) this.posY);
-		// draw the as red (debug purpose)
-		// g2d.setColor(Color.RED);
-		// g2d.fillRect((int) posX, (int) posY, width, height);
 
-		// draw an health bar
-		g2d.setColor(Color.RED);
-		g2d.fillRect((int) posX - 15, (int) posY - 20, 5 * 10, 5);
-		g2d.setColor(Color.GREEN);
-		g2d.fillRect((int) posX - 15, (int) posY - 20, health * 10, 5);
 	}
 }

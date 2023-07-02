@@ -8,6 +8,8 @@ import core.Loop;
 import ui.Sprite;
 import ui.SpriteAnimation;
 import managers.BombManager;
+import managers.EnemyManager;
+import managers.SaveManager;
 import managers.TileManager;
 import util.*;
 
@@ -44,6 +46,8 @@ public class Bomberman extends Entity {
 	public int score;
 	public String direction;
 
+	private boolean won;
+
 	public Bomberman(int posX, int posY) {
 		/* Pass everything to the superclass Entity */
 		super(posX, posY, 30, 30, 5, new Sprite("bomberman", 6.3, 5, "down",
@@ -59,10 +63,11 @@ public class Bomberman extends Entity {
 		/* Set the props to their initial states */
 		this.keys = new ArrayList<>();
 		this.health = 1;
-		this.maxBombs = 3;
-		this.bombRadius = 2;
+		this.maxBombs = 100;
+		this.bombRadius = 5;
 		this.lives = 5;
 		this.score = 0;
+		this.won = false;
 	}
 
 	public void die() {
@@ -71,7 +76,11 @@ public class Bomberman extends Entity {
 		this.sprite.setAnimation("death");
 		this.dead = true;
 		Loop.build().removeController();
+		Loop.build().overlay.repaint();
 		this.sprite.width = (int) (this.sprite.spritesheet.getWidth() / 6);
+		if (this.lives == 0) {
+			SaveManager.incrementLosses();
+		}
 	}
 
 	/*
@@ -101,9 +110,34 @@ public class Bomberman extends Entity {
 		}
 	}
 
+	private void win() {
+		this.won = true;
+		this.sprite = new Sprite("bomberman-hatch", 9, 1, "idle", new SpriteAnimation[] {
+				new SpriteAnimation("idle", 9, 0, 10)
+		}, 2.5f);
+		SaveManager.incrementLevel();
+		SaveManager.incrementWins();
+		Loop.build().removeController();
+	}
+
 	public void update(int elapsed) {
 
+		if (this.won) {
+			if (this.sprite.current < this.sprite.currentAnimation.maxFrames - 1) {
+				this.sprite.update(elapsed);
+			}
+			return;
+		}
+
 		CollisionChecker.build().Collision_To_check();
+
+		if (this.prevTile == TileType.Hatch) {
+			if (EnemyManager.build().enemies.size() == 0) {
+				if (!this.won) {
+					this.win();
+				}
+			}
+		}
 
 		if (this.dead) {
 			if (this.sprite.current < this.sprite.currentAnimation.maxFrames - 1) {
@@ -118,7 +152,6 @@ public class Bomberman extends Entity {
 					Loop.build().addController();
 					this.sprite.width = (int) (this.sprite.spritesheet.getWidth() / 6.3);
 				}
-
 			}
 			return;
 		}

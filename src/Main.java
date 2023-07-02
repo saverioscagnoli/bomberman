@@ -6,12 +6,14 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import core.Loop;
+import managers.SaveManager;
 import util.Consts;
 import util.Utils;
 
 class Main {
     public static void main(String[] args) throws IOException {
         JFrame win = new JFrame("Super Bomberman");
+        SaveManager.resetLevel();
 
         win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         win.setResizable(false);

@@ -30,7 +30,7 @@ public class Loop extends JPanel implements Runnable {
   private boolean running;
 
   /* The JPanel that contains points and lives */
-  private JPanel overlay;
+  public JPanel overlay;
 
   /* The main menu background image saved to improve performance */
   private BufferedImage menuBg;
@@ -273,7 +273,7 @@ public class Loop extends JPanel implements Runnable {
           /* Draw the points and lives */
           og2d.setColor(Color.BLACK);
           og2d.drawString("" + this.bomberman.lives, 50, 75);
-          og2d.drawString("" + this.bomberman.score, this.getWidth() - 75, 75);
+          og2d.drawString("" + this.bomberman.score, this.getWidth() - 100, 75);
         }
 
         /* Draw the line at the bottom of the overlay to separate the game */
