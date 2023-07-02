@@ -6,6 +6,7 @@ import managers.BombManager;
 import managers.TileManager;
 import ui.Sprite;
 import ui.SpriteAnimation;
+import util.CollisionChecker;
 import util.Consts;
 import util.TileType;
 import util.Utils;
@@ -143,6 +144,7 @@ public class Bomb extends Entity {
 
 							/* Set the grid position to empty */
 							TileManager.build().grid[y][x] = TileType.Empty;
+							CollisionChecker.build().update_Centered_Collisions();
 							break;
 						} else {
 							BombManager.build().addExplosion(ex);

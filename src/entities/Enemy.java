@@ -35,7 +35,7 @@ public class Enemy extends Entity {
 		if (!immune) {
 			health -= damage;
 			immune = true;
-			Utils.setTimeout(() -> immune = false, 30);
+			Utils.setTimeout(() -> immune = false, 100);
 			System.out.println(this + " health: " + health);
 			if (health <= 0) {
 				this.die();
