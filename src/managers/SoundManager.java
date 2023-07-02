@@ -32,6 +32,11 @@ public class SoundManager {
                 this.clip.loop(Clip.LOOP_CONTINUOUSLY);
                 break;
             }
+            case Stats: {
+                this.clip = Utils.playSound(Consts.soundPath + "stats.wav");
+                this.clip.loop(Clip.LOOP_CONTINUOUSLY);
+                break;
+            }
             case InGame: {
                 this.clip = Utils.playSound(Consts.soundPath + "level-1.wav");
                 this.clip.loop(Clip.LOOP_CONTINUOUSLY);

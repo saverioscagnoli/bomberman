@@ -3,6 +3,7 @@ package entities;
 import java.awt.Graphics2D;
 import core.Loop;
 import entities.enemies.Denkyun;
+import managers.SaveManager;
 import managers.TileManager;
 import ui.Sprite;
 import ui.SpriteAnimation;
@@ -61,6 +62,7 @@ public class Enemy extends Entity {
 				}, 2.5f);
 				Denkyun e = (Denkyun) this;
 				Loop.build().bomberman.score += e.score;
+				SaveManager.incrementScore(e.score);
 				Loop.build().overlay.repaint();
 			}, 1000);
 		}
@@ -68,12 +70,23 @@ public class Enemy extends Entity {
 	}
 
 	public void update(int elapsed) {
+		if (Loop.build().bomberman.dead)
+			return;
 		if (this.sprite.currentAnimation.name == "explosion"
 				&& this.sprite.current == this.sprite.currentAnimation.maxFrames - 1) {
 			this.die();
 			return;
 		}
 		this.sprite.update(elapsed);
+
+		// checking AABB collision with the player
+
+		if (this.posX + this.width > Loop.build().bomberman.posX
+				&& this.posX < Loop.build().bomberman.posX + Loop.build().bomberman.width
+				&& this.posY + this.height > Loop.build().bomberman.posY
+				&& this.posY < Loop.build().bomberman.posY + Loop.build().bomberman.height) {
+			Loop.build().bomberman.die();
+		}
 	}
 
 	public void render(Graphics2D g2d) {

@@ -44,6 +44,8 @@ public class MenuHandler extends MouseAdapter implements KeyListener {
         if (this.loop.gameState == GameState.Menu) {
           if (this.loop.arrowY == 555) {
             this.loop.setState(GameState.InGame);
+          } else {
+            this.loop.setState(GameState.Stats);
           }
         }
         break;
@@ -56,6 +58,8 @@ public class MenuHandler extends MouseAdapter implements KeyListener {
           this.loop.setState(GameState.Pause);
         } else if (this.loop.gameState == GameState.Menu) {
           System.exit(0);
+        } else if (this.loop.gameState == GameState.Stats) {
+          this.loop.setState(GameState.Menu);
         }
         break;
       }

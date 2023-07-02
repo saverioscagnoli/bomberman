@@ -4,5 +4,6 @@
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
     "editor.tabSize": 2
-  }
+  },
+  "java.debug.settings.onBuildFailureProceed": true
 }

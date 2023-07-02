@@ -72,4 +72,11 @@ public abstract class SaveManager {
     data.put("losses", "" + (losses + 1));
     SaveManager.writeProgress(data);
   }
+
+  public static void incrementScore(int score) {
+    HashMap<String, String> data = SaveManager.readProgress();
+    int oldscore = Integer.parseInt(data.get("score"));
+    data.put("score", "" + (oldscore + score));
+    SaveManager.writeProgress(data);
+  }
 }

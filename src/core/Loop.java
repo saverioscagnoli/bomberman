@@ -7,6 +7,7 @@ import managers.BombManager;
 import managers.EnemyManager;
 import managers.SoundManager;
 import managers.PowerupManager;
+import managers.SaveManager;
 import managers.TileManager;
 import java.awt.*;
 import util.Consts;
@@ -35,6 +36,7 @@ public class Loop extends JPanel implements Runnable {
   /* The main menu background image saved to improve performance */
   private BufferedImage menuBg;
   private BufferedImage menuArrow;
+  private BufferedImage statsBg;
   public int arrowY;
 
   /* The elapsed frames from the start of the game */
@@ -66,6 +68,7 @@ public class Loop extends JPanel implements Runnable {
     this.gameState = GameState.Menu;
     this.menuBg = Utils.loadImage("assets/title-screen.png");
     this.menuArrow = Utils.loadImage("assets/menu-arrow.png");
+    this.statsBg = Utils.loadImage("assets/Stats.png");
     this.arrowY = 555;
     this.elapsed = 0;
     this.running = false;
@@ -115,8 +118,6 @@ public class Loop extends JPanel implements Runnable {
   /* The function that creates the main menu */
   private void createMainMenu() {
     this.removeAll();
-    this.addKeyListener(this.menuHandler);
-
     this.revalidate();
     this.repaint();
   }
@@ -134,6 +135,10 @@ public class Loop extends JPanel implements Runnable {
     switch (this.gameState) {
       case Menu: {
         this.createMainMenu();
+        break;
+      }
+      case Stats: {
+        SoundManager.build().ost(gameState);
         break;
       }
       case InGame: {
@@ -243,9 +248,18 @@ public class Loop extends JPanel implements Runnable {
     /* Render according to the game state */
     switch (this.gameState) {
       case Menu: {
-
         g2d.drawImage(this.menuBg, 0, 0, this.getWidth(), this.getHeight(), null);
         g2d.drawImage(this.menuArrow, 190, this.arrowY, 30, 50, null);
+        break;
+      }
+      case Stats: {
+        g2d.drawImage(this.statsBg, 0, 0, this.getWidth(), this.getHeight(), null);
+        System.out.println(SaveManager.readProgress().get("wins"));
+        g2d.setFont(Utils.loadFont(60f));
+        g2d.setColor(Color.BLACK);
+        g2d.drawString("" + SaveManager.readProgress().get("losses"), this.getWidth() - 210, 234);
+        g2d.drawString("" + SaveManager.readProgress().get("wins"), this.getWidth() - 160, 380);
+        g2d.drawString("" + SaveManager.readProgress().get("score"), this.getWidth() - 160 - 297, 380 + 200);
         break;
       }
       case InGame:
@@ -273,7 +287,8 @@ public class Loop extends JPanel implements Runnable {
           /* Draw the points and lives */
           og2d.setColor(Color.BLACK);
           og2d.drawString("" + this.bomberman.lives, 50, 75);
-          og2d.drawString("" + this.bomberman.score, this.getWidth() - 100, 75);
+          int scoreLength = String.valueOf(this.bomberman.score).length();
+          og2d.drawString("" + this.bomberman.score, this.getWidth() - 75 - scoreLength * 33, 75);
         }
 
         /* Draw the line at the bottom of the overlay to separate the game */
@@ -287,7 +302,6 @@ public class Loop extends JPanel implements Runnable {
         og2d.drawLine(x1, y1, x2, y2);
 
         og2d.dispose();
-        System.out.println(bomberman.lives);
         break;
       }
     }
