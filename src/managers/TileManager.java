@@ -26,6 +26,8 @@ public class TileManager {
     /* An arraylist that contains only the backround tiles */
     public ArrayList<Tile> basicTiles;
 
+    public Tile hatch;
+
     private TileManager() {
         /* Set all the initial properties */
         int rows = (int) Consts.screenWidth / Consts.tileDims;
@@ -155,11 +157,18 @@ public class TileManager {
                 this.addBasicTile(new Tile(x, y, false, src));
             }
         }
+
+        Tile tileWithHatch = this.walls.get(Utils.rng(0, this.walls.size() - 1));
+        while (!tileWithHatch.destructable) {
+            tileWithHatch = this.walls.get(Utils.rng(0, this.walls.size() - 1));
+        }
+        this.hatch = new Tile(tileWithHatch.posX, tileWithHatch.posY);
     }
 
     /* Update all the tiles at once */
     public void updateTiles(int elapsed) {
         ArrayList<Tile> toRemove = new ArrayList<>();
+        this.hatch.update(elapsed);
         for (Tile tile : this.walls) {
             if (tile.destructable) {
                 if (tile.dead) {
@@ -177,6 +186,7 @@ public class TileManager {
     /* Draw all the tiles at once */
     public void drawBasicTiles(Graphics2D g2d) {
         Iterator<Tile> it = this.walls.iterator();
+        this.hatch.render(g2d);
         while (it.hasNext()) {
             Tile walls = it.next();
             if (!walls.dead) {

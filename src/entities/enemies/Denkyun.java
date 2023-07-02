@@ -13,8 +13,7 @@ import util.TileType;
 import util.Utils;
 
 public class Denkyun extends Enemy {
-	private int gridX;
-	private int gridY;
+	public int score = 100;
 	private TileType prevTile;
 
 	public Denkyun(int posX, int posY, int speed) {
@@ -28,8 +27,6 @@ public class Denkyun extends Enemy {
 		this.health = 2;
 		this.direction = Utils.pick(new String[] { "up", "down", "left", "right" });
 		this.sprite.setAnimation(this.direction);
-		this.gridX = posX / Consts.tileDims;
-		this.gridY = posY / Consts.tileDims;
 		this.prevTile = TileType.Empty;
 	}
 
@@ -55,6 +52,9 @@ public class Denkyun extends Enemy {
 		// the enemy moves in a direction until it hits a wall, then it changes
 		// direction
 		super.update(elapsed);
+
+		if (this.stop)
+			return;
 
 		switch (this.direction) {
 			case "up": {
@@ -142,7 +142,10 @@ public class Denkyun extends Enemy {
 	}
 
 	public void render(Graphics2D g2d) {
-		// draw hitbox as blue box (debug purpose)
-		this.sprite.draw(g2d, posX - 5, posY - 15);
+		int offsetY = 0;
+		if (this.sprite.currentAnimation.name == "explosion") {
+			offsetY = -30;
+		}
+		this.sprite.draw(g2d, posX - 5, posY - 15 + offsetY);
 	}
 }

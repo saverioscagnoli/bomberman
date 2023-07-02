@@ -87,7 +87,7 @@ public class Bomb extends Entity {
 		/* If the bomb already exploded (touched by another bomb) */
 		if (this.dead)
 			return;
-		Explosion[][] explosionMatrix = new Explosion[4][5];
+		Explosion[][] explosionMatrix = new Explosion[4][10];
 		int r = Loop.build().bomberman.bombRadius;
 
 		Utils.playSound(Consts.soundPath + "bomb-explosion.wav");

@@ -1,8 +1,6 @@
 package entities;
 
 import java.awt.Graphics2D;
-import java.util.ArrayList;
-
 import entities.bosses.ClownMask;
 import managers.EnemyManager;
 import ui.Sprite;
@@ -62,7 +60,9 @@ public class Explosion extends Entity {
 					}
 					if (AABB_player) {
 						// Collision occurred
-						player.die();
+						if (!player.dead) {
+							player.die();
+						}
 					}
 				}
 			}
