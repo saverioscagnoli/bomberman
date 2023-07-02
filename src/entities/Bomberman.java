@@ -2,6 +2,7 @@ package entities;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 
 import core.Loop;
@@ -50,7 +51,7 @@ public class Bomberman extends Entity {
 
 	public Bomberman(int posX, int posY) {
 		/* Pass everything to the superclass Entity */
-		super(posX, posY, 30, 30, 5, new Sprite("bomberman", 6.3, 5, "down",
+		super(posX, posY, 20, 20, 5, new Sprite("bomberman", 6.3, 5, "down",
 				new SpriteAnimation[] {
 						new SpriteAnimation("left", 3, 0, 10),
 						new SpriteAnimation("down", 3, 1, 10),
@@ -222,23 +223,21 @@ public class Bomberman extends Entity {
 	}
 
 	public void render(Graphics2D g2d) {
-		this.sprite.draw(g2d, (int) this.posX, (int) this.posY - 30);
+		this.sprite.draw(g2d, (int) this.posX - 10, (int) this.posY - 35);
 
-		// WritableRaster raster = this.sprite.spritesheet.getRaster();
+		WritableRaster raster = this.sprite.spritesheet.getRaster();
 
-		/*
-		 * for (int i = 0; i < this.sprite.spritesheet.getWidth(); i++) {
-		 * for (int j = 0; j < this.sprite.spritesheet.getHeight(); j++) {
-		 * int[] pixels = raster.getPixel(i, j, (int[]) null);
-		 * if (pixels[0] == 0 && pixels[1] == 0 && pixels[2] == 0)
-		 * continue;
-		 * pixels[0] = 255;
-		 * pixels[1] = 255;
-		 * pixels[2] = 255;
-		 * raster.setPixel(i, j, pixels);
-		 * }
-		 * }
-		 */
+		for (int i = 0; i < this.sprite.spritesheet.getWidth(); i++) {
+			for (int j = 0; j < this.sprite.spritesheet.getHeight(); j++) {
+				int[] pixels = raster.getPixel(i, j, (int[]) null);
+				if (pixels[0] == 0 && pixels[1] == 0 && pixels[2] == 0)
+					continue;
+				pixels[0] = 255;
+				pixels[1] = 255;
+				pixels[2] = 255;
+				raster.setPixel(i, j, pixels);
+			}
+		}
 
 		// draw the health bar above the player with 5 squares for each health point
 
