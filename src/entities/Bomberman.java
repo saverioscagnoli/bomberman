@@ -58,7 +58,7 @@ public class Bomberman extends Entity {
 
 		/* Set the props to their initial states */
 		this.keys = new ArrayList<>();
-		this.health = 3;
+		this.health = 1;
 		this.maxBombs = 3;
 		this.bombRadius = 2;
 		this.lives = 5;
@@ -211,8 +211,8 @@ public class Bomberman extends Entity {
 
 		// draw the hitbox as a gray square
 
-		g2d.setColor(Color.GRAY);
-		g2d.fillRect(posX, posY, width, height);
+		// g2d.setColor(Color.GRAY);
+		// g2d.fillRect(posX, posY, width, height);
 
 		g2d.setColor(Color.RED);
 		g2d.fillRect((int) posX - 15, (int) posY - 20, 5 * 10, 5);

@@ -2,7 +2,6 @@ package managers;
 
 import java.util.ArrayList;
 import entities.Enemy;
-import entities.bosses.ClownMask;
 import entities.enemies.Denkyun;
 import util.Consts;
 import util.TileType;
