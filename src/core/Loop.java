@@ -260,6 +260,8 @@ public class Loop extends JPanel implements Runnable {
         g2d.drawString("" + SaveManager.readProgress().get("losses"), this.getWidth() - 210, 234);
         g2d.drawString("" + SaveManager.readProgress().get("wins"), this.getWidth() - 160, 380);
         g2d.drawString("" + SaveManager.readProgress().get("score"), this.getWidth() - 160 - 297, 380 + 200);
+        BufferedImage credits = Utils.loadImage("assets/guys.png");
+        g2d.drawImage(credits, 223, 643, credits.getWidth() * 3, credits.getHeight() * 3, null);
         break;
       }
       case InGame:
