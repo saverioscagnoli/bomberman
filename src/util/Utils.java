@@ -3,10 +3,13 @@ package util;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.imageio.ImageIO;
@@ -146,6 +149,13 @@ public abstract class Utils {
 
 	public static int lerp(int a, int b, double t) {
 		return (int) (a + (b - a) * t);
+	}
+
+	public static BufferedImage copyImage(BufferedImage img) {
+		ColorModel cm = img.getColorModel();
+		boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+		WritableRaster raster = img.copyData(null);
+		return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
 	}
 
 }

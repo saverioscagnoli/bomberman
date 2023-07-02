@@ -70,7 +70,9 @@ public class Enemy extends Entity {
 	}
 
 	public void update(int elapsed) {
-		if (Loop.build().bomberman.dead)
+		Bomberman bomberman = Loop.build().bomberman;
+
+		if (bomberman.dead)
 			return;
 		if (this.sprite.currentAnimation.name == "explosion"
 				&& this.sprite.current == this.sprite.currentAnimation.maxFrames - 1) {
@@ -81,11 +83,13 @@ public class Enemy extends Entity {
 
 		// checking AABB collision with the player
 
-		if (this.posX + this.width > Loop.build().bomberman.posX
-				&& this.posX < Loop.build().bomberman.posX + Loop.build().bomberman.width
-				&& this.posY + this.height > Loop.build().bomberman.posY
-				&& this.posY < Loop.build().bomberman.posY + Loop.build().bomberman.height) {
-			Loop.build().bomberman.die();
+		if (!bomberman.immune) {
+			if (this.posX + this.width > bomberman.posX
+					&& this.posX < bomberman.posX + bomberman.width
+					&& this.posY + this.height > bomberman.posY
+					&& this.posY < bomberman.posY + bomberman.height) {
+				bomberman.die();
+			}
 		}
 	}
 

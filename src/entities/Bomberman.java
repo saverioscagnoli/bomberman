@@ -2,6 +2,7 @@ package entities;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 
@@ -49,6 +50,9 @@ public class Bomberman extends Entity {
 
 	private boolean won;
 
+	private BufferedImage blinkImage;
+	private BufferedImage original;
+
 	public Bomberman(int posX, int posY) {
 		/* Pass everything to the superclass Entity */
 		super(posX, posY, 20, 20, 5, new Sprite("bomberman", 6.3, 5, "down",
@@ -69,6 +73,25 @@ public class Bomberman extends Entity {
 		this.lives = 5;
 		this.score = 0;
 		this.won = false;
+		this.original = this.sprite.spritesheet;
+		this.blinkImage = Utils.copyImage(this.sprite.spritesheet);
+		this.immune = true;
+
+		Utils.setTimeout(() -> this.immune = false, 15000);
+
+		WritableRaster raster = this.blinkImage.getRaster();
+
+		for (int i = 0; i < this.sprite.spritesheet.getWidth(); i++) {
+			for (int j = 0; j < this.sprite.spritesheet.getHeight(); j++) {
+				int[] pixels = raster.getPixel(i, j, (int[]) null);
+				if (pixels[0] == 0 && pixels[1] == 0 && pixels[2] == 0)
+					continue;
+				pixels[0] = 255;
+				pixels[1] = 255;
+				pixels[2] = 255;
+				raster.setPixel(i, j, pixels);
+			}
+		}
 	}
 
 	public void die() {
@@ -100,15 +123,6 @@ public class Bomberman extends Entity {
 			return;
 
 		bombManager.addBomb(new Bomb(pos[0], pos[1], this.bombRadius));
-	}
-
-	/* Damage the player */
-	public void dealDamage(int damage) {
-		if (!immune) {
-			health -= damage;
-			immune = true;
-			Utils.setTimeout(() -> immune = false, 1000);
-		}
 	}
 
 	private void win() {
@@ -152,6 +166,8 @@ public class Bomberman extends Entity {
 					this.sprite.setAnimation("down");
 					Loop.build().addController();
 					this.sprite.width = (int) (this.sprite.spritesheet.getWidth() / 6.3);
+					this.immune = true;
+					Utils.setTimeout(() -> this.immune = false, 10000);
 				}
 			}
 			return;
@@ -223,21 +239,12 @@ public class Bomberman extends Entity {
 	}
 
 	public void render(Graphics2D g2d) {
-		this.sprite.draw(g2d, (int) this.posX - 10, (int) this.posY - 35);
-
-		WritableRaster raster = this.sprite.spritesheet.getRaster();
-
-		for (int i = 0; i < this.sprite.spritesheet.getWidth(); i++) {
-			for (int j = 0; j < this.sprite.spritesheet.getHeight(); j++) {
-				int[] pixels = raster.getPixel(i, j, (int[]) null);
-				if (pixels[0] == 0 && pixels[1] == 0 && pixels[2] == 0)
-					continue;
-				pixels[0] = 255;
-				pixels[1] = 255;
-				pixels[2] = 255;
-				raster.setPixel(i, j, pixels);
-			}
+		if (immune && System.currentTimeMillis() / 100 % 2 == 0) {
+			this.sprite.spritesheet = blinkImage;
+		} else {
+			this.sprite.spritesheet = this.original;
 		}
+		this.sprite.draw(g2d, (int) this.posX - 10, (int) this.posY - 35);
 
 		// draw the health bar above the player with 5 squares for each health point
 

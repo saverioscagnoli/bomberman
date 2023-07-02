@@ -60,7 +60,7 @@ public class Explosion extends Entity {
 					}
 					if (AABB_player) {
 						// Collision occurred
-						if (!player.dead) {
+						if (!player.dead && !player.immune) {
 							player.die();
 						}
 					}
