@@ -11,6 +11,8 @@ import util.Consts;
 import util.Utils;
 
 class Main {
+    private static final boolean DEBUG = true;
+
     public static void main(String[] args) throws IOException {
         JFrame win = new JFrame("Super Bomberman");
         SaveManager.resetLevel();
@@ -36,6 +38,9 @@ class Main {
         win.setVisible(true);
 
         loop.requestFocus();
-        Utils.createDebugWindow();
+
+        if (DEBUG) {
+            Utils.createDebugWindow();
+        }
     }
 }

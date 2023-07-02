@@ -1,6 +1,7 @@
 package managers;
 
 import java.util.ArrayList;
+import java.util.List;
 import entities.Bomb;
 import entities.Explosion;
 import java.awt.Graphics2D;
@@ -78,9 +79,8 @@ public class BombManager {
 	}
 
 	public void drawExplosions(Graphics2D g2d) {
-		int l = this.explosions.size();
-		for (int i = 0; i < l; i++) {
-			Explosion ex = this.explosions.get(i);
+		List<Explosion> explosionsCopy = new ArrayList<>(this.explosions);
+		for (Explosion ex : explosionsCopy) {
 			if (!ex.dead) {
 				ex.render(g2d);
 			}
@@ -88,9 +88,8 @@ public class BombManager {
 	}
 
 	public void drawBombs(Graphics2D g2d) {
-		int l = this.bombs.size();
-		for (int i = 0; i < l; i++) {
-			Bomb b = this.bombs.get(i);
+		List<Bomb> bombsCopy = new ArrayList<>(this.bombs);
+		for (Bomb b : bombsCopy) {
 			if (!b.dead) {
 				b.render(g2d);
 			}

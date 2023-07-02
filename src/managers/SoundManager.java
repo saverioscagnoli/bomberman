@@ -46,6 +46,9 @@ public class SoundManager {
                 this.clip = Utils.playSound(Consts.soundPath + "pause.wav");
                 break;
             }
+            default: {
+                break;
+            }
         }
     }
 }

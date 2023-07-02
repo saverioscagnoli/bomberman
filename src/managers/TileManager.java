@@ -2,8 +2,7 @@ package managers;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.Iterator;
-
+import java.util.List;
 import entities.Tile;
 import ui.Sprite;
 import ui.SpriteAnimation;
@@ -184,26 +183,21 @@ public class TileManager {
     }
 
     /* Draw all the tiles at once */
-    public void drawBasicTiles(Graphics2D g2d) {
-        Iterator<Tile> it = this.walls.iterator();
+    public void drawWalls(Graphics2D g2d) {
         this.hatch.render(g2d);
-        while (it.hasNext()) {
-            Tile walls = it.next();
-            if (!walls.dead) {
-                walls.render(g2d);
-            } else {
-                it.remove();
+        List<Tile> wallsCopy = new ArrayList<>(this.walls);
+        for (Tile w : wallsCopy) {
+            if (!w.dead) {
+                w.render(g2d);
             }
         }
     }
 
-    /* Draw all the obstacles at once */
-    public void drawObstacles(Graphics2D g2d) {
+    public void drawBasic(Graphics2D g2d) {
         for (Tile basicTile : this.basicTiles) {
             if (!basicTile.dead) {
                 basicTile.render(g2d);
             }
         }
-
     }
 }

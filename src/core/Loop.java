@@ -154,6 +154,9 @@ public class Loop extends JPanel implements Runnable {
         this.bombManager.pauseBombs();
         break;
       }
+      default: {
+        break;
+      }
     }
 
     this.revalidate();
@@ -267,8 +270,8 @@ public class Loop extends JPanel implements Runnable {
       case InGame:
       case Pause: {
         /* Draw everything the game needs */
-        tileManager.drawObstacles(g2d);
-        tileManager.drawBasicTiles(g2d);
+        tileManager.drawBasic(g2d);
+        tileManager.drawWalls(g2d);
         bombManager.drawBombs(g2d);
         bombManager.drawExplosions(g2d);
         enemyManager.drawEnemies(g2d);
@@ -304,6 +307,9 @@ public class Loop extends JPanel implements Runnable {
         og2d.drawLine(x1, y1, x2, y2);
 
         og2d.dispose();
+        break;
+      }
+      default: {
         break;
       }
     }

@@ -1,6 +1,8 @@
 package managers;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import entities.Enemy;
 import entities.enemies.Denkyun;
 import util.Consts;
@@ -68,9 +70,8 @@ public class EnemyManager {
 	}
 
 	public void drawEnemies(Graphics2D g2d) {
-		int l = enemies.size();
-		for (int i = 0; i < l; i++) {
-			Enemy e = enemies.get(i);
+		List<Enemy> enemiesCopy = new ArrayList<>(this.enemies);
+		for (Enemy e : enemiesCopy) {
 			if (!e.dead) {
 				e.render(g2d);
 			}

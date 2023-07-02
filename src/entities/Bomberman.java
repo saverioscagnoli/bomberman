@@ -239,6 +239,12 @@ public class Bomberman extends Entity {
 	}
 
 	public void render(Graphics2D g2d) {
+		if (this.won) {
+			if (this.sprite.current == this.sprite.currentAnimation.maxFrames - 1) {
+				return;
+			}
+		}
+
 		if (immune && System.currentTimeMillis() / 100 % 2 == 0) {
 			this.sprite.spritesheet = blinkImage;
 		} else {
