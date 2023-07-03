@@ -68,7 +68,7 @@ public class Bomberman extends Entity {
 		/* Set the props to their initial states */
 		this.keys = new ArrayList<>();
 		this.health = 1;
-		this.maxBombs = 100;
+		this.maxBombs = 1;
 		this.bombRadius = 5;
 		this.lives = 5;
 		this.score = 0;
@@ -76,8 +76,6 @@ public class Bomberman extends Entity {
 		this.original = this.sprite.spritesheet;
 		this.blinkImage = Utils.copyImage(this.sprite.spritesheet);
 		this.immune = true;
-
-		Utils.setTimeout(() -> this.immune = false, 15000);
 
 		WritableRaster raster = this.blinkImage.getRaster();
 

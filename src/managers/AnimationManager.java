@@ -49,5 +49,9 @@ public class AnimationManager {
     spriteMap.put("enemy-explosion", Utils.loadImage(Consts.enemiesPath + "enemy-explosion.png"));
     spriteMap.put("hatch", Utils.loadImage(Consts.tilesPath + "hatch.png"));
     spriteMap.put("bomberman-hatch", Utils.loadImage("assets/bomberman-hatch.png"));
+    spriteMap.put("bomb+1", Utils.loadImage(Consts.powerupsPath + "bomb+1.png"));
+    spriteMap.put("radius+1", Utils.loadImage(Consts.powerupsPath + "radius+1.png"));
+    spriteMap.put("pass-through", Utils.loadImage(Consts.powerupsPath + "pass-through.png"));
+    spriteMap.put("lives+1", Utils.loadImage(Consts.powerupsPath + "lives+1.png"));
   }
 }

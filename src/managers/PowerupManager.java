@@ -1,10 +1,13 @@
 package managers;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import entities.*;
+import entities.powerups.BombPowerup;
+import entities.powerups.LivesPowerup;
+import entities.powerups.PassThroughPowerup;
+import entities.powerups.RadiusPowerup;
 
 /*
  * This class manages all the powerups. 
@@ -13,12 +16,20 @@ import entities.*;
  */
 
 public class PowerupManager {
-
 	public static PowerupManager instance = null;
 	public ArrayList<PowerUp> powerups;
+	public ArrayList<PowerUp> toRemove;
+	/*
+	 * Array to store all the classes. When instanciating a new powerup, it will be
+	 * randomly chosen in this array. If you want to add a powerup, just make a new
+	 * one in the powerups folder and add it here like the previous ones.
+	 * See the die function of the Tuile.java file.
+	 */
+	public Class<?>[] classes = { BombPowerup.class, RadiusPowerup.class, PassThroughPowerup.class, LivesPowerup.class };
 
 	private PowerupManager() {
 		this.powerups = new ArrayList<>();
+		this.toRemove = new ArrayList<>();
 	}
 
 	public static synchronized PowerupManager build() {
@@ -28,71 +39,22 @@ public class PowerupManager {
 		return instance;
 	}
 
-	public static void HandlePowerup(PowerUp p, Bomberman c) {
-		switch (p.name) {
-			case "speed": {
-				Runnable onPickup = () -> {
-					c.speed += 5;
-				};
-				Runnable onExpire = () -> {
-					c.speed -= 5;
-				};
-				p.onPickup(5000, onPickup, onExpire);
-			}
-				break;
-
-			case "bomb": {
-				Runnable onPickup = () -> {
-					if (c.bombRadius < 5) {
-						c.bombRadius += 1;
-					} // avoids having the bomb radius going above 5.
-				};
-				Runnable onExpire = () -> {
-				};
-				p.onPickup(5000, onPickup, onExpire);
-			}
-				break;
-
-			case "rain": {
-				Runnable onPickup = () -> {
-					for (Enemy e : EnemyManager.build().enemies) {
-						if (e instanceof Enemy) {
-							Enemy enemy = (Enemy) e;
-							enemy.dealDamage((int) enemy.health / 2);
-							System.out.println(enemy + " health: " + enemy.health);
-						}
-					}
-				};
-				Runnable onExpire = () -> {
-				};
-				p.onPickup(5000, onPickup, onExpire);
-			}
-		}
-	}
-
-	public static void RenderPowerup(Graphics2D g2d) {
-		// draw an orange rectangle for the powerup
-		for (PowerUp p : PowerupManager.build().powerups) {
-			p.render(g2d);
-		}
-	}
-
-	public static void UpdatePowerup(int elapsed) {
-		for (PowerUp p : PowerupManager.build().powerups) {
+	public void updatePowerup(int elapsed) {
+		for (PowerUp p : this.powerups) {
 			if (p.dead) {
-				PowerupManager.build().powerups.remove(p);
-				break;
+				this.toRemove.add(p);
 			} else {
 				p.update(elapsed);
 			}
 		}
+
+		this.toRemove.forEach(p -> this.powerups.remove(p));
 	}
 
-	public static void RenderMessage(PowerUp p, Graphics2D g2d) {
-		// draw a message above the powerup for 1 second
-		System.out.println("rendering message");
-		g2d.setColor(Color.BLACK);
-		g2d.drawString(p.name, (int) p.posX, (int) p.posY - 10);
+	public void drawPowerups(Graphics2D g2d) {
+		ArrayList<PowerUp> copy = new ArrayList<>(this.powerups);
+		for (PowerUp p : copy) {
+			p.render(g2d);
+		}
 	}
-
 }

@@ -142,6 +142,9 @@ public class Loop extends JPanel implements Runnable {
         break;
       }
       case InGame: {
+        if (this.bomberman.immune) {
+          Utils.setTimeout(() -> this.bomberman.immune = false, 15000);
+        }
         /* Start the thread and resume all the bombs */
         this.start();
         this.createOverlay();
@@ -238,7 +241,7 @@ public class Loop extends JPanel implements Runnable {
     bombManager.updateBombs(elapsed);
     bombManager.updateExplosions(elapsed);
     enemyManager.updateEnemies(elapsed);
-    PowerupManager.UpdatePowerup(elapsed);
+    powerupManager.updatePowerup(elapsed);
   }
 
   /* The function that renders everything needed on screen */
@@ -276,7 +279,7 @@ public class Loop extends JPanel implements Runnable {
         bombManager.drawExplosions(g2d);
         enemyManager.drawEnemies(g2d);
         bomberman.render(g2d);
-        PowerupManager.RenderPowerup(g2d);
+        powerupManager.drawPowerups(g2d);
 
         /* Draw the overlay */
         Graphics2D og2d = (Graphics2D) this.overlay.getGraphics();

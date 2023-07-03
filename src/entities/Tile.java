@@ -1,6 +1,8 @@
 package entities;
 
 import java.awt.Graphics2D;
+
+import managers.PowerupManager;
 import managers.TileManager;
 import ui.Sprite;
 import ui.SpriteAnimation;
@@ -68,6 +70,22 @@ public class Tile extends Entity {
 
     if (tileManager.hatch.posX == this.posX && tileManager.hatch.posY == this.posY) {
       tileManager.grid[y][x] = TileType.Hatch;
+    }
+
+    /* Spawn a random powerup */
+    if (Utils.rng(1, 10) <= 5) {
+      /* Get a randon powerup class */
+      Class<?> c = Utils.pick(PowerupManager.build().classes);
+      PowerUp p = null;
+      try {
+        /* Instanciate the random class */
+        p = (PowerUp) c.getDeclaredConstructor(int.class, int.class).newInstance(this.posX, this.posY);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      /* Add the powerups */
+      PowerupManager.build().powerups.add(p);
+      TileManager.build().grid[y][x] = TileType.PowerUp;
     }
   }
 

@@ -18,4 +18,5 @@ public abstract class Consts {
   public static final String soundPath = "assets/sounds/";
   public static final String bombPath = "assets/bomb/";
   public static final String enemiesPath = "assets/enemies/";
+  public static final String powerupsPath = "assets/powerups/";
 }
