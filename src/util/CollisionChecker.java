@@ -127,11 +127,9 @@ public class CollisionChecker {
 
 			for (PowerUp p : PowerupManager.build().powerups) {
 				// if one of the occupied tiles has a powerup, pick it up
-				if (p.posX == occupiedTiles[0][0] && p.posY == occupiedTiles[0][1]) {
-					p.onPickup();
-				}
 				if (p.posX == occupiedTiles[1][0] && p.posY == occupiedTiles[1][1]) {
 					p.onPickup();
+					Utils.playSound("assets/sounds/powerup.wav");
 				}
 			}
 		}

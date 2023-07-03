@@ -54,5 +54,6 @@ public class AnimationManager {
     spriteMap.put("pass-through", Utils.loadImage(Consts.powerupsPath + "pass-through.png"));
     spriteMap.put("lives+1", Utils.loadImage(Consts.powerupsPath + "lives+1.png"));
     spriteMap.put("Rollers", Utils.loadImage(Consts.powerupsPath + "Rollers.png"));
+    spriteMap.put("AcidRain", Utils.loadImage(Consts.powerupsPath + "AcidRain.png"));
   }
 }

@@ -40,7 +40,7 @@ public class Loop extends JPanel implements Runnable {
   public int arrowY;
 
   /* The elapsed frames from the start of the game */
-  private int elapsed;
+  public int elapsed;
 
   /* The current game state. See GameState.java */
   public GameState gameState;
