@@ -23,6 +23,8 @@ public class Sprite {
   /* The array of animations */
   public SpriteAnimation[] animations;
 
+  public int cycles;
+
   public Sprite(String spriteName, double abs, int rows, String currentAnimName, SpriteAnimation[] anims, float scale) {
     /* Set all the properties to their initial values */
     this.spritesheet = AnimationManager.build().getSprite(spriteName);
@@ -34,6 +36,7 @@ public class Sprite {
     if (this.animations != null) {
       this.setAnimation(currentAnimName);
     }
+    this.cycles = 0;
   }
 
   /* Set the current animation, given its name */
@@ -56,6 +59,9 @@ public class Sprite {
        * of the animation, reset it to 0
        */
       this.current = (this.current + 1) % this.currentAnimation.maxFrames;
+      if (this.current == 0) {
+        this.cycles++;
+      }
     }
   }
 

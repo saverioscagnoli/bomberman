@@ -39,6 +39,7 @@ public class Bomb extends Entity {
 		this.isSolid = true;
 		this.createdAt = System.currentTimeMillis();
 		this.pausedAt = 0;
+		Loop.build().bomberman.bombRadius = bombRadius;
 	}
 
 	/* Set the paused time of the bomb to now */
@@ -67,9 +68,7 @@ public class Bomb extends Entity {
 	public void die() {
 		this.explode();
 		this.dead = true;
-		int i = posY / Consts.tileDims;
-		int j = posX / Consts.tileDims;
-		TileManager.build().grid[i][j] = TileType.Empty;
+		TileManager.build().grid[this.gridY][this.gridX] = TileType.Empty;
 	}
 
 	@Override

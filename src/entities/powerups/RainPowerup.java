@@ -6,8 +6,6 @@ import entities.PowerUp;
 import managers.TileManager;
 import ui.Sprite;
 import ui.SpriteAnimation;
-import util.Consts;
-import util.TileType;
 
 public class RainPowerup extends PowerUp {
 
@@ -25,6 +23,6 @@ public class RainPowerup extends PowerUp {
 
     }
 
-    TileManager.build().grid[this.posY / Consts.tileDims][this.posX / Consts.tileDims] = TileType.Empty;
+    TileManager.build().grid[this.gridY][this.gridX] = this.prevTile;
   }
 }

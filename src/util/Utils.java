@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.imageio.ImageIO;
@@ -145,10 +144,6 @@ public abstract class Utils {
 				new DebugWindow();
 			}
 		});
-	}
-
-	public static int lerp(int a, int b, double t) {
-		return (int) (a + (b - a) * t);
 	}
 
 	public static BufferedImage copyImage(BufferedImage img) {

@@ -21,7 +21,7 @@ import util.Utils;
 public class Loop extends JPanel implements Runnable {
   /* The instance for the singleton */
   private static Loop instance = null;
-  public static boolean changeButton = false;
+  public boolean isMouseChanging;
 
   /* The time to update the game loop */
   private static final long TARGET_FRAME_TIME = 1_000_000_000 / 60;
@@ -101,6 +101,7 @@ public class Loop extends JPanel implements Runnable {
         new SpriteAnimation("redButton", 2, 0, 30),
         new SpriteAnimation("greenButton", 2, 1, 30)
     }, 1);
+    this.isMouseChanging = false;
   }
 
   public static Loop build() {
@@ -256,6 +257,23 @@ public class Loop extends JPanel implements Runnable {
     bombManager.updateExplosions(elapsed);
     enemyManager.updateEnemies(elapsed);
     powerupManager.updatePowerup(elapsed);
+
+    if (this.isMouseChanging) {
+      this.buttonToggle.update(elapsed);
+      if (this.buttonToggle.currentAnimation.name == "redButton") {
+        if (this.buttonToggle.current == 0 && this.buttonToggle.cycles > 0) {
+          this.buttonToggle.cycles = 0;
+          this.buttonToggle.setAnimation("greenButton");
+          this.isMouseChanging = false;
+        }
+      } else {
+        if (this.buttonToggle.current == 0 && this.buttonToggle.cycles > 0) {
+          this.buttonToggle.cycles = 0;
+          this.buttonToggle.setAnimation("redButton");
+          this.isMouseChanging = false;
+        }
+      }
+    }
   }
 
   /* The function that renders everything needed on screen */
@@ -313,7 +331,7 @@ public class Loop extends JPanel implements Runnable {
           int scoreLength = String.valueOf(this.bomberman.score).length();
           og2d.drawString("" + this.bomberman.score, this.getWidth() - 75 - scoreLength * 33, 75);
         }
-        this.buttonToggle.draw(og2d, 589, 16, 100, 100);
+        this.buttonToggle.draw(og2d, 100, 14, 100, 100);
         /* Draw the line at the bottom of the overlay to separate the game */
         int x1 = 0;
         int x2 = this.overlay.getWidth();

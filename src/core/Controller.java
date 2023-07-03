@@ -86,7 +86,7 @@ public class Controller extends MouseAdapter implements KeyListener {
             }
             case KeyEvent.VK_M: {
                 MouseManager.build().enabled = !MouseManager.build().enabled;
-                Loop.build().changeButton = true;
+                Loop.build().isMouseChanging = !Loop.build().isMouseChanging;
                 break;
             }
 

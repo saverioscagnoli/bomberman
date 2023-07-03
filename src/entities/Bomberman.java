@@ -69,7 +69,7 @@ public class Bomberman extends Entity {
 		this.keys = new ArrayList<>();
 		this.health = 1;
 		this.maxBombs = 1;
-		this.bombRadius = 5;
+		this.bombRadius = 1;
 		this.lives = 5;
 		this.score = 0;
 		this.won = false;
@@ -102,6 +102,14 @@ public class Bomberman extends Entity {
 		this.sprite.width = (int) (this.sprite.spritesheet.getWidth() / 6);
 		if (this.lives == 0) {
 			SaveManager.incrementLosses();
+			// gameover
+		} else {
+			if (this.speed > 1) {
+				this.speed--;
+			}
+			if (!CollisionChecker.SolidTiles.contains(TileType.Obstacle)) {
+				CollisionChecker.SolidTiles.add(TileType.Obstacle);
+			}
 		}
 	}
 
@@ -110,17 +118,17 @@ public class Bomberman extends Entity {
 	 */
 	public void placeBomb() {
 		BombManager bombManager = BombManager.build();
-		int[] pos = Utils.normalizePos(this.posX, this.posY);
 		if (bombManager.bombs.size() >= this.maxBombs) {
 			return;
 		}
-		// if the bomb is already there, don't add it
-		int i = pos[1] / Consts.tileDims;
-		int j = pos[0] / Consts.tileDims;
-		if (TileManager.build().grid[i][j] == TileType.Bomb)
+		TileManager.build().grid[this.gridY][this.gridX] = TileType.Bomb;
+
+		if (this.prevTile != TileType.Empty)
 			return;
 
-		bombManager.addBomb(new Bomb(pos[0], pos[1], this.bombRadius));
+		int x = this.gridX * Consts.tileDims;
+		int y = this.gridY * Consts.tileDims;
+		bombManager.addBomb(new Bomb(x, y, this.bombRadius));
 	}
 
 	private void win() {

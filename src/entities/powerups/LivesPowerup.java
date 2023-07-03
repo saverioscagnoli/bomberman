@@ -5,9 +5,6 @@ import entities.PowerUp;
 import managers.TileManager;
 import ui.Sprite;
 import ui.SpriteAnimation;
-import util.Consts;
-import util.TileType;
-
 public class LivesPowerup extends PowerUp {
 
   public LivesPowerup(int posX, int posY) {
@@ -19,6 +16,7 @@ public class LivesPowerup extends PowerUp {
   public void onPickup() {
     this.die();
     Loop.build().bomberman.lives++;
-    TileManager.build().grid[this.posY / Consts.tileDims][this.posX / Consts.tileDims] = TileType.Empty;
+    TileManager.build().grid[this.gridY][this.gridX] = this.prevTile;
+    Loop.build().overlay.repaint();
   }
 }

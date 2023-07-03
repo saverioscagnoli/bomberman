@@ -5,8 +5,6 @@ import entities.PowerUp;
 import managers.TileManager;
 import ui.Sprite;
 import ui.SpriteAnimation;
-import util.Consts;
-import util.TileType;
 import util.Utils;
 
 public class VestPowerup extends PowerUp {
@@ -22,6 +20,6 @@ public class VestPowerup extends PowerUp {
     Utils.setTimeout(() -> {
       Loop.build().bomberman.immune = false;
     }, 8000);
-    TileManager.build().grid[this.posY / Consts.tileDims][this.posX / Consts.tileDims] = TileType.Empty;
+    TileManager.build().grid[this.gridY][this.gridX] = this.prevTile;
   }
 }

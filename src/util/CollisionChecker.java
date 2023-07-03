@@ -6,9 +6,9 @@ import entities.PowerUp;
 import managers.TileManager;
 import managers.PowerupManager;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.ArrayList;
 
 public class CollisionChecker {
 
@@ -20,7 +20,8 @@ public class CollisionChecker {
 	private final Bomberman loop_Bomberman = Loop.build().bomberman;
 	boolean newHorizontal_align;
 	boolean newVertical_align;
-	public static TileType[] SolidTiles = { TileType.Wall, TileType.Bomb, TileType.Obstacle };
+	public static ArrayList<TileType> SolidTiles = new ArrayList<>(
+			Arrays.asList(TileType.Bomb, TileType.Wall, TileType.Obstacle));
 
 	private boolean upSolid;
 	private boolean downSolid;
@@ -47,10 +48,10 @@ public class CollisionChecker {
 	public void update_Centered_Collisions() {
 		TileType[][] gameGrid = TileManager.build().grid;
 		savedPos = Utils.normalizeEntityPos(loop_Bomberman);
-		upSolid = Arrays.asList(SolidTiles).contains(gameGrid[(savedPos[1]) / 48 - 1][(savedPos[0]) / 48]);
-		downSolid = Arrays.asList(SolidTiles).contains(gameGrid[(savedPos[1]) / 48 + 1][(savedPos[0]) / 48]);
-		rightSolid = Arrays.asList(SolidTiles).contains(gameGrid[(savedPos[1]) / 48][(savedPos[0]) / 48 + 1]);
-		leftSolid = Arrays.asList(SolidTiles).contains(gameGrid[(savedPos[1]) / 48][(savedPos[0]) / 48 - 1]);
+		upSolid = SolidTiles.contains(gameGrid[(savedPos[1]) / 48 - 1][(savedPos[0]) / 48]);
+		downSolid = SolidTiles.contains(gameGrid[(savedPos[1]) / 48 + 1][(savedPos[0]) / 48]);
+		rightSolid = SolidTiles.contains(gameGrid[(savedPos[1]) / 48][(savedPos[0]) / 48 + 1]);
+		leftSolid = SolidTiles.contains(gameGrid[(savedPos[1]) / 48][(savedPos[0]) / 48 - 1]);
 	}
 
 	public void Collision_To_check() {
@@ -76,17 +77,17 @@ public class CollisionChecker {
 			}
 			// System.out.println(Arrays.deepToString(occupiedTiles));
 
-			upSolid = (Arrays.asList(SolidTiles)
+			upSolid = SolidTiles
 					.contains(TileManager.build().grid[occupiedTiles[0][1] / 48 - 1][occupiedTiles[0][0] / 48])
 					||
-					Arrays.asList(SolidTiles)
-							.contains(TileManager.build().grid[occupiedTiles[1][1] / 48 - 1][occupiedTiles[1][0] / 48]));
+					SolidTiles
+							.contains(TileManager.build().grid[occupiedTiles[1][1] / 48 - 1][occupiedTiles[1][0] / 48]);
 
-			downSolid = (Arrays.asList(SolidTiles)
+			downSolid = SolidTiles
 					.contains(TileManager.build().grid[occupiedTiles[0][1] / 48 + 1][occupiedTiles[0][0] / 48])
 					||
-					Arrays.asList(SolidTiles)
-							.contains(TileManager.build().grid[occupiedTiles[1][1] / 48 + 1][occupiedTiles[1][0] / 48]));
+					SolidTiles
+							.contains(TileManager.build().grid[occupiedTiles[1][1] / 48 + 1][occupiedTiles[1][0] / 48]);
 
 			for (PowerUp p : PowerupManager.build().powerups) {
 				// if one of the occupied tiles has a powerup, pick it up
@@ -111,17 +112,17 @@ public class CollisionChecker {
 				occupiedTiles = new int[][] { savedPos, { savedPos[0], savedPos[1] + 48 } };
 			}
 
-			rightSolid = (Arrays.asList(SolidTiles)
+			rightSolid = SolidTiles
 					.contains(TileManager.build().grid[occupiedTiles[0][1] / 48][occupiedTiles[0][0] / 48 + 1])
 					||
-					Arrays.asList(SolidTiles)
-							.contains(TileManager.build().grid[occupiedTiles[1][1] / 48][occupiedTiles[1][0] / 48 + 1]));
+					SolidTiles
+							.contains(TileManager.build().grid[occupiedTiles[1][1] / 48][occupiedTiles[1][0] / 48 + 1]);
 
-			leftSolid = (Arrays.asList(SolidTiles)
+			leftSolid = SolidTiles
 					.contains(TileManager.build().grid[occupiedTiles[0][1] / 48][occupiedTiles[0][0] / 48 - 1])
 					||
-					Arrays.asList(SolidTiles)
-							.contains(TileManager.build().grid[occupiedTiles[1][1] / 48][occupiedTiles[1][0] / 48 - 1]));
+					SolidTiles
+							.contains(TileManager.build().grid[occupiedTiles[1][1] / 48][occupiedTiles[1][0] / 48 - 1]);
 			// System.out.println("rightsolid : " + rightSolid + " leftsolid : "+
 			// leftSolid);
 
@@ -146,7 +147,7 @@ public class CollisionChecker {
 		if ((newHorizontal_align && newVertical_align)) {
 			/* collision check da fare in caso il player sia dentro un quadrato */
 			// TileType[][] gameGrid = TileManager.build().grid;
-			// System.out.println(Arrays.asList(SolidTiles).contains(gameGrid[1][2]));
+			// System.out.printlnSolidTiles.contains(gameGrid[1][2]));
 
 			// TODO : mettere uno switch per le direzioni
 			// TODO : aumentare di x pixel la tolleranza fra il blocco e il player.

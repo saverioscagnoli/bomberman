@@ -3,8 +3,6 @@ package managers;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-
-import core.Loop;
 import entities.*;
 import entities.powerups.BombPowerup;
 import entities.powerups.LivesPowerup;
@@ -14,7 +12,6 @@ import entities.powerups.RainPowerup;
 import entities.powerups.SkullPowerup;
 import entities.powerups.SpeedPowerup;
 import entities.powerups.VestPowerup;
-import util.Consts;
 import util.Utils;
 
 /*
