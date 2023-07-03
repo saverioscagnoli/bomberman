@@ -2,10 +2,13 @@ package util;
 
 import core.Loop;
 import entities.Bomberman;
+import entities.PowerUp;
 import managers.TileManager;
+import managers.PowerupManager;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.ArrayList;
 
 public class CollisionChecker {
 
@@ -71,7 +74,6 @@ public class CollisionChecker {
 			else { // if going right
 				occupiedTiles = new int[][] { savedPos, { savedPos[0] - 48, savedPos[1] } };
 			}
-
 			// System.out.println(Arrays.deepToString(occupiedTiles));
 
 			upSolid = (Arrays.asList(SolidTiles)
@@ -86,7 +88,14 @@ public class CollisionChecker {
 					Arrays.asList(SolidTiles)
 							.contains(TileManager.build().grid[occupiedTiles[1][1] / 48 + 1][occupiedTiles[1][0] / 48]));
 
-			// System.out.println("upsolid : " + upSolid + " downsolid : "+ downSolid);
+			for (PowerUp p : PowerupManager.build().powerups) {
+				// if one of the occupied tiles has a powerup, pick it up
+				if (p.posX == occupiedTiles[1][0] && p.posY == occupiedTiles[1][1]) {
+					p.onPickup();
+					Utils.playSound("assets/sounds/powerup.wav");
+				}
+			}
+
 		}
 
 		if (old_verticalAlign && !newVertical_align) { // se il player si é disallineato verticalmente
@@ -115,15 +124,21 @@ public class CollisionChecker {
 							.contains(TileManager.build().grid[occupiedTiles[1][1] / 48][occupiedTiles[1][0] / 48 - 1]));
 			// System.out.println("rightsolid : " + rightSolid + " leftsolid : "+
 			// leftSolid);
+
+			for (PowerUp p : PowerupManager.build().powerups) {
+				// if one of the occupied tiles has a powerup, pick it up
+				if (p.posX == occupiedTiles[0][0] && p.posY == occupiedTiles[0][1]) {
+					p.onPickup();
+				}
+				if (p.posX == occupiedTiles[1][0] && p.posY == occupiedTiles[1][1]) {
+					p.onPickup();
+				}
+			}
 		}
 
 		if ((!old_verticalAlign && newVertical_align) || (!old_horizontalAlign && newHorizontal_align)) {
 			// se il player é tornato al centro di una grid
-			// get player position
 			update_Centered_Collisions();
-
-			// System.out.println("up : " + upSolid + " right : "+ rightSolid + " down :
-			// "+downSolid+" left : "+leftSolid);
 		}
 
 		// save the directions for the next cycle

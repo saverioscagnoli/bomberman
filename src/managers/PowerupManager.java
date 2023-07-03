@@ -8,6 +8,7 @@ import entities.powerups.BombPowerup;
 import entities.powerups.LivesPowerup;
 import entities.powerups.PassThroughPowerup;
 import entities.powerups.RadiusPowerup;
+import entities.powerups.SpeedPowerup;
 
 /*
  * This class manages all the powerups. 
@@ -23,9 +24,14 @@ public class PowerupManager {
 	 * Array to store all the classes. When instanciating a new powerup, it will be
 	 * randomly chosen in this array. If you want to add a powerup, just make a new
 	 * one in the powerups folder and add it here like the previous ones.
-	 * See the die function of the Tuile.java file.
+	 * See the die function of the Tile.java file.
 	 */
-	public Class<?>[] classes = { BombPowerup.class, RadiusPowerup.class, PassThroughPowerup.class, LivesPowerup.class };
+	public Class<?>[] classes = {
+			BombPowerup.class,
+			RadiusPowerup.class,
+			PassThroughPowerup.class,
+			LivesPowerup.class,
+			SpeedPowerup.class, };
 
 	private PowerupManager() {
 		this.powerups = new ArrayList<>();
