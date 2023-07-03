@@ -1,6 +1,8 @@
 package core;
 
 import entities.Bomberman;
+import managers.MouseManager;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -80,6 +82,11 @@ public class Controller extends MouseAdapter implements KeyListener {
                     break;
                 this.bomberman.sprite.setAnimation("right");
                 this.bomberman.keys.add(0, "D");
+                break;
+            }
+            case KeyEvent.VK_M: {
+                MouseManager.build().enabled = !MouseManager.build().enabled;
+                Loop.build().changeButton = true;
                 break;
             }
 

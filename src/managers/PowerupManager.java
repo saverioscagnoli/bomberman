@@ -11,7 +11,9 @@ import entities.powerups.LivesPowerup;
 import entities.powerups.PassThroughPowerup;
 import entities.powerups.RadiusPowerup;
 import entities.powerups.RainPowerup;
+import entities.powerups.SkullPowerup;
 import entities.powerups.SpeedPowerup;
+import entities.powerups.VestPowerup;
 import util.Consts;
 import util.Utils;
 
@@ -37,12 +39,14 @@ public class PowerupManager {
 	 * See the die function of the Tile.java file.
 	 */
 	public Class<?>[] classes = {
-			// BombPowerup.class,
-			// RadiusPowerup.class,
-			// PassThroughPowerup.class,
-			// LivesPowerup.class,
-			// SpeedPowerup.class,
-			RainPowerup.class };
+			BombPowerup.class,
+			RadiusPowerup.class,
+			PassThroughPowerup.class,
+			LivesPowerup.class,
+			SpeedPowerup.class,
+			RainPowerup.class,
+			VestPowerup.class,
+			SkullPowerup.class };
 
 	private PowerupManager() {
 		this.powerups = new ArrayList<>();
@@ -90,6 +94,5 @@ public class PowerupManager {
 		} else {
 			yrain = -40;
 		}
-
 	}
 }

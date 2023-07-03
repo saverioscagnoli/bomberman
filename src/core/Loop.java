@@ -5,10 +5,14 @@ import javax.swing.*;
 import entities.Bomberman;
 import managers.BombManager;
 import managers.EnemyManager;
+import managers.MouseManager;
 import managers.SoundManager;
 import managers.PowerupManager;
 import managers.SaveManager;
 import managers.TileManager;
+import ui.Sprite;
+import ui.SpriteAnimation;
+
 import java.awt.*;
 import util.Consts;
 import util.GameState;
@@ -17,6 +21,7 @@ import util.Utils;
 public class Loop extends JPanel implements Runnable {
   /* The instance for the singleton */
   private static Loop instance = null;
+  public static boolean changeButton = false;
 
   /* The time to update the game loop */
   private static final long TARGET_FRAME_TIME = 1_000_000_000 / 60;
@@ -57,6 +62,7 @@ public class Loop extends JPanel implements Runnable {
 
   private Controller controller;
   private MenuHandler menuHandler;
+  public Sprite buttonToggle;
 
   /*
    * constructor. This will be called only the first time the loop is
@@ -91,6 +97,10 @@ public class Loop extends JPanel implements Runnable {
     this.controller = Controller.build(this);
     this.menuHandler = MenuHandler.build(this);
     this.addKeyListener(this.menuHandler);
+    this.buttonToggle = new Sprite("buttonToggle", 2, 2, "redButton", new SpriteAnimation[] {
+        new SpriteAnimation("redButton", 2, 0, 30),
+        new SpriteAnimation("greenButton", 2, 1, 30)
+    }, 1);
   }
 
   public static Loop build() {
@@ -142,6 +152,7 @@ public class Loop extends JPanel implements Runnable {
         break;
       }
       case InGame: {
+        MouseManager.build();
         if (this.bomberman.immune) {
           Utils.setTimeout(() -> this.bomberman.immune = false, 15000);
         }
@@ -237,6 +248,9 @@ public class Loop extends JPanel implements Runnable {
   private void update() {
     this.elapsed++;
     bomberman.update(elapsed);
+    if (MouseManager.build().tileClicked != null && MouseManager.build().enabled) {
+      MouseManager.build().checkPositionReached();
+    }
     tileManager.updateTiles(elapsed);
     bombManager.updateBombs(elapsed);
     bombManager.updateExplosions(elapsed);
@@ -292,13 +306,14 @@ public class Loop extends JPanel implements Runnable {
           og2d.setColor(Color.BLACK);
           og2d.drawString("PAUSE!", x - 90, y + 15);
         } else {
+
           /* Draw the points and lives */
           og2d.setColor(Color.BLACK);
           og2d.drawString("" + this.bomberman.lives, 50, 75);
           int scoreLength = String.valueOf(this.bomberman.score).length();
           og2d.drawString("" + this.bomberman.score, this.getWidth() - 75 - scoreLength * 33, 75);
         }
-
+        this.buttonToggle.draw(og2d, 589, 16, 100, 100);
         /* Draw the line at the bottom of the overlay to separate the game */
         int x1 = 0;
         int x2 = this.overlay.getWidth();
