@@ -42,6 +42,8 @@ public class Loop extends JPanel implements Runnable {
   private BufferedImage menuBg;
   private BufferedImage menuArrow;
   private BufferedImage statsBg;
+  private BufferedImage MouseIcon;
+  private BufferedImage MButton;
   public int arrowY;
 
   /* The elapsed frames from the start of the game */
@@ -86,6 +88,8 @@ public class Loop extends JPanel implements Runnable {
     this.powerupManager = PowerupManager.build();
     this.musicManager = SoundManager.build();
     this.bomberman = new Bomberman(50, 50);
+    this.MouseIcon = Utils.loadImage("assets/MouseIcon.png");
+    this.MButton = Utils.loadImage("assets/MButton.png");
 
     /* Set the panel */
     this.setPreferredSize(new Dimension(Consts.screenWidth, Consts.screenHeight));
@@ -99,8 +103,8 @@ public class Loop extends JPanel implements Runnable {
     this.menuHandler = MenuHandler.build(this);
     this.addKeyListener(this.menuHandler);
     this.buttonToggle = new Sprite("buttonToggle", 2, 2, "redButton", new SpriteAnimation[] {
-        new SpriteAnimation("redButton", 2, 0, 30),
-        new SpriteAnimation("greenButton", 2, 1, 30)
+        new SpriteAnimation("redButton", 2, 0, 5),
+        new SpriteAnimation("greenButton", 2, 1, 5)
     }, 1);
     this.isMouseChanging = false;
   }
@@ -308,7 +312,7 @@ public class Loop extends JPanel implements Runnable {
         /* Draw everything the game needs */
         tileManager.drawBasic(g2d);
         if (MouseManager.build().enabled) {
-          MouseManager.build().DrawLegalPositions(g2d);
+          MouseManager.build().drawLegalPositions(g2d);
         }
         tileManager.drawWalls(g2d);
         bombManager.drawBombs(g2d);
@@ -335,7 +339,9 @@ public class Loop extends JPanel implements Runnable {
           int scoreLength = String.valueOf(this.bomberman.score).length();
           og2d.drawString("" + this.bomberman.score, this.getWidth() - 75 - scoreLength * 33, 75);
         }
-        this.buttonToggle.draw(og2d, 100, 14, 100, 100);
+        this.buttonToggle.draw(og2d, 100, 35, 100, 100);
+        og2d.drawImage(this.MButton, 115, 0, MButton.getWidth() * 2, MButton.getHeight() * 2, null);
+        og2d.drawImage(this.MouseIcon, 180, 15, MouseIcon.getWidth() * 2, MouseIcon.getHeight() * 2, null);
         /* Draw the line at the bottom of the overlay to separate the game */
         int x1 = 0;
         int x2 = this.overlay.getWidth();

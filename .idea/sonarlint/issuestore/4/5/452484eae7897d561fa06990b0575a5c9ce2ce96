@@ -1,0 +1,19 @@
+
+m
+java:S1104"WMake tileClicked a static final constant or non-public and provide accessors if needed.(³ı–„
+v
+java:S1104"[Make normtileClicked a static final constant or non-public and provide accessors if needed.(í«”İıÿÿÿÿ
+o
+java:S1104"SMake enabled a static final constant or non-public and provide accessors if needed.(€î¨X8õš–’1
+p
+java:S1104"UMake validTile a static final constant or non-public and provide accessors if needed.(¡˜‹ üÿÿÿÿ
+v
+java:S1104"TMake instance a static final constant or non-public and provide accessors if needed.(çÑ‹¡úÿÿÿÿ8ÉÉ–’1
+P
+java:S1444".Make this "public static instance" field final(çÑ‹¡úÿÿÿÿ8ÉÉ–’1
+h
+java:S3776P"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(ÇĞˆ‰
+O
+java:S1135V"2Complete the task associated to this TODO comment.(¤š©8ø›±—’1
+n
+java:S3776‘"RRefactor this method to reduce its Cognitive Complexity from 25 to the 15 allowed.(µØ‚¼ùÿÿÿÿ

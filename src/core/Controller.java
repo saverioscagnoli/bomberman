@@ -46,47 +46,60 @@ public class Controller extends MouseAdapter implements KeyListener {
         int keyCode = e.getKeyCode();
         switch (keyCode) {
             case KeyEvent.VK_W: {
-                wPressed = true;
-                latestVerticalKey = "W";
-                if (this.bomberman.keys.contains("W"))
+                if (MouseManager.build().enabled == false) {
+                    wPressed = true;
+                    latestVerticalKey = "W";
+                    if (this.bomberman.keys.contains("W"))
+                        break;
+                    this.bomberman.sprite.setAnimation("up");
+                    this.bomberman.keys.add(0, "W");
                     break;
-                this.bomberman.sprite.setAnimation("up");
-                this.bomberman.keys.add(0, "W");
-                break;
+                }
             }
 
             case KeyEvent.VK_A: {
-                aPressed = true;
-                latestHorizontalKey = "A";
-                if (this.bomberman.keys.contains("A"))
+                if (MouseManager.build().enabled == false) {
+                    aPressed = true;
+                    latestHorizontalKey = "A";
+                    if (this.bomberman.keys.contains("A"))
+                        break;
+                    this.bomberman.sprite.setAnimation("left");
+                    this.bomberman.keys.add(0, "A");
                     break;
-                this.bomberman.sprite.setAnimation("left");
-                this.bomberman.keys.add(0, "A");
-                break;
+                }
             }
 
             case KeyEvent.VK_S: {
-                latestVerticalKey = "S";
-                sPressed = true;
-                if (this.bomberman.keys.contains("S"))
-                    break;
-                this.bomberman.sprite.setAnimation("down");
-                this.bomberman.keys.add(0, "S");
+                if (MouseManager.build().enabled == false) {
+                    latestVerticalKey = "S";
+                    sPressed = true;
+                    if (this.bomberman.keys.contains("S"))
+                        break;
+                    this.bomberman.sprite.setAnimation("down");
+                    this.bomberman.keys.add(0, "S");
+                }
                 break;
             }
 
             case KeyEvent.VK_D: {
-                latestHorizontalKey = "D";
-                dPressed = true;
-                if (this.bomberman.keys.contains("D"))
-                    break;
-                this.bomberman.sprite.setAnimation("right");
-                this.bomberman.keys.add(0, "D");
+                if (MouseManager.build().enabled == false) {
+                    latestHorizontalKey = "D";
+                    dPressed = true;
+                    if (this.bomberman.keys.contains("D"))
+                        break;
+                    this.bomberman.sprite.setAnimation("right");
+                    this.bomberman.keys.add(0, "D");
+                }
                 break;
             }
             case KeyEvent.VK_M: {
                 if (MouseManager.build().enabled == false) {
+                    Loop.build().bomberman.keys.clear();
                     MouseManager.build().tileClicked = Utils.normalizeEntityPos(Loop.build().bomberman);
+                    MouseManager.build().normtileClicked = Utils.normalizeEntityPos(Loop.build().bomberman);
+                }
+                if (MouseManager.build().enabled == true) {
+                    Loop.build().bomberman.keys.clear();
                 }
                 MouseManager.build().enabled = !MouseManager.build().enabled;
                 bomberman.posX = Utils.normalizeEntityPos(bomberman)[0] + Consts.tileDims / 2 - bomberman.width / 2;

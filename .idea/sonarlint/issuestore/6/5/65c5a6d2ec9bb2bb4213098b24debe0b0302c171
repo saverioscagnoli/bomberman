@@ -1,0 +1,24 @@
+
+u
+java:S1104"_Make latestHorizontalKey a static final constant or non-public and provide accessors if needed.(î°› 
+s
+java:S1104"]Make latestVerticalKey a static final constant or non-public and provide accessors if needed.(ö¨ë½
+g
+java:S3776-"RRefactor this method to reduce its Cognitive Complexity from 25 to the 15 allowed.(Ý¼õA
+f	java:S128<"LEnd this switch case with an unconditional break, return or throw statement.(¡âíÜÿÿÿÿÿ
+a	java:S1280"LEnd this switch case with an unconditional break, return or throw statement.(ª„°
+7	java:S131/""Add a default case to this switch.(ìß¤è
+=
+java:S11251"'Remove the unnecessary boolean literal.(Þ»òÒ
+=
+java:S1125="'Remove the unnecessary boolean literal.(Þ»òÒ
+=
+java:S1125I"'Remove the unnecessary boolean literal.(Þ»òÒ
+=
+java:S1125U"'Remove the unnecessary boolean literal.(Þ»òÒ
+=
+java:S1125`"'Remove the unnecessary boolean literal.(Þ»òÒ
+B
+java:S1125e"'Remove the unnecessary boolean literal.(‰œ˜•ûÿÿÿÿ
+m
+java:S3776y"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(˜Â½€øÿÿÿÿ
