@@ -93,7 +93,7 @@ public class Loop extends JPanel implements Runnable {
 
     /* Create the main menu */
     this.createMainMenu();
-    this.enemyManager.instanciateEnemies(2);
+    this.enemyManager.instanciateEnemies(5);
     this.controller = Controller.build(this);
     this.menuHandler = MenuHandler.build(this);
     this.addKeyListener(this.menuHandler);

@@ -13,12 +13,8 @@ import util.TileType;
 import util.Utils;
 
 public class Puropen extends Enemy {
-	private int gridX;
-	private int gridY;
-	private TileType prevTile;
-
-	public Puropen(int posX, int posY, int speed) {
-		super(posX, posY, Consts.tileDims, Consts.tileDims, speed,
+	public Puropen(int posX, int posY) {
+		super(posX, posY, Consts.tileDims, Consts.tileDims, 1,
 				new Sprite("enemy-1", 4, 4, "left", new SpriteAnimation[] {
 						new SpriteAnimation("down", 4, 0, 3),
 						new SpriteAnimation("up", 4, 1, 3),
@@ -28,9 +24,7 @@ public class Puropen extends Enemy {
 		this.health = 1;
 		this.direction = Utils.pick(new String[] { "up", "down", "left", "right" });
 		this.sprite.setAnimation(this.direction);
-		this.gridX = posX / Consts.tileDims;
-		this.gridY = posY / Consts.tileDims;
-		this.prevTile = TileType.Empty;
+		this.score = 100;
 	}
 
 	private boolean collide() {
@@ -56,12 +50,15 @@ public class Puropen extends Enemy {
 		// direction
 		super.update(elapsed);
 
+		if (this.stop)
+			return;
+
 		switch (this.direction) {
 			case "up": {
 				if (this.collide()) {
 					int edge = this.gridY * Consts.tileDims;
 					if (this.posY <= edge) {
-						this.direction = "down";
+						this.direction = Utils.pick(new String[] { "left", "right", "down" });
 						this.sprite.setAnimation(this.direction);
 					} else {
 						this.posY -= this.speed;
@@ -75,7 +72,7 @@ public class Puropen extends Enemy {
 				if (this.collide()) {
 					int edge = this.gridY * Consts.tileDims + Consts.tileDims;
 					if (this.posY + this.height >= edge) {
-						this.direction = "up";
+						this.direction = Utils.pick(new String[] { "left", "right", "up" });
 						this.sprite.setAnimation(this.direction);
 					} else {
 						this.posY += this.speed;
@@ -89,7 +86,7 @@ public class Puropen extends Enemy {
 				if (this.collide()) {
 					int edge = this.gridX * Consts.tileDims;
 					if (this.posX <= edge) {
-						this.direction = "right";
+						this.direction = Utils.pick(new String[] { "up", "down", "right" });
 						this.sprite.setAnimation(this.direction);
 					} else {
 						this.posX -= this.speed;
@@ -103,7 +100,7 @@ public class Puropen extends Enemy {
 				if (this.collide()) {
 					int edge = this.gridX * Consts.tileDims + Consts.tileDims;
 					if (this.posX + this.width >= edge) {
-						this.direction = "left";
+						this.direction = Utils.pick(new String[] { "up", "down", "left" });
 						this.sprite.setAnimation(this.direction);
 					} else {
 						this.posX += this.speed;
@@ -142,7 +139,10 @@ public class Puropen extends Enemy {
 	}
 
 	public void render(Graphics2D g2d) {
-		// draw hitbox as blue box (debug purpose)
-		this.sprite.draw(g2d, posX - 5, posY - 15);
+		int offsetY = 0;
+		if (this.sprite.currentAnimation.name == "explosion") {
+			offsetY = -30;
+		}
+		this.sprite.draw(g2d, posX - 5, posY - 15 + offsetY);
 	}
 }

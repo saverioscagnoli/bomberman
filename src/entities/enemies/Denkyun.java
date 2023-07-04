@@ -3,7 +3,6 @@ package entities.enemies;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import entities.Enemy;
 import managers.TileManager;
 import ui.Sprite;
@@ -13,21 +12,18 @@ import util.TileType;
 import util.Utils;
 
 public class Denkyun extends Enemy {
-	public int score = 100;
-	private TileType prevTile;
-
-	public Denkyun(int posX, int posY, int speed) {
-		super(posX, posY, Consts.tileDims, Consts.tileDims, speed,
-				new Sprite("enemy-1", 4, 4, "left", new SpriteAnimation[] {
-						new SpriteAnimation("down", 4, 0, 3),
-						new SpriteAnimation("up", 4, 1, 3),
-						new SpriteAnimation("left", 4, 2, 3),
-						new SpriteAnimation("right", 4, 3, 3)
+	public Denkyun(int posX, int posY) {
+		super(posX, posY, Consts.tileDims, Consts.tileDims, 1,
+				new Sprite("denkyun", 10, 1, "idle", new SpriteAnimation[] {
+						new SpriteAnimation("idle", 10, 0, 15),
 				}, 2.5f));
-		this.health = 2;
+		this.health = 1;
 		this.direction = Utils.pick(new String[] { "up", "down", "left", "right" });
 		this.sprite.setAnimation(this.direction);
-		this.prevTile = TileType.Empty;
+		this.gridX = posX / Consts.tileDims;
+		this.gridY = posY / Consts.tileDims;
+		this.score = 400;
+		this.health = 2;
 	}
 
 	private boolean collide() {
@@ -61,7 +57,7 @@ public class Denkyun extends Enemy {
 				if (this.collide()) {
 					int edge = this.gridY * Consts.tileDims;
 					if (this.posY <= edge) {
-						this.direction = Utils.pick(new String[] { "left", "right", "down" });
+						this.direction = "down";
 						this.sprite.setAnimation(this.direction);
 					} else {
 						this.posY -= this.speed;
@@ -75,7 +71,7 @@ public class Denkyun extends Enemy {
 				if (this.collide()) {
 					int edge = this.gridY * Consts.tileDims + Consts.tileDims;
 					if (this.posY + this.height >= edge) {
-						this.direction = Utils.pick(new String[] { "left", "right", "up" });
+						this.direction = "up";
 						this.sprite.setAnimation(this.direction);
 					} else {
 						this.posY += this.speed;
@@ -89,7 +85,7 @@ public class Denkyun extends Enemy {
 				if (this.collide()) {
 					int edge = this.gridX * Consts.tileDims;
 					if (this.posX <= edge) {
-						this.direction = Utils.pick(new String[] { "up", "down", "right" });
+						this.direction = "right";
 						this.sprite.setAnimation(this.direction);
 					} else {
 						this.posX -= this.speed;
@@ -103,7 +99,7 @@ public class Denkyun extends Enemy {
 				if (this.collide()) {
 					int edge = this.gridX * Consts.tileDims + Consts.tileDims;
 					if (this.posX + this.width >= edge) {
-						this.direction = Utils.pick(new String[] { "up", "down", "left" });
+						this.direction = "left";
 						this.sprite.setAnimation(this.direction);
 					} else {
 						this.posX += this.speed;
@@ -142,10 +138,13 @@ public class Denkyun extends Enemy {
 	}
 
 	public void render(Graphics2D g2d) {
+		int offsetX = 0;
 		int offsetY = 0;
+
 		if (this.sprite.currentAnimation.name == "explosion") {
-			offsetY = -30;
+			offsetX = -5;
+			offsetY = -60;
 		}
-		this.sprite.draw(g2d, posX - 5, posY - 15 + offsetY);
+		this.sprite.draw(g2d, posX + 3 + offsetX, posY + 3 + offsetY);
 	}
 }

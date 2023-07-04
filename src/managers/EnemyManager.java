@@ -5,6 +5,9 @@ import java.util.List;
 
 import entities.Enemy;
 import entities.enemies.Denkyun;
+import entities.enemies.NutsStar;
+import entities.enemies.Pakupa;
+import entities.enemies.Puropen;
 import util.Consts;
 import util.TileType;
 import util.Utils;
@@ -20,6 +23,7 @@ import java.awt.Graphics2D;
 public class EnemyManager {
 	public static EnemyManager instance = null;
 	public ArrayList<Enemy> enemies;
+	public Class<?>[] classes = { Puropen.class, Denkyun.class, NutsStar.class, Pakupa.class };
 
 	private EnemyManager() {
 		this.enemies = new ArrayList<>();
@@ -47,7 +51,13 @@ public class EnemyManager {
 				y = Utils.rng(Consts.tileDims + 1, Consts.screenHeight - Consts.tileDims);
 				pos = Utils.normalizePos(x, y);
 			}
-			Enemy e = new Denkyun(pos[0], pos[1], 1);
+			Class<?> c = Utils.pick(classes);
+			Enemy e = null;
+			try {
+				e = (Enemy) c.getConstructor(int.class, int.class).newInstance(pos[0], pos[1]);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 			enemies.add(e);
 		}
 

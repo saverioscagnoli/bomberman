@@ -21,8 +21,8 @@ public class Bomb extends Entity {
 	/* The time in milliseconds that will set if the game is paused */
 	private long pausedAt;
 
-	private int gridX;
-	private int gridY;
+	public int gridX;
+	public int gridY;
 
 	public Bomb(int posX, int posY, int bombRadius) {
 		/* Pass everything to the entity superclass */
@@ -67,6 +67,11 @@ public class Bomb extends Entity {
 	/* Makes the bomb explode and resets the tile on the grid */
 	public void die() {
 		this.explode();
+		this.dead = true;
+		TileManager.build().grid[this.gridY][this.gridX] = TileType.Empty;
+	}
+
+	public void dieNotExplode() {
 		this.dead = true;
 		TileManager.build().grid[this.gridY][this.gridX] = TileType.Empty;
 	}

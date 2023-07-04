@@ -2,7 +2,6 @@ package entities;
 
 import java.awt.Graphics2D;
 import core.Loop;
-import entities.enemies.Denkyun;
 import managers.SaveManager;
 import managers.TileManager;
 import ui.Sprite;
@@ -11,7 +10,7 @@ import util.Consts;
 import util.TileType;
 import util.Utils;
 
-public class Enemy extends Entity {
+public abstract class Enemy extends Entity {
 
 	/* The direction of the enemy */
 	protected String direction;
@@ -26,6 +25,10 @@ public class Enemy extends Entity {
 	public boolean immune = false;
 
 	protected boolean stop = false;
+
+	protected int score;
+
+	protected TileType prevTile = TileType.Empty;
 
 	public Enemy(int posX, int posY, int width, int height, int speed, Sprite sprite) {
 		super(posX, posY, width, height, speed, sprite);
@@ -60,7 +63,7 @@ public class Enemy extends Entity {
 				this.sprite = new Sprite("enemy-explosion", 7.9, 1, "explosion", new SpriteAnimation[] {
 						new SpriteAnimation("explosion", 7, 0, 7)
 				}, 2.5f);
-				Denkyun e = (Denkyun) this;
+				Enemy e = (Enemy) this;
 				Loop.build().bomberman.score += e.score;
 				SaveManager.incrementScore(e.score);
 				Loop.build().overlay.repaint();
@@ -93,7 +96,5 @@ public class Enemy extends Entity {
 		}
 	}
 
-	public void render(Graphics2D g2d) {
-
-	}
+	public abstract void render(Graphics2D g2d);
 }

@@ -58,5 +58,8 @@ public class AnimationManager {
     spriteMap.put("Vest", Utils.loadImage(Consts.powerupsPath + "Vest.png"));
     spriteMap.put("Skull", Utils.loadImage(Consts.powerupsPath + "Skull.png"));
     spriteMap.put("buttonToggle", Utils.loadImage("assets/" + "buttonToggle.png"));
+    spriteMap.put("denkyun", Utils.loadImage(Consts.enemiesPath + "denkyun.png"));
+    spriteMap.put("nuts-star", Utils.loadImage(Consts.enemiesPath + "nuts-star.png"));
+    spriteMap.put("pakupa", Utils.loadImage(Consts.enemiesPath + "pakupa.png"));
   }
 }
