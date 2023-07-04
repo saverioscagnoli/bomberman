@@ -1,7 +1,6 @@
 package entities;
 
 import java.awt.Graphics2D;
-import core.Loop;
 import managers.BombManager;
 import managers.TileManager;
 import ui.Sprite;

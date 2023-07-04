@@ -61,8 +61,6 @@ public class EnemyManager {
 			}
 			enemies.add(e);
 		}
-
-		this.enemies.add(new FaralsBoss(300, 300));
 	}
 
 	public void updateEnemies(int elapsed) {

@@ -36,7 +36,10 @@ public class TileManager {
         this.basicTiles = new ArrayList<>();
 
         /* Set the tiles */
-        this.setTiles();
+        // this.setTiles();
+        this.grid = Utils.readLevel("levels/level-1.lvl");
+        this.readGrid();
+        this.setHatch();
     }
 
     /* Singleton */
@@ -47,8 +50,93 @@ public class TileManager {
         return instance;
     }
 
-    public void addBasicTile(Tile tile) {
-        this.basicTiles.add(tile);
+    private void readGrid() {
+        for (int i = 0; i < this.grid.length; i++) {
+            for (int j = 0; j < this.grid[i].length; j++) {
+                int x = j * Consts.tileDims;
+                int y = i * Consts.tileDims;
+                TileType tileAt = this.grid[i][j];
+                Tile tile = null;
+                String src = null;
+
+                switch (tileAt) {
+                    case Wall: {
+                        if (i == 0) {
+                            if (j == 0)
+                                src = "w-tl";
+                            else if (j == this.grid[i].length - 1)
+                                src = "w-tr";
+                            else
+                                src = "w-t";
+                        } else if (i == this.grid.length - 1) {
+                            if (j == 0)
+                                src = "w-bl";
+                            else if (j == this.grid[i].length - 1)
+                                src = "w-br";
+                            else
+                                src = "w-b";
+                        } else if (j == 0)
+                            src = "w-l";
+                        else if (j == this.grid[i].length - 1)
+                            src = "w-r";
+                        else
+                            src = "w-center";
+                        tile = new Tile(x, y, true, src);
+                        this.walls.add(tile);
+                        break;
+                    }
+                    case Obstacle: {
+                        src = "wd-1";
+                        String animName = null;
+                        /*
+                         * Set if it is the obstacle sprite at the edge of the map. See:
+                         * assets/tiles/idle-edge.png
+                         */
+                        if (i == 1 || this.grid[i - 1][j] == TileType.Wall) {
+                            animName = "idle-edge";
+                        } else {
+                            animName = "idle";
+                            src = "wd-1";
+                        }
+                        tile = new Tile(x, y, true, false, true, new Sprite(src, 6, 3, animName,
+                                new SpriteAnimation[] {
+                                        new SpriteAnimation("idle", 4, 0, 10),
+                                        new SpriteAnimation("idle-edge", 4, 1, 10),
+                                        new SpriteAnimation("death", 6, 2, 10)
+                                }, 1));
+                        this.walls.add(tile);
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                }
+                if (i == 1 || (i > 0 && this.grid[i - 1][j] == TileType.Wall)) {
+                    src = "basic-1-edge";
+                    /*
+                     * Check if there is an obstacle on the tile above. If yes, set a shadow tile.
+                     * See assets/tiles/basic-1-shadow.png
+                     */
+                } else if (i > 1 && this.grid[i - 1][j] == TileType.Obstacle) {
+                    src = "basic-1-shadow";
+                } else {
+                    src = "basic-1";
+                }
+                this.basicTiles.add(new Tile(x, y, false, src));
+            }
+        }
+    }
+
+    private void setHatch() {
+        if (this.walls.stream().filter(w -> w.destructable).count() == 0) {
+            this.hatch = new Tile(0, 0);
+            return;
+        }
+        Tile tileWithHatch = (Tile) Utils.pick(this.walls.toArray());
+        while (!tileWithHatch.destructable) {
+            tileWithHatch = (Tile) Utils.pick(this.walls.toArray());
+        }
+        this.hatch = new Tile(tileWithHatch.posX, tileWithHatch.posY);
     }
 
     /*
@@ -153,15 +241,11 @@ public class TileManager {
                 } else {
                     src = "basic-1";
                 }
-                this.addBasicTile(new Tile(x, y, false, src));
+                this.basicTiles.add(new Tile(x, y, false, src));
             }
         }
 
-        Tile tileWithHatch = this.walls.get(Utils.rng(0, this.walls.size() - 1));
-        while (!tileWithHatch.destructable) {
-            tileWithHatch = this.walls.get(Utils.rng(0, this.walls.size() - 1));
-        }
-        this.hatch = new Tile(tileWithHatch.posX, tileWithHatch.posY);
+        this.setHatch();
     }
 
     /* Update all the tiles at once */

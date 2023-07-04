@@ -5,8 +5,10 @@ import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -153,4 +155,49 @@ public abstract class Utils {
 		return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
 	}
 
+	public static TileType[][] readLevel(String path) {
+		TileType[][] grid = new TileType[Consts.gridHeight][Consts.gridWidth];
+		try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+			String line;
+			int i = 0;
+			while ((line = reader.readLine()) != null) {
+				String[] tokens = line.split(",");
+				for (int j = 0; j < tokens.length; j++) {
+					String token = tokens[j];
+					if (token == " ")
+						continue;
+					switch (token) {
+						case "W": {
+							grid[i][j] = TileType.Wall;
+							break;
+						}
+						case "WD": {
+							grid[i][j] = TileType.Obstacle;
+							break;
+						}
+						case "N": {
+							grid[i][j] = TileType.Empty;
+							break;
+						}
+					}
+
+				}
+				i++;
+			}
+		} catch (IOException e) {
+			System.err.println("Error reading the file: " + e.getMessage());
+		}
+
+		return grid;
+	}
+
+	public static String[] getLevelNames() {
+		File folder = new File("levels");
+		File[] listOfFiles = folder.listFiles();
+		String[] names = new String[listOfFiles.length];
+		for (int i = 0; i < listOfFiles.length; i++) {
+			names[i] = listOfFiles[i].getName();
+		}
+		return names;
+	}
 }

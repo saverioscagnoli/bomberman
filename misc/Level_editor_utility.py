@@ -28,19 +28,25 @@ def copy_values():
         for col in range(cols):
             button = buttons[col][row]
             textbox.insert(tk.END, button["text"])
-            textbox.insert(tk.END, " ")
+            textbox.insert(tk.END, ",")
         textbox.insert(tk.END, "\n")
-        
+
+def set_grid():
+    for row in range(rows):
+        for col in range(cols):
+            if (row != 0 and col != 0 and row < 16 and col < 14 and row % 2 == 0 and col % 2 == 0):
+                button_click(row, col)
+
 def save_to_file():
-    filename = filename_entry.get()
-    filename += ".txt"
+    filename = "levels/" + filename_entry.get()
+    filename += ".lvl"
     text = textbox.get("1.0", tk.END)
     with open(filename, "w") as file:
         file.write(text)
     messagebox.showinfo("File Saved", f"The file has been saved as {filename}")
     
 def open_file():
-    file_path = filedialog.askopenfilename(filetypes=[("Text Files", "*.txt")])
+    file_path = filedialog.askopenfilename(filetypes=[("Level files", "*.lvl")])
     if file_path:
         with open(file_path, "r") as file:
             content = file.read()
@@ -66,8 +72,8 @@ def update_buttons(content):
 window = tk.Tk()
 window.title("Button Matrix")
 
-rows = 17
-cols = 21
+rows = 15
+cols = 17
 
 # Create a 2D list to store the buttons
 buttons = []
@@ -99,22 +105,25 @@ for row in range(rows):
 copy_button = tk.Button(window, text="Copy Values", command=copy_values)
 copy_button.grid(row=rows, columnspan=cols, pady=10)
 
+grid_button = tk.Button(window, text="Grid", command=set_grid)
+grid_button.grid(row=rows+1, columnspan=cols, padx=50, pady=10)
+
 textbox = tk.Text(window, height=5, width=55)
-textbox.grid(row=rows+1, columnspan=cols)
+textbox.grid(row=rows+2, columnspan=cols)
 
 # Create the filename entry textbox and label
 filename_label = tk.Label(window, text="File Name:")
-filename_label.grid(row=rows+2, columnspan=cols-2, pady=10)
+filename_label.grid(row=rows+3, columnspan=cols-2, pady=10)
 
 filename_entry = tk.Entry(window, width=20)
-filename_entry.grid(row=rows+2, columnspan=cols, pady=10)
+filename_entry.grid(row=rows+3, columnspan=cols, pady=10)
 
 # Create the button for saving to a file
 save_button = tk.Button(window, text="Save to File", command=save_to_file)
-save_button.grid(row=rows+3, columnspan=cols, pady=10)
+save_button.grid(row=rows+4, columnspan=cols, pady=10)
 
 # Create the button for opening and pasting a file
 open_button = tk.Button(window, text="Open File", command=open_file)
-open_button.grid(row=rows+4, columnspan=cols, pady=10)
+open_button.grid(row=rows+5, columnspan=cols, pady=10)
 
 window.mainloop()

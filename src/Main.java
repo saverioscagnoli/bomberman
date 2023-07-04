@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.io.IOException;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,7 +17,6 @@ class Main {
     public static void main(String[] args) throws IOException {
         JFrame win = new JFrame("Super Bomberman");
         SaveManager.resetLevel();
-
         win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         win.setResizable(false);
         win.setPreferredSize(new Dimension(Consts.screenWidth, Consts.screenHeight + 120));
