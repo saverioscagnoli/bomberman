@@ -37,7 +37,7 @@ public class TileManager {
 
         /* Set the tiles */
         // this.setTiles();
-        this.grid = Utils.readLevel("levels/level-1.lvl");
+        this.grid = Utils.readLevel("levels/prova.lvl");
         this.readGrid();
         this.setHatch();
     }

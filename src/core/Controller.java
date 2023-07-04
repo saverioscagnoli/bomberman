@@ -85,7 +85,12 @@ public class Controller extends MouseAdapter implements KeyListener {
                 break;
             }
             case KeyEvent.VK_M: {
+                if (MouseManager.build().enabled == false) {
+                    MouseManager.build().tileClicked = Utils.normalizeEntityPos(Loop.build().bomberman);
+                }
                 MouseManager.build().enabled = !MouseManager.build().enabled;
+                bomberman.posX = Utils.normalizeEntityPos(bomberman)[0] + Consts.tileDims / 2 - bomberman.width / 2;
+                bomberman.posY = Utils.normalizeEntityPos(bomberman)[1] + Consts.tileDims / 2 - bomberman.height / 2;
                 Loop.build().isMouseChanging = !Loop.build().isMouseChanging;
                 break;
             }

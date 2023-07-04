@@ -307,6 +307,9 @@ public class Loop extends JPanel implements Runnable {
       case Pause: {
         /* Draw everything the game needs */
         tileManager.drawBasic(g2d);
+        if (MouseManager.build().enabled) {
+          MouseManager.build().DrawLegalPositions(g2d);
+        }
         tileManager.drawWalls(g2d);
         bombManager.drawBombs(g2d);
         bombManager.drawExplosions(g2d);

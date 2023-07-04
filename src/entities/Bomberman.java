@@ -11,6 +11,7 @@ import ui.Sprite;
 import ui.SpriteAnimation;
 import managers.BombManager;
 import managers.EnemyManager;
+import managers.MouseManager;
 import managers.SaveManager;
 import managers.TileManager;
 import util.*;
@@ -94,6 +95,8 @@ public class Bomberman extends Entity {
 
 	public void die() {
 		this.keys.clear();
+		MouseManager.build().tileClicked[0] = 48;
+		MouseManager.build().tileClicked[1] = 48;
 		this.lives--;
 		this.sprite.setAnimation("death");
 		this.dead = true;
