@@ -61,5 +61,7 @@ public class AnimationManager {
     spriteMap.put("denkyun", Utils.loadImage(Consts.enemiesPath + "denkyun.png"));
     spriteMap.put("nuts-star", Utils.loadImage(Consts.enemiesPath + "nuts-star.png"));
     spriteMap.put("pakupa", Utils.loadImage(Consts.enemiesPath + "pakupa.png"));
+    spriteMap.put("Faralsboss", Utils.loadImage(Consts.enemiesPath + "Faralsboss.png"));
+
   }
 }

@@ -2,6 +2,7 @@ package entities;
 
 import java.awt.Graphics2D;
 import entities.bosses.ClownMask;
+import entities.bosses.FaralsBoss;
 import managers.EnemyManager;
 import ui.Sprite;
 import ui.SpriteAnimation;
@@ -53,6 +54,12 @@ public class Explosion extends Entity {
 							if (!cm.hit) {
 								cm.stop = true;
 								cm.hit = true;
+							}
+						} else if (enemy instanceof FaralsBoss) {
+							FaralsBoss fb = (FaralsBoss) enemy;
+							if (!fb.hit) {
+								fb.stop = true;
+								fb.hit = true;
 							}
 						} else {
 							enemy.dealDamage(1);

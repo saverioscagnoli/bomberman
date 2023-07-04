@@ -17,6 +17,7 @@ public class Bomb extends Entity {
 
 	/* The time in milliseconds when which the bomb was placed */
 	private long createdAt;
+	private int bombRadius = 1;
 
 	/* The time in milliseconds that will set if the game is paused */
 	private long pausedAt;
@@ -39,7 +40,7 @@ public class Bomb extends Entity {
 		this.isSolid = true;
 		this.createdAt = System.currentTimeMillis();
 		this.pausedAt = 0;
-		Loop.build().bomberman.bombRadius = bombRadius;
+		this.bombRadius = bombRadius;
 	}
 
 	/* Set the paused time of the bomb to now */
@@ -92,7 +93,7 @@ public class Bomb extends Entity {
 		if (this.dead)
 			return;
 		Explosion[][] explosionMatrix = new Explosion[4][10];
-		int r = Loop.build().bomberman.bombRadius;
+		int r = this.bombRadius;
 
 		Utils.playSound(Consts.soundPath + "bomb-explosion.wav");
 		for (int rad = 1; rad < r + 1; rad++) { // for the length of the bomb radius

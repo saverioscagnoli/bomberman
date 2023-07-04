@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entities.Enemy;
+import entities.bosses.FaralsBoss;
 import entities.enemies.Denkyun;
 import entities.enemies.NutsStar;
 import entities.enemies.Pakupa;
@@ -61,7 +62,7 @@ public class EnemyManager {
 			enemies.add(e);
 		}
 
-		// this.enemies.add(new ClownMask(300, 300));
+		this.enemies.add(new FaralsBoss(300, 300));
 	}
 
 	public void updateEnemies(int elapsed) {
