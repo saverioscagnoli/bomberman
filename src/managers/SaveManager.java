@@ -79,4 +79,10 @@ public abstract class SaveManager {
     data.put("score", "" + (oldscore + score));
     SaveManager.writeProgress(data);
   }
+
+  public static void setName(String name) {
+    HashMap<String, String> data = SaveManager.readProgress();
+    data.put("name", "" + name);
+    SaveManager.writeProgress(data);
+  }
 }

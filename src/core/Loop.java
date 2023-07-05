@@ -1,6 +1,10 @@
 package core;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import entities.Bomberman;
 import managers.BombManager;
@@ -81,6 +85,57 @@ public class Loop extends JPanel implements Runnable {
     this.elapsed = 0;
     this.running = false;
 
+    // code for the profile stuff
+    JTextField textField = new JTextField(SaveManager.readProgress().get("name"));
+    textField.setBounds(500, 37, 212, 40);
+    textField.setVisible(true);
+    textField.setFont(new Font("Arial", Font.PLAIN, 30));
+    container.add(textField);
+
+    ImageIcon saveIcon = new ImageIcon("assets/SaveIcon.png");
+    JButton customButton = new JButton(saveIcon);
+    customButton.setBackground(Color.BLUE);
+    customButton.setFocusPainted(false); // Remove the border around the button when focused
+    customButton.setBounds(720 - 262, 37, 40, 40);
+    customButton.setVisible(true);
+    // when the button gets pressed, SaveManager.setName() is called with input from
+    // the textbox
+    customButton.addActionListener(e -> SaveManager.setName(textField.getText()));
+
+    // create the avatar button
+    JButton avatarButton = new JButton();
+    avatarButton.setBounds(720 - 262 - 50 + 303, 37 - 30, 100, 100);
+    avatarButton.setVisible(true);
+    Image avatarIcon = Utils.loadImage("assets/AvatarIcon.png").getScaledInstance(100, 100, Image.SCALE_DEFAULT);
+    ImageIcon icon = new ImageIcon(avatarIcon);
+    avatarButton.setIcon(icon);
+    container.add(avatarButton);
+    // when the button gets pressed, open a file chooser to select an image and save
+    // it in the assets folder as AvatarIcon.png
+    // cannot use Utils.loadImage() because it returns a BufferedImage
+    avatarButton.addActionListener(e -> {
+      JFileChooser fileChooser = new JFileChooser();
+      fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+      int result = fileChooser.showOpenDialog(avatarButton);
+      if (result == JFileChooser.APPROVE_OPTION) {
+        File selectedFile = fileChooser.getSelectedFile();
+        ImageIcon newIcon = new ImageIcon(selectedFile.getAbsolutePath());
+        Image newImage = newIcon.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
+        ImageIcon newIcon2 = new ImageIcon(newImage);
+        avatarButton.setIcon(newIcon2);
+        // save the image in assets/AvatarIcon.png so it can be loaded later
+        // reminder Utils class has no image manipulation so we cannot use it
+        try {
+          BufferedImage bImage = ImageIO.read(new File(selectedFile.getAbsolutePath()));
+          ImageIO.write(bImage, "png", new File("assets/AvatarIcon.png"));
+        } catch (IOException e1) {
+          e1.printStackTrace();
+        }
+      }
+    });
+
+    container.add(customButton);
+
     /* Build all the managers */
     this.tileManager = TileManager.build();
     this.bombManager = BombManager.build();
@@ -97,6 +152,7 @@ public class Loop extends JPanel implements Runnable {
 
     /* Create the main menu */
     this.createMainMenu();
+
     this.enemyManager.instanciateEnemies(5);
 
     this.controller = Controller.build(this);
