@@ -2,6 +2,7 @@ package entities;
 
 import java.awt.Graphics2D;
 import core.Loop;
+import managers.PowerupManager;
 import managers.SaveManager;
 import managers.TileManager;
 import ui.Sprite;
@@ -46,6 +47,22 @@ public abstract class Enemy extends Entity {
 	public void die() {
 		this.dead = true;
 		TileManager.build().grid[this.gridY][this.gridX] = TileType.Empty;
+		if (Utils.rng(1, 10) <= 3) {
+			/* Get a randon powerup class */
+			Class<?> c = Utils.pick(PowerupManager.build().classes);
+			PowerUp p = null;
+			int[] normPosition = Utils.normalizePos(this.posX, this.posY);
+			try {
+				/* Instanciate the random class */
+				p = (PowerUp) c.getDeclaredConstructor(int.class, int.class).newInstance(normPosition[0], normPosition[1]);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			/* Add the powerups */
+			PowerupManager.build().powerups.add(p);
+			TileManager.build().grid[normPosition[1] / 48][normPosition[0] / 48] = TileType.PowerUp;
+
+		}
 	}
 
 	/* Deals damage to the enemy */

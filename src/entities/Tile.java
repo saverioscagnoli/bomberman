@@ -73,7 +73,7 @@ public class Tile extends Entity {
     }
 
     /* Spawn a random powerup */
-    if (Utils.rng(1, 10) <= 10) {
+    if (Utils.rng(1, 10) <= 1) {
       /* Get a randon powerup class */
       Class<?> c = Utils.pick(PowerupManager.build().classes);
       PowerUp p = null;
