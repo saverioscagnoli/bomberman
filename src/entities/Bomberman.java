@@ -162,6 +162,7 @@ public class Bomberman extends Entity {
 		} else {
 			EnemyManager.build().instanciateEnemies(5);
 		}
+		Loop.build().setState(GameState.StageCleared);
 		this.won = false;
 	}
 

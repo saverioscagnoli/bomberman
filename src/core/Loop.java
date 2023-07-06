@@ -383,10 +383,10 @@ public class Loop extends JPanel implements Runnable {
       }
       case StageCleared: {
         // fade to black screen and display victory.png for 3 seconds
+        stop();
         g2d.setColor(Color.BLACK);
         g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
         g2d.drawImage(this.victory, 0, 0, this.getWidth(), this.getHeight(), null);
-        // after 3 seconds, set gamestate to menu without using this.elapsed
         Utils.setTimeout(() -> {
           setState(GameState.InGame);
         }, 1500);
