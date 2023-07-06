@@ -3,6 +3,8 @@ package managers;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
+
+import entities.Enemy;
 import entities.Tile;
 import ui.Sprite;
 import ui.SpriteAnimation;
@@ -37,9 +39,8 @@ public class TileManager {
 
         /* Set the tiles */
         // this.setTiles();
-        this.grid = Utils.readLevel("levels/prova.lvl");
+        this.grid = Utils.readLevel("levels/level-1.lvl");
         this.readGrid();
-        this.setHatch();
     }
 
     /* Singleton */
@@ -50,7 +51,9 @@ public class TileManager {
         return instance;
     }
 
-    private void readGrid() {
+    public void readGrid() {
+        this.basicTiles.clear();
+        this.walls.clear();
         for (int i = 0; i < this.grid.length; i++) {
             for (int j = 0; j < this.grid[i].length; j++) {
                 int x = j * Consts.tileDims;
@@ -125,6 +128,7 @@ public class TileManager {
                 this.basicTiles.add(new Tile(x, y, false, src));
             }
         }
+        this.setHatch();
     }
 
     private void setHatch() {
@@ -136,6 +140,7 @@ public class TileManager {
         while (!tileWithHatch.destructable) {
             tileWithHatch = (Tile) Utils.pick(this.walls.toArray());
         }
+        System.out.println(tileWithHatch.posX / 48 + " " + tileWithHatch.posY / 48);
         this.hatch = new Tile(tileWithHatch.posX, tileWithHatch.posY);
     }
 

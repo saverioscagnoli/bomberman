@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import core.Loop;
 import entities.Bomberman;
 import entities.Enemy;
+import managers.TileManager;
 import ui.Sprite;
 import ui.SpriteAnimation;
 import util.Consts;
+import util.TileType;
 import util.Utils;
 
 public class ClownMask extends Enemy {
@@ -26,7 +28,7 @@ public class ClownMask extends Enemy {
             new SpriteAnimation("idle-2", 4, 3, 50)
         }, 2.5f));
 
-    this.health = 18;
+    this.health = 2;
     this.speed = 1;
     this.stop = false;
     this.width = (int) (this.sprite.width * this.sprite.scale);
@@ -37,6 +39,9 @@ public class ClownMask extends Enemy {
   }
 
   public void die() {
+    TileManager.build().grid[1][1] = TileType.Hatch;
+    TileManager.build().hatch.posX = 48;
+    TileManager.build().hatch.posY = 48;
     this.dead = true;
   }
 

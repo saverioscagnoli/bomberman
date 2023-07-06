@@ -39,7 +39,7 @@ public class EnemyManager {
 
 	/* The function that instanciates all the enemies at random positions. */
 	public void instanciateEnemies(int n) {
-
+		this.enemies.clear();
 		for (int i = 0; i < n; i++) {
 			int x = Utils.rng(Consts.tileDims + 1, Consts.screenWidth - Consts.tileDims);
 			int y = Utils.rng(Consts.tileDims + 1, Consts.screenHeight -

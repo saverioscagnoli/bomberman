@@ -92,6 +92,10 @@ public class Controller extends MouseAdapter implements KeyListener {
                 }
                 break;
             }
+            case KeyEvent.VK_F: { // TODO : Levarlo
+                Loop.build().bomberman.win();
+                break;
+            }
             case KeyEvent.VK_M: {
                 if (MouseManager.build().enabled == false) {
                     Loop.build().bomberman.keys.clear();

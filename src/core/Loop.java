@@ -70,6 +70,12 @@ public class Loop extends JPanel implements Runnable {
   private MenuHandler menuHandler;
   public Sprite buttonToggle;
 
+  private BufferedImage victory;
+  private BufferedImage winBomberman;
+  public JButton avatarButton;
+  public JButton customButton;
+  public JTextField textField;
+
   /*
    * constructor. This will be called only the first time the loop is
    * built
@@ -81,35 +87,42 @@ public class Loop extends JPanel implements Runnable {
     this.menuBg = Utils.loadImage("assets/title-screen.png");
     this.menuArrow = Utils.loadImage("assets/menu-arrow.png");
     this.statsBg = Utils.loadImage("assets/Stats.png");
+    this.victory = Utils.loadImage("assets/victory.png");
+    this.winBomberman = Utils.loadImage("assets/winBomberman.png");
     this.arrowY = 555;
     this.elapsed = 0;
     this.running = false;
 
     // code for the profile stuff
-    JTextField textField = new JTextField(SaveManager.readProgress().get("name"));
+    textField = new JTextField(SaveManager.readProgress().get("name"));
     textField.setBounds(500, 37, 212, 40);
-    textField.setVisible(true);
     textField.setFont(new Font("Arial", Font.PLAIN, 30));
     container.add(textField);
+    textField.setVisible(false);
 
     ImageIcon saveIcon = new ImageIcon("assets/SaveIcon.png");
-    JButton customButton = new JButton(saveIcon);
+    customButton = new JButton(saveIcon);
     customButton.setBackground(Color.BLUE);
     customButton.setFocusPainted(false); // Remove the border around the button when focused
     customButton.setBounds(720 - 262, 37, 40, 40);
-    customButton.setVisible(true);
+    customButton.setVisible(false);
+
     // when the button gets pressed, SaveManager.setName() is called with input from
     // the textbox
-    customButton.addActionListener(e -> SaveManager.setName(textField.getText()));
+    customButton.addActionListener(e -> {
+      SaveManager.setName(textField.getText());
+      // regive the focus to the jpanel so the textfield doesn't keep it
+      this.requestFocus();
+    });
 
     // create the avatar button
-    JButton avatarButton = new JButton();
+    avatarButton = new JButton();
     avatarButton.setBounds(720 - 262 - 50 + 303, 37 - 30, 100, 100);
-    avatarButton.setVisible(true);
     Image avatarIcon = Utils.loadImage("assets/AvatarIcon.png").getScaledInstance(100, 100, Image.SCALE_DEFAULT);
     ImageIcon icon = new ImageIcon(avatarIcon);
     avatarButton.setIcon(icon);
     container.add(avatarButton);
+    avatarButton.setVisible(false);
     // when the button gets pressed, open a file chooser to select an image and save
     // it in the assets folder as AvatarIcon.png
     // cannot use Utils.loadImage() because it returns a BufferedImage
@@ -149,12 +162,10 @@ public class Loop extends JPanel implements Runnable {
     /* Set the panel */
     this.setPreferredSize(new Dimension(Consts.screenWidth, Consts.screenHeight));
     this.setFocusable(true);
+    EnemyManager.build().instanciateEnemies(5);
 
     /* Create the main menu */
     this.createMainMenu();
-
-    this.enemyManager.instanciateEnemies(5);
-
     this.controller = Controller.build(this);
     this.menuHandler = MenuHandler.build(this);
     this.addKeyListener(this.menuHandler);
@@ -206,11 +217,17 @@ public class Loop extends JPanel implements Runnable {
 
     switch (this.gameState) {
       case Menu: {
+        avatarButton.setVisible(false);
+        textField.setVisible(false);
+        customButton.setVisible(false);
         this.createMainMenu();
         break;
       }
       case Stats: {
         SoundManager.build().ost(gameState);
+        avatarButton.setVisible(true);
+        textField.setVisible(true);
+        customButton.setVisible(true);
         break;
       }
       case InGame: {
@@ -224,6 +241,7 @@ public class Loop extends JPanel implements Runnable {
         this.bombManager.resumeBombs();
         break;
       }
+
       case Pause: {
         /* Stop the thread and pause all the bombs */
         this.stop();
@@ -251,7 +269,7 @@ public class Loop extends JPanel implements Runnable {
   }
 
   /* The function that takes care of creating the thread and starting it */
-  private void start() {
+  public void start() {
     this.addController();
     this.running = true;
     this.thread = new Thread(this);
@@ -361,6 +379,17 @@ public class Loop extends JPanel implements Runnable {
         g2d.drawString("" + SaveManager.readProgress().get("score"), this.getWidth() - 160 - 297, 380 + 200);
         BufferedImage credits = Utils.loadImage("assets/guys.png");
         g2d.drawImage(credits, 223, 643, credits.getWidth() * 3, credits.getHeight() * 3, null);
+        break;
+      }
+      case StageCleared: {
+        // fade to black screen and display victory.png for 3 seconds
+        g2d.setColor(Color.BLACK);
+        g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
+        g2d.drawImage(this.victory, 0, 0, this.getWidth(), this.getHeight(), null);
+        // after 3 seconds, set gamestate to menu without using this.elapsed
+        Utils.setTimeout(() -> {
+          setState(GameState.InGame);
+        }, 1500);
         break;
       }
       case InGame:
