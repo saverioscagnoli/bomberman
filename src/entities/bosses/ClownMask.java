@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import core.Loop;
 import entities.Bomberman;
 import entities.Enemy;
+import entities.Tile;
 import managers.TileManager;
 import ui.Sprite;
 import ui.SpriteAnimation;
@@ -39,9 +40,11 @@ public class ClownMask extends Enemy {
   }
 
   public void die() {
-    TileManager.build().grid[1][1] = TileType.Hatch;
-    TileManager.build().hatch.posX = 48;
-    TileManager.build().hatch.posY = 48;
+    Tile hatch = TileManager.build().hatch;
+    hatch.isVisible = true;
+    hatch.posX = Consts.tileDims * 2;
+    hatch.posY = Consts.tileDims;
+    TileManager.build().grid[1][2] = TileType.Hatch;
     this.dead = true;
   }
 
@@ -63,7 +66,7 @@ public class ClownMask extends Enemy {
         double maxAbs = Math.max(absDx, absDy);
 
         if (Math.sqrt(dx * dx + dy * dy) < 100) {
-          if (!bomberman.dead) {
+          if (!bomberman.dead && !bomberman.immune) {
             bomberman.die();
           }
         }

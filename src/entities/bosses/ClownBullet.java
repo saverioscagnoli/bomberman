@@ -69,7 +69,7 @@ public class ClownBullet extends Entity {
 
     Bomberman bomberman = Loop.build().bomberman;
 
-    if (!bomberman.dead && this.posX + this.width > bomberman.posX &&
+    if (!bomberman.dead && !bomberman.immune && this.posX + this.width > bomberman.posX &&
         this.posX < bomberman.posX + bomberman.width &&
         this.posY + this.height > bomberman.posY &&
         this.posY < bomberman.posY + bomberman.height) {

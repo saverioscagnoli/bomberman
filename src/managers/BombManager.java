@@ -5,6 +5,8 @@ import java.util.List;
 import entities.Bomb;
 import entities.Explosion;
 import util.CollisionChecker;
+import util.Consts;
+import util.TileType;
 
 import java.awt.Graphics2D;
 
@@ -81,6 +83,17 @@ public class BombManager {
 			this.bombs.remove(b);
 			CollisionChecker.build().update_Centered_Collisions();
 		});
+
+		if (this.bombs.size() == 0) {
+			TileManager tileManager = TileManager.build();
+			for (int i = 0; i < Consts.gridHeight; i++) {
+				for (int j = 0; j < Consts.gridWidth; j++) {
+					if (tileManager.grid[i][j] == TileType.Bomb) {
+						tileManager.grid[i][j] = TileType.Empty;
+					}
+				}
+			}
+		}
 	}
 
 	public void drawExplosions(Graphics2D g2d) {

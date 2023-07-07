@@ -43,14 +43,14 @@ public class EnemyManager {
 		this.enemies.clear();
 		for (int i = 0; i < n; i++) {
 
-			int gridX = Utils.rng(1, Consts.gridWidth - 1);
-			int gridY = Utils.rng(1, Consts.gridHeight - 1);
+			int gridX = Utils.rng(4, Consts.gridWidth - 1);
+			int gridY = Utils.rng(4, Consts.gridHeight - 1);
 			int x = gridX * Consts.tileDims;
 			int y = gridY * Consts.tileDims;
 
 			while (TileManager.build().grid[gridY][gridX] != TileType.Empty) {
-				gridX = Utils.rng(1, Consts.gridWidth - 1);
-				gridY = Utils.rng(1, Consts.gridHeight - 1);
+				gridX = Utils.rng(4, Consts.gridWidth - 1);
+				gridY = Utils.rng(4, Consts.gridHeight - 1);
 				x = gridX * Consts.tileDims;
 				y = gridY * Consts.tileDims;
 			}

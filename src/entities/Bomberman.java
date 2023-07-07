@@ -7,15 +7,12 @@ import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 
 import core.Loop;
-import entities.bosses.ClownMask;
-import entities.bosses.FaralsBoss;
 import ui.Sprite;
 import ui.SpriteAnimation;
 import managers.BombManager;
 import managers.EnemyManager;
 import managers.LevelManager;
 import managers.MouseManager;
-import managers.PowerupManager;
 import managers.SaveManager;
 import managers.TileManager;
 import util.*;
@@ -60,6 +57,8 @@ public class Bomberman extends Entity {
 	private BufferedImage blinkImage;
 	private BufferedImage original;
 
+	private String level;
+
 	public Bomberman(int posX, int posY) {
 		/* Pass everything to the superclass Entity */
 		super(posX, posY, 20, 20, 5, new Sprite("bomberman", 6.3, 5, "down",
@@ -75,8 +74,8 @@ public class Bomberman extends Entity {
 		/* Set the props to their initial states */
 		this.keys = new ArrayList<>();
 		this.health = 1;
-		this.maxBombs = 20;
-		this.bombRadius = 4;
+		this.maxBombs = 1;
+		this.bombRadius = 1;
 		this.lives = 5;
 		this.score = 0;
 		this.won = false;
@@ -98,6 +97,7 @@ public class Bomberman extends Entity {
 				raster.setPixel(i, j, pixels);
 			}
 		}
+		this.level = "1";
 	}
 
 	public void die() {
@@ -220,12 +220,15 @@ public class Bomberman extends Entity {
 			this.gridY = normPos[1] / Consts.tileDims;
 
 			/* Reset the tile on which the player was to what was originally */
+
 			if (prevX != this.gridX || prevY != this.gridY) {
 				if (tileManager.grid[prevY][prevX] == TileType.Bomberman) {
 					tileManager.grid[prevY][prevX] = this.prevTile;
 				}
+
 				this.prevTile = tileManager.grid[this.gridY][this.gridX];
 			}
+
 			direction = "";
 			this.stop = false;
 
