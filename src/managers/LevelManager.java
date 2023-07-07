@@ -44,9 +44,9 @@ public class LevelManager {
     TileManager.build().readGrid();
     Loop.build().bomberman.posX = 80;
     Loop.build().bomberman.posY = 80;
-    if (newLevel.equals("3")) {
+    if (newLevel.equals("3") && EnemyManager.build().enemies.size() == 0) {
       EnemyManager.build().enemies.add(new ClownMask(400, 300));
-    } else if (newLevel.equals("6")) {
+    } else if (newLevel.equals("6") && EnemyManager.build().enemies.size() == 0) {
       EnemyManager.build().enemies.add(new FaralsBoss(400, 300));
     } else {
       EnemyManager.build().instanciateEnemies(5);

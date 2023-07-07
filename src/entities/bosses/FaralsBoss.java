@@ -5,10 +5,12 @@ import core.Loop;
 import entities.Bomb;
 import entities.Bomberman;
 import entities.Enemy;
+import entities.Tile;
 import managers.BombManager;
 import managers.TileManager;
 import ui.Sprite;
 import ui.SpriteAnimation;
+import util.Consts;
 import util.TileType;
 import util.Utils;
 
@@ -37,6 +39,11 @@ public class FaralsBoss extends Enemy {
   }
 
   public void die() {
+    Tile hatch = TileManager.build().hatch;
+    hatch.isVisible = true;
+    hatch.posX = Consts.tileDims * 2;
+    hatch.posY = Consts.tileDims;
+    TileManager.build().grid[1][2] = TileType.Hatch;
     this.dead = true;
   }
 

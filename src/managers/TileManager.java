@@ -54,6 +54,7 @@ public class TileManager {
     public void readGrid() {
         this.basicTiles.clear();
         this.walls.clear();
+        this.hatch = null;
         for (int i = 0; i < this.grid.length; i++) {
             for (int j = 0; j < this.grid[i].length; j++) {
                 int x = j * Consts.tileDims;
@@ -140,117 +141,7 @@ public class TileManager {
         while (!tileWithHatch.destructable) {
             tileWithHatch = (Tile) Utils.pick(this.walls.toArray());
         }
-        System.out.println(tileWithHatch.posX / 48 + " " + tileWithHatch.posY / 48);
         this.hatch = new Tile(tileWithHatch.posX, tileWithHatch.posY);
-    }
-
-    /*
-     * This function takes care of genrating the tiles, the onbstacles, and specific
-     * tiles like edge tiles or shadow tiles
-     */
-    private void setTiles() {
-        /* Loop through the grid (a matrix) */
-        for (int i = 0; i < this.grid.length; i++) {
-            for (int j = 0; j < this.grid[i].length; j++) {
-                /* Get the x and y coordinates */
-                int x = j * Consts.tileDims;
-                int y = i * Consts.tileDims;
-
-                /* Check if we should spawn an obstacle */
-                boolean shouldSpawnObstacle = Utils.rng(1, 10) == 5;
-
-                Tile tile = null;
-                String src = null;
-
-                /* If it is on the first horizontal iteration, set the top walls */
-                if (i == 0) {
-                    if (j == 0) {
-                        src = "w-tl";
-                    } else if (j == this.grid[i].length - 1) {
-                        src = "w-tr";
-                    } else {
-                        src = "w-t";
-                    }
-                    tile = new Tile(x, y, true, src);
-                    this.grid[i][j] = TileType.Wall;
-                    this.walls.add(tile);
-                    /* If it is on the last horizontal iteration, set the bottom wall */
-                } else if (i == this.grid.length - 1) {
-                    if (j == 0) {
-                        src = "w-bl";
-                    } else if (j == this.grid[i].length - 1) {
-                        src = "w-br";
-                    } else {
-                        src = "w-b";
-                    }
-                    tile = new Tile(x, y, true, src);
-                    this.grid[i][j] = TileType.Wall;
-                    this.walls.add(tile);
-                    /* If any iteration is on an index divisible by 2, set a wall (grid pattern) */
-                } else if (i % 2 == 0 && j % 2 == 0 && j != 0 && j < this.grid[i].length - 1) {
-                    src = "w-center";
-                    tile = new Tile(x, y, true, src);
-                    this.grid[i][j] = TileType.Wall;
-                    this.walls.add(tile);
-                } else {
-                    /* On the first vertical iteration, set the left walls */
-                    if (j == 0) {
-                        src = "w-l";
-                        tile = new Tile(x, y, true, src);
-                        this.grid[i][j] = TileType.Wall;
-                        this.walls.add(tile);
-                        /* On the last vertical iteration, set the right walls */
-                    } else if (j == this.grid[i].length - 1) {
-                        src = "w-r";
-                        tile = new Tile(x, y, true, src);
-                        this.grid[i][j] = TileType.Wall;
-                        this.walls.add(tile);
-                    } else {
-                        /* If we should spawn an obstacle, set it */
-                        if (shouldSpawnObstacle) {
-                            src = "wd-1";
-                            String animName = null;
-                            /*
-                             * Set if it is the obstacle sprite at the edge of the map. See:
-                             * assets/tiles/idle-edge.png
-                             */
-                            if (i == 1 || this.grid[i - 1][j] == TileType.Wall) {
-                                animName = "idle-edge";
-                            } else {
-                                animName = "idle";
-                                src = "wd-1";
-                            }
-                            tile = new Tile(x, y, true, false, true, new Sprite(src, 6, 3, animName,
-                                    new SpriteAnimation[] {
-                                            new SpriteAnimation("idle", 4, 0, 10),
-                                            new SpriteAnimation("idle-edge", 4, 1, 10),
-                                            new SpriteAnimation("death", 6, 2, 10)
-                                    }, 1));
-                            this.grid[i][j] = TileType.Obstacle;
-                            this.walls.add(tile);
-                        } else {
-                            /* If it doesn't have anything, then it's an empty tile */
-                            this.grid[i][j] = TileType.Empty;
-                        }
-                    }
-                }
-                /* Check if it needs to be the edge tile. See assets/tiles/basic-1-edge.png */
-                if (i == 1 || (i > 0 && this.grid[i - 1][j] == TileType.Wall)) {
-                    src = "basic-1-edge";
-                    /*
-                     * Check if there is an obstacle on the tile above. If yes, set a shadow tile.
-                     * See assets/tiles/basic-1-shadow.png
-                     */
-                } else if (i > 1 && this.grid[i - 1][j] == TileType.Obstacle) {
-                    src = "basic-1-shadow";
-                } else {
-                    src = "basic-1";
-                }
-                this.basicTiles.add(new Tile(x, y, false, src));
-            }
-        }
-
-        this.setHatch();
     }
 
     /* Update all the tiles at once */
