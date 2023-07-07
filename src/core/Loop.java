@@ -9,6 +9,7 @@ import javax.swing.*;
 import entities.Bomberman;
 import managers.BombManager;
 import managers.EnemyManager;
+import managers.LevelManager;
 import managers.MouseManager;
 import managers.SoundManager;
 import managers.PowerupManager;
@@ -72,6 +73,9 @@ public class Loop extends JPanel implements Runnable {
 
   private BufferedImage victory;
   private BufferedImage winBomberman;
+  private BufferedImage continueScreen;
+  private JButton yesButton;
+  private JButton noButton;
   public JButton avatarButton;
   public JButton customButton;
   public JTextField textField;
@@ -89,6 +93,7 @@ public class Loop extends JPanel implements Runnable {
     this.statsBg = Utils.loadImage("assets/Stats.png");
     this.victory = Utils.loadImage("assets/victory.png");
     this.winBomberman = Utils.loadImage("assets/winBomberman.png");
+    this.continueScreen = Utils.loadImage("assets/ContinueScreen.png");
     this.arrowY = 555;
     this.elapsed = 0;
     this.running = false;
@@ -148,6 +153,39 @@ public class Loop extends JPanel implements Runnable {
     });
 
     container.add(customButton);
+
+    // creating buttons to yes/no continue screen
+    // they must be invisible
+    yesButton = new JButton();
+    yesButton.setBounds(329, 399, 147, 53);
+    yesButton.setVisible(false);
+    yesButton.setFocusPainted(false);
+    yesButton.addActionListener(e -> {
+      LevelManager.build().reloadLevel();
+      stop();
+      this.addController();
+      bomberman.dead = true;
+      bomberman.lives = 3;
+      setState(GameState.InGame);
+    });
+    yesButton.setOpaque(false);
+    yesButton.setContentAreaFilled(false);
+    yesButton.setBorderPainted(false);
+
+    noButton = new JButton();
+    noButton.setBounds(353, 472, 91, 48);
+    noButton.setVisible(false);
+    noButton.setFocusPainted(false);
+    noButton.addActionListener(e -> {
+      // if no is pressed, go back to the game
+      System.out.println("no");
+    });
+    noButton.setOpaque(false);
+    noButton.setContentAreaFilled(false);
+    noButton.setBorderPainted(false);
+
+    container.add(yesButton);
+    container.add(noButton);
 
     /* Build all the managers */
     this.tileManager = TileManager.build();
@@ -221,6 +259,14 @@ public class Loop extends JPanel implements Runnable {
         textField.setVisible(false);
         customButton.setVisible(false);
         this.createMainMenu();
+        break;
+      }
+      case ContinueScreen: {
+        // set the Yes and No buttons to visible and clickable
+        yesButton.setVisible(true);
+        noButton.setVisible(true);
+        this.yesButton.setEnabled(true);
+        this.noButton.setEnabled(true);
         break;
       }
       case Stats: {
@@ -387,6 +433,12 @@ public class Loop extends JPanel implements Runnable {
         g2d.drawString("" + SaveManager.readProgress().get("score"), this.getWidth() - 160 - 297, 380 + 200);
         BufferedImage credits = Utils.loadImage("assets/guys.png");
         g2d.drawImage(credits, 223, 643, credits.getWidth() * 3, credits.getHeight() * 3, null);
+        break;
+      }
+      case ContinueScreen: {
+        // draw the bufferedimage ContinueScreen
+        g2d.drawImage(this.continueScreen, 0, 0, this.getWidth(), this.getHeight(), null);
+
         break;
       }
       case StageCleared: {

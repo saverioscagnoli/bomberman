@@ -25,7 +25,9 @@ import java.awt.Graphics2D;
 public class EnemyManager {
 	public static EnemyManager instance = null;
 	public ArrayList<Enemy> enemies;
-	public Class<?>[] classes = { Puropen.class, Denkyun.class, NutsStar.class, Pakupa.class, Cuppen.class };
+	public Class<?>[] classes = { Puropen.class, Denkyun.class,
+			// NutsStar.class,
+			Pakupa.class, Cuppen.class };
 
 	private EnemyManager() {
 		this.enemies = new ArrayList<>();
