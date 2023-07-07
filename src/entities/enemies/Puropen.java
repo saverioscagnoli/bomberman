@@ -17,9 +17,17 @@ public class Puropen extends Enemy {
 						new SpriteAnimation("right", 4, 3, 3)
 				}, 2.5f));
 		this.health = 1;
-		this.direction = Utils.pick(new String[] { "up", "down", "left", "right" });
-		this.sprite.setAnimation(this.direction);
 		this.score = 100;
+
+		String[] dirs = { "up", "down", "left", "right" };
+		String dir = Utils.pick(dirs);
+		int i = 0;
+		while (this.collide(dir) && i < Consts.maxIterations) {
+			dir = Utils.pick(dirs);
+			i++;
+		}
+		this.direction = dir;
+		this.sprite.setAnimation(this.direction);
 	}
 
 	public void update(int elapsed) {
