@@ -145,9 +145,10 @@ public abstract class Enemy extends Entity {
 
 		if (!(this instanceof Cuppen)) {
 			solid.add(TileType.Obstacle);
-		} else if (this instanceof Pakupa) {
+		}
+		
+		if (this instanceof Pakupa) {
 			TileType next = map.get(this.direction);
-
 
 			if (next == TileType.Bomb) {
 				int x = 0;
@@ -208,8 +209,14 @@ public abstract class Enemy extends Entity {
 						String[] dirs = { "down", "left", "right" };
 						this.direction = Utils.pick(dirs);
 
-						while (this.collide(this.direction)) {
+						int i = 0;
+
+						while (this.collide(this.direction) && i < Consts.maxIterations) {
 							this.direction = Utils.pick(dirs);
+							if (i == 50) {
+								dirs = new String[] { "down", "left", "right", "up" };
+							}
+							i++;
 						}
 
 					} else {
@@ -227,10 +234,16 @@ public abstract class Enemy extends Entity {
 					if (randomDirection) {
 						String[] dirs = { "up", "left", "right" };
 						this.direction = Utils.pick(dirs);
+						int i = 0;
 
-						while (this.collide(this.direction)) {
+						while (this.collide(this.direction) && i < Consts.maxIterations) {
 							this.direction = Utils.pick(dirs);
+							if (i == 50) {
+								dirs = new String[] { "down", "left", "right", "up" };
+							}
+							i++;
 						}
+
 					} else {
 						this.direction = "up";
 					}
@@ -247,9 +260,14 @@ public abstract class Enemy extends Entity {
 					if (randomDirection) {
 						String[] dirs = { "up", "down", "right" };
 						this.direction = Utils.pick(dirs);
+						int i = 0;
 
-						while (this.collide(this.direction)) {
+						while (this.collide(this.direction) && i < Consts.maxIterations) {
 							this.direction = Utils.pick(dirs);
+							if (i == 50) {
+								dirs = new String[] { "down", "left", "right", "up" };
+							}
+							i++;
 						}
 					} else {
 						this.direction = "right";
@@ -269,9 +287,16 @@ public abstract class Enemy extends Entity {
 						String[] dirs = { "up", "down", "left" };
 						this.direction = Utils.pick(dirs);
 
-						while (this.collide(this.direction)) {
+						int i = 0;
+
+						while (this.collide(this.direction) && i < Consts.maxIterations) {
 							this.direction = Utils.pick(dirs);
+							if (i == 50) {
+								dirs = new String[] { "down", "left", "right", "up" };
+							}
+							i++;
 						}
+
 					} else {
 						this.direction = "left";
 					}

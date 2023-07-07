@@ -7,5 +7,7 @@ public enum GameState {
   InGame,
   Pause,
   GameOver,
-  Stats, StageCleared,
+  Stats,
+  StageCleared,
+  ContinueScreen
 }

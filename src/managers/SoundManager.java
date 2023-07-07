@@ -38,7 +38,9 @@ public class SoundManager {
                 break;
             }
             case InGame: {
-                this.clip = Utils.playSound(Consts.soundPath + "level-1.wav");
+                String lvl = SaveManager.readProgress().get("level");
+                boolean isBoss = lvl.equals("3") || lvl.equals("6");
+                this.clip = Utils.playSound(Consts.soundPath + (isBoss ? "boss.wav" : "level-1.wav"));
                 this.clip.loop(Clip.LOOP_CONTINUOUSLY);
                 break;
             }
