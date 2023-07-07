@@ -33,6 +33,8 @@ public class Bomberman extends Entity {
 	/* A flag to determine if the player is immune, and will not take damage */
 	public boolean immune;
 
+	public boolean passThroughWalls;
+
 	/* The lives of the player */
 	public int lives;
 
@@ -73,14 +75,15 @@ public class Bomberman extends Entity {
 		/* Set the props to their initial states */
 		this.keys = new ArrayList<>();
 		this.health = 1;
-		this.maxBombs = 1;
-		this.bombRadius = 1;
+		this.maxBombs = 20;
+		this.bombRadius = 4;
 		this.lives = 5;
 		this.score = 0;
 		this.won = false;
 		this.original = this.sprite.spritesheet;
 		this.blinkImage = Utils.copyImage(this.sprite.spritesheet);
-		this.immune = true;
+		this.passThroughWalls = false;
+		// this.immune = true;
 
 		WritableRaster raster = this.blinkImage.getRaster();
 
@@ -109,6 +112,7 @@ public class Bomberman extends Entity {
 		this.sprite.width = (int) (this.sprite.spritesheet.getWidth() / 6);
 		if (this.lives == 0) {
 			SaveManager.incrementLosses();
+			Loop.build().setState(GameState.ContinueScreen);
 			// gameover
 		} else {
 			if (this.speed > 1) {
@@ -116,9 +120,9 @@ public class Bomberman extends Entity {
 			}
 			if (!CollisionChecker.SolidTiles.contains(TileType.Obstacle)) {
 				CollisionChecker.SolidTiles.add(TileType.Obstacle);
+				this.passThroughWalls = false;
 			}
 		}
-		Loop.build().setState(GameState.ContinueScreen); // da spostare a lives ==0
 	}
 
 	/*

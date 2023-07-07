@@ -1,5 +1,6 @@
 package entities.powerups;
 
+import core.Loop;
 import entities.PowerUp;
 import managers.TileManager;
 import ui.Sprite;
@@ -19,5 +20,6 @@ public class PassThroughPowerup extends PowerUp {
     this.die();
     CollisionChecker.SolidTiles.remove(TileType.Obstacle);
     TileManager.build().grid[this.gridY][this.gridX] = this.prevTile;
+    Loop.build().bomberman.passThroughWalls = true;
   }
 }

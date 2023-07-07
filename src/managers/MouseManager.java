@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 import core.Loop;
 import entities.Bomberman;
+import util.CollisionChecker;
 import util.Consts;
 import util.TileType;
 import util.Utils;
@@ -32,8 +33,8 @@ public class MouseManager extends MouseAdapter {
   // image to draw on the accessible tiles
   BufferedImage moveIndicator = Utils.loadImage("assets/moveIndicator.png");
 
-  // gamegrid shorthand
-  TileType[][] gameGrid = TileManager.build().grid;
+  // tileManager.grid shorthand
+  TileManager tileManager = TileManager.build();
 
   // bomberman shorthand
   private final Bomberman bomberman = Loop.build().bomberman;
@@ -56,7 +57,8 @@ public class MouseManager extends MouseAdapter {
 
       @Override
       public void mousePressed(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1 && !(verticalMovement || horizontalMovement)) { // only move if there is no queued movement
+        if (e.getButton() == MouseEvent.BUTTON1 && !(verticalMovement || horizontalMovement)) { // only move if there is
+          // no queued movement
           if (Loop.build().gameState == util.GameState.InGame) {
             tileClicked = Utils.normalizePos(e.getX(), e.getY());
             normtileClicked[0] = tileClicked[0];
@@ -83,16 +85,21 @@ public class MouseManager extends MouseAdapter {
     validUpTiles.clear();
     validDownTiles.clear();
 
-    //TODO : creare funzione che popola ciascun array per massima riutilizzabilitá del codice (usando x/y offset per decidere up/down/l/r)
-    //TODO passaggio attraverso i muri con mouse movements
-    //TODO set bomberman direction with mouse movements
+    // TODO : creare funzione che popola ciascun array per massima riutilizzabilitá
+    // del codice (usando x/y offset per decidere up/down/l/r)
     int normBombermanX = normalizedBombermanPosition[0];
     int normBombermanY = normalizedBombermanPosition[1];
-    if (gameGrid[normBombermanY / 48][(normBombermanX + 48) / 48] == TileType.Empty) {// se la tile a destra é libera
+    if (tileManager.grid[normBombermanY / 48][(normBombermanX + 48) / 48] == TileType.Empty
+        || (bomberman.passThroughWalls == true
+            && tileManager.grid[normBombermanY / 48][(normBombermanX + 48) / 48] == TileType.Obstacle)) {// se la tile a
+                                                                                                         // destra
+      // élibera
       int[] dxTile = { normBombermanX + 48, normBombermanY };
       validRightTiles.add(dxTile);
       // while there are empty tiles to the right, add them to the list
-      while (gameGrid[dxTile[1] / 48][(dxTile[0] + 48) / 48] == TileType.Empty) {
+      while (tileManager.grid[dxTile[1] / 48][(dxTile[0] + 48) / 48] == TileType.Empty
+          || (bomberman.passThroughWalls == true
+              && tileManager.grid[dxTile[1] / 48][(dxTile[0] + 48) / 48] == TileType.Obstacle)) {
         int[] dxTile2 = { dxTile[0] + 48, dxTile[1] };
         validRightTiles.add(dxTile2);
         dxTile = dxTile2;
@@ -101,11 +108,17 @@ public class MouseManager extends MouseAdapter {
       validRightTiles.clear();
     }
 
-    if (gameGrid[normBombermanY / 48][(normBombermanX - 48) / 48] == TileType.Empty) {// se la tile a sinistra é libera
+    if (tileManager.grid[normBombermanY / 48][(normBombermanX - 48) / 48] == TileType.Empty
+        || (bomberman.passThroughWalls == true
+            && tileManager.grid[normBombermanY / 48][(normBombermanX - 48) / 48] == TileType.Obstacle)) {// se la tile a
+                                                                                                         // sinistra
+      // élibera
       int[] sxTile = { normBombermanX - 48, normBombermanY };
       validLeftTiles.add(sxTile);
       // while there are empty tiles to the left, add them to the list
-      while (gameGrid[sxTile[1] / 48][(sxTile[0] - 48) / 48] == TileType.Empty) {
+      while (tileManager.grid[sxTile[1] / 48][(sxTile[0] - 48) / 48] == TileType.Empty
+          || (bomberman.passThroughWalls == true
+              && tileManager.grid[sxTile[1] / 48][(sxTile[0] - 48) / 48] == TileType.Obstacle)) {
         int[] sxTile2 = { sxTile[0] - 48, sxTile[1] };
         validLeftTiles.add(sxTile2);
         sxTile = sxTile2;
@@ -114,11 +127,17 @@ public class MouseManager extends MouseAdapter {
       validLeftTiles.clear();
     }
 
-    if (gameGrid[(normBombermanY - 48) / 48][normBombermanX / 48] == TileType.Empty) {// se la tile sopra é libera
+    if (tileManager.grid[(normBombermanY - 48) / 48][normBombermanX / 48] == TileType.Empty ||
+        (bomberman.passThroughWalls == true
+            && tileManager.grid[(normBombermanY - 48) / 48][normBombermanX / 48] == TileType.Obstacle)) {// se la tile
+                                                                                                         // sopra é//
+      // libera
       int[] upTile = { normBombermanX, normBombermanY - 48 };
       validUpTiles.add(upTile);
       // while there are empty tiles above, add them to the list
-      while (gameGrid[(upTile[1] - 48) / 48][upTile[0] / 48] == TileType.Empty) {
+      while (tileManager.grid[(upTile[1] - 48) / 48][upTile[0] / 48] == TileType.Empty
+          || (bomberman.passThroughWalls == true
+              && tileManager.grid[(upTile[1] - 48) / 48][upTile[0] / 48] == TileType.Obstacle)) {
         int[] upTile2 = { upTile[0], upTile[1] - 48 };
         validUpTiles.add(upTile2);
         upTile = upTile2;
@@ -127,11 +146,17 @@ public class MouseManager extends MouseAdapter {
       validUpTiles.clear();
     }
 
-    if (gameGrid[(normBombermanY + 48) / 48][normBombermanX / 48] == TileType.Empty) {// se la tile sotto é libera
+    if (tileManager.grid[(normBombermanY + 48) / 48][normBombermanX / 48] == TileType.Empty
+        || bomberman.passThroughWalls &&
+            tileManager.grid[(normBombermanY + 48) / 48][normBombermanX / 48] == TileType.Obstacle) {// se la tile sotto
+                                                                                                     // é//
+                                                                                                     // libera
       int[] downTile = { normBombermanX, normBombermanY + 48 };
       validDownTiles.add(downTile);
       // while there are empty tiles below, add them to the list
-      while (gameGrid[(downTile[1] + 48) / 48][downTile[0] / 48] == TileType.Empty) {
+      while (tileManager.grid[(downTile[1] + 48) / 48][downTile[0] / 48] == TileType.Empty
+          || (bomberman.passThroughWalls == true
+              && tileManager.grid[(downTile[1] + 48) / 48][downTile[0] / 48] == TileType.Obstacle)) {
         int[] downTile2 = { downTile[0], downTile[1] + 48 };
         validDownTiles.add(downTile2);
         downTile = downTile2;
@@ -176,11 +201,13 @@ public class MouseManager extends MouseAdapter {
       if (bombermanPos[0] < tileClicked[0] - 2) {
         Loop.build().bomberman.keys.clear();
         Loop.build().bomberman.keys.add("D");
+        bomberman.sprite.setAnimation("right");
       }
 
       if (bombermanPos[0] > tileClicked[0] + 2) {
         Loop.build().bomberman.keys.clear();
         Loop.build().bomberman.keys.add("A");
+        bomberman.sprite.setAnimation("left");
       }
 
     }
@@ -195,9 +222,11 @@ public class MouseManager extends MouseAdapter {
       if (bombermanPos[1] < tileClicked[1] - 2) {
         Loop.build().bomberman.keys.clear();
         Loop.build().bomberman.keys.add("S");
+        bomberman.sprite.setAnimation("down");
       } else if (bombermanPos[1] > tileClicked[1] + 2) {
         Loop.build().bomberman.keys.clear();
         Loop.build().bomberman.keys.add("W");
+        bomberman.sprite.setAnimation("up");
       }
     }
 

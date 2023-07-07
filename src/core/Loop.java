@@ -19,6 +19,8 @@ import ui.Sprite;
 import ui.SpriteAnimation;
 
 import java.awt.*;
+
+import util.CollisionChecker;
 import util.Consts;
 import util.GameState;
 import util.Utils;
@@ -163,9 +165,11 @@ public class Loop extends JPanel implements Runnable {
     yesButton.addActionListener(e -> {
       LevelManager.build().reloadLevel();
       stop();
-      this.addController();
-      bomberman.dead = true;
-      bomberman.lives = 3;
+      this.requestFocus();
+      bomberman.maxBombs = 1;
+      bomberman.bombRadius = 1;
+      bomberman.speed = 1;
+      bomberman.lives = 5;
       setState(GameState.InGame);
     });
     yesButton.setOpaque(false);
@@ -177,8 +181,8 @@ public class Loop extends JPanel implements Runnable {
     noButton.setVisible(false);
     noButton.setFocusPainted(false);
     noButton.addActionListener(e -> {
-      // if no is pressed, go back to the game
-      System.out.println("no");
+      // quit the game
+      System.exit(0);
     });
     noButton.setOpaque(false);
     noButton.setContentAreaFilled(false);
@@ -193,7 +197,7 @@ public class Loop extends JPanel implements Runnable {
     this.enemyManager = EnemyManager.build();
     this.powerupManager = PowerupManager.build();
     this.musicManager = SoundManager.build();
-    this.bomberman = new Bomberman(50, 50);
+    this.bomberman = new Bomberman(60, 60);
     this.MouseIcon = Utils.loadImage("assets/MouseIcon.png");
     this.MButton = Utils.loadImage("assets/MButton.png");
 
@@ -328,6 +332,7 @@ public class Loop extends JPanel implements Runnable {
     this.running = true;
     this.thread = new Thread(this);
     this.thread.start();
+    CollisionChecker.build().update_Centered_Collisions();
   }
 
   /* The function that takes care of stopping the thread */
@@ -444,9 +449,11 @@ public class Loop extends JPanel implements Runnable {
       case StageCleared: {
         // fade to black screen and display victory.png for 3 seconds
         stop();
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(Color.decode("#FC8400"));
         g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
-        g2d.drawImage(this.victory, 0, 0, this.getWidth(), this.getHeight(), null);
+        g2d.drawImage(this.victory, this.getWidth() / 3 - 50 - victory.getWidth() / 3,
+            this.getHeight() / 3 - victory.getHeight() / 3, victory.getWidth() * 3,
+            victory.getHeight() * 3, null);
         break;
       }
       case InGame:
