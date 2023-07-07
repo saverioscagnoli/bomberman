@@ -21,11 +21,12 @@ public class Denkyun extends Enemy {
 
 		String[] dirs = { "up", "down", "left", "right" };
 		String dir = Utils.pick(dirs);
-		while (this.collide(dir)) {
+		int i = 0;
+		while (this.collide(dir) && i < Consts.maxIterations) {
 			dir = Utils.pick(dirs);
+			i++;
 		}
 		this.direction = dir;
-		this.sprite.setAnimation(this.direction);
 	}
 
 	public void update(int elapsed) {

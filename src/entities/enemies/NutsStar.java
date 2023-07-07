@@ -22,6 +22,15 @@ public class NutsStar extends Enemy {
     this.score = 200;
     this.justChanged = false;
     this.health = 1;
+    String[] dirs = { "up", "down", "left", "right" };
+    String dir = Utils.pick(dirs);
+    int i = 0;
+    while (this.collide(dir) && i < Consts.maxIterations) {
+      dir = Utils.pick(dirs);
+      i++;
+    }
+    this.direction = dir;
+    this.sprite.setAnimation(this.direction);
   }
 
   private void setDirection(String direction) {
@@ -30,30 +39,20 @@ public class NutsStar extends Enemy {
     this.justChanged = true;
   }
 
-  private void handleCollisions(String[] directions, boolean check, Runnable fn) {
-    if (this.collide()) {
-      if (check) {
-        String dir = Utils.pick(directions);
-        while (this.collide(dir)) {
-          dir = Utils.pick(directions);
-        }
-        this.setDirection(dir);
-      } else {
-        fn.run();
-      }
-    } else if (this.gridX % 2 != 0 && this.gridY % 2 != 0 && !this.justChanged && check) {
+  private void handleDirectionChange(String[] directions, boolean check, Runnable fn) {
+    if (this.gridX % 2 != 0 && this.gridY % 2 != 0 && !this.justChanged && check) {
       if (Utils.rng(1, 5) == 1) {
         String dir = Utils.pick(directions);
-        while (this.collide(dir)) {
+        int i = 0;
+        while (this.collide(dir) && i < Consts.maxIterations) {
           dir = Utils.pick(directions);
+          i++;
         }
         this.setDirection(dir);
       } else {
         fn.run();
         this.justChanged = true;
       }
-    } else {
-      fn.run();
     }
   }
 
@@ -68,29 +67,29 @@ public class NutsStar extends Enemy {
       case "up": {
         int edge = this.gridY * Consts.tileDims;
         String[] directions = new String[] { "left", "right", "down" };
-        this.handleCollisions(directions, this.posY <= edge, () -> this.posY -= this.speed);
+        this.handleDirectionChange(directions, this.posY <= edge, () -> this.posY -= this.speed);
         break;
       }
       case "down": {
         int edge = this.gridY * Consts.tileDims + Consts.tileDims;
         String[] directions = new String[] { "left", "right", "up" };
-        this.handleCollisions(directions, this.posY + this.height >= edge, () -> this.posY += this.speed);
+        this.handleDirectionChange(directions, this.posY + this.height >= edge, () -> this.posY += this.speed);
         break;
       }
       case "left": {
         int edge = this.gridX * Consts.tileDims;
         String[] directions = new String[] { "up", "down", "right" };
-        this.handleCollisions(directions, this.posX <= edge, () -> this.posX -= this.speed);
+        this.handleDirectionChange(directions, this.posX <= edge, () -> this.posX -= this.speed);
         break;
       }
       case "right": {
         int edge = this.gridX * Consts.tileDims + Consts.tileDims;
         String[] directions = new String[] { "up", "down", "left" };
-        this.handleCollisions(directions, this.posX + this.width >= edge, () -> this.posX += this.speed);
+        this.handleDirectionChange(directions, this.posX + this.width >= edge, () -> this.posX += this.speed);
         break;
       }
     }
-
+    this.move(true);
     this.updateGrid();
   }
 

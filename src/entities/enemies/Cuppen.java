@@ -15,17 +15,22 @@ public class Cuppen extends Enemy {
         }, 2.5f));
 
     this.health = 1;
-    this.direction = Utils.pick(new String[] { "up", "down", "left", "right" });
-    this.sprite.setAnimation(this.direction);
     this.gridX = posX / Consts.tileDims;
     this.gridY = posY / Consts.tileDims;
     this.score = 400;
     this.health = 2;
+
+    String[] dirs = { "up", "down", "left", "right" };
+    String dir = Utils.pick(dirs);
+    int i = 0;
+    while (this.collide(dir) && i < Consts.maxIterations) {
+      dir = Utils.pick(dirs);
+      i++;
+    }
+    this.direction = dir;
   }
 
   public void update(int elapsed) {
-    // the enemy moves in a direction until it hits a wall, then it changes
-    // direction
     super.update(elapsed);
 
     if (this.stop)

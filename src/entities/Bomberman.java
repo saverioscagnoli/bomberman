@@ -73,9 +73,9 @@ public class Bomberman extends Entity {
 		/* Set the props to their initial states */
 		this.keys = new ArrayList<>();
 		this.health = 1;
-		this.maxBombs = 10;
-		this.bombRadius = 5;
-		this.lives = 100;
+		this.maxBombs = 1;
+		this.bombRadius = 1;
+		this.lives = 5;
 		this.score = 0;
 		this.won = false;
 		this.original = this.sprite.spritesheet;

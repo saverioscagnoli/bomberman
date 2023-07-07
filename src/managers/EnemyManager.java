@@ -44,21 +44,23 @@ public class EnemyManager {
 	public void instanciateEnemies(int n) {
 		this.enemies.clear();
 		for (int i = 0; i < n; i++) {
-			int x = Utils.rng(Consts.tileDims + 1, Consts.screenWidth - Consts.tileDims);
-			int y = Utils.rng(Consts.tileDims + 1, Consts.screenHeight -
-					Consts.tileDims);
-			int[] pos = Utils.normalizePos(x, y);
-			TileType[][] grid = TileManager.build().grid;
-			while (grid[y / Consts.tileDims][x / Consts.tileDims] == TileType.Obstacle
-					|| grid[y / Consts.tileDims][x / Consts.tileDims] == TileType.Wall) {
-				x = Utils.rng(Consts.tileDims + 1, Consts.screenWidth - Consts.tileDims);
-				y = Utils.rng(Consts.tileDims + 1, Consts.screenHeight - Consts.tileDims);
-				pos = Utils.normalizePos(x, y);
+
+			int gridX = Utils.rng(1, Consts.gridWidth - 1);
+			int gridY = Utils.rng(1, Consts.gridHeight - 1);
+			int x = gridX * Consts.tileDims;
+			int y = gridY * Consts.tileDims;
+
+			while (TileManager.build().grid[gridY][gridX] != TileType.Empty) {
+				gridX = Utils.rng(1, Consts.gridWidth - 1);
+				gridY = Utils.rng(1, Consts.gridHeight - 1);
+				x = gridX * Consts.tileDims;
+				y = gridY * Consts.tileDims;
 			}
+
 			Class<?> c = Utils.pick(classes);
 			Enemy e = null;
 			try {
-				e = (Enemy) c.getConstructor(int.class, int.class).newInstance(pos[0], pos[1]);
+				e = (Enemy) c.getConstructor(int.class, int.class).newInstance(x, y);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
