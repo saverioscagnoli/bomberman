@@ -13,6 +13,7 @@ import ui.Sprite;
 import ui.SpriteAnimation;
 import managers.BombManager;
 import managers.EnemyManager;
+import managers.LevelManager;
 import managers.MouseManager;
 import managers.PowerupManager;
 import managers.SaveManager;
@@ -52,7 +53,7 @@ public class Bomberman extends Entity {
 	public int score;
 	public String direction;
 
-	private boolean won;
+	public boolean won;
 
 	private BufferedImage blinkImage;
 	private BufferedImage original;
@@ -117,6 +118,7 @@ public class Bomberman extends Entity {
 				CollisionChecker.SolidTiles.add(TileType.Obstacle);
 			}
 		}
+		Loop.build().setState(GameState.ContinueScreen); // da spostare a lives ==0
 	}
 
 	/*
@@ -151,27 +153,11 @@ public class Bomberman extends Entity {
 		SaveManager.incrementWins();
 		Loop.build().overlay.repaint();
 
-		String newLevel = SaveManager.readProgress().get("level");
-		String newLevelString = "levels/level-" + newLevel + ".lvl";
-		if (newLevel.equals("3") || newLevel.equals("6")) {
-			newLevelString = "levels/bosslevel.lvl";
-		}
-		TileManager.build().grid = Utils.readLevel(newLevelString);
-		TileManager.build().readGrid();
-		this.posX = 80;
-		this.posY = 80;
-		if (newLevel.equals("3")) {
-			EnemyManager.build().enemies.add(new ClownMask(400, 300));
-		} else if (newLevel.equals("6")) {
-			EnemyManager.build().enemies.add(new FaralsBoss(400, 300));
-		} else {
-			EnemyManager.build().instanciateEnemies(5);
-		}
+		LevelManager.build().loadNextLevel();
 		Loop.build().setState(GameState.StageCleared);
+
 		this.won = false;
 		this.keys.clear();
-		BombManager.build().bombs.clear();
-		PowerupManager.build().powerups.clear();
 	}
 
 	public void update(int elapsed) {
