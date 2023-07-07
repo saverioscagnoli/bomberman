@@ -78,6 +78,32 @@ public class MouseManager extends MouseAdapter {
     });
   }
 
+  public ArrayList<int[]> CardinalDirectionChecker(int normBombermanX, int normBombermanY, int xOffset, int yOffset) {
+    ArrayList<int[]> foundValidTiles = new ArrayList<>();
+
+    if (tileManager.grid[(normBombermanY + yOffset) / 48][(normBombermanX + xOffset) / 48] == TileType.Empty
+        || (bomberman.passThroughWalls == true
+            && tileManager.grid[(normBombermanY + yOffset) / 48][(normBombermanX + xOffset)
+                / 48] == TileType.Obstacle)) {// se la
+      // tile a
+      // destra
+      // élibera
+      int[] dxTile = { normBombermanX + xOffset, normBombermanY + yOffset };
+      foundValidTiles.add(dxTile);
+      // while there are empty tiles to the right, add them to the list
+      while (tileManager.grid[(dxTile[1] + yOffset) / 48][(dxTile[0] + xOffset) / 48] == TileType.Empty
+          || (bomberman.passThroughWalls == true
+              && tileManager.grid[(dxTile[1] + yOffset) / 48][(dxTile[0] + xOffset) / 48] == TileType.Obstacle)) {
+        int[] dxTile2 = { dxTile[0] + xOffset, dxTile[1] + yOffset };
+        foundValidTiles.add(dxTile2);
+        dxTile = dxTile2;
+      }
+    } else {
+      foundValidTiles.clear();
+    }
+    return foundValidTiles;
+  }
+
   // function to populate the arrays of positions we can move into
   public void findLegalPositions(int[] normalizedBombermanPosition) {
     validRightTiles.clear();
@@ -89,81 +115,15 @@ public class MouseManager extends MouseAdapter {
     // del codice (usando x/y offset per decidere up/down/l/r)
     int normBombermanX = normalizedBombermanPosition[0];
     int normBombermanY = normalizedBombermanPosition[1];
-    if (tileManager.grid[normBombermanY / 48][(normBombermanX + 48) / 48] == TileType.Empty
-        || (bomberman.passThroughWalls == true
-            && tileManager.grid[normBombermanY / 48][(normBombermanX + 48) / 48] == TileType.Obstacle)) {// se la tile a
-                                                                                                         // destra
-      // élibera
-      int[] dxTile = { normBombermanX + 48, normBombermanY };
-      validRightTiles.add(dxTile);
-      // while there are empty tiles to the right, add them to the list
-      while (tileManager.grid[dxTile[1] / 48][(dxTile[0] + 48) / 48] == TileType.Empty
-          || (bomberman.passThroughWalls == true
-              && tileManager.grid[dxTile[1] / 48][(dxTile[0] + 48) / 48] == TileType.Obstacle)) {
-        int[] dxTile2 = { dxTile[0] + 48, dxTile[1] };
-        validRightTiles.add(dxTile2);
-        dxTile = dxTile2;
-      }
-    } else {
-      validRightTiles.clear();
-    }
 
-    if (tileManager.grid[normBombermanY / 48][(normBombermanX - 48) / 48] == TileType.Empty
-        || (bomberman.passThroughWalls == true
-            && tileManager.grid[normBombermanY / 48][(normBombermanX - 48) / 48] == TileType.Obstacle)) {// se la tile a
-                                                                                                         // sinistra
-      // élibera
-      int[] sxTile = { normBombermanX - 48, normBombermanY };
-      validLeftTiles.add(sxTile);
-      // while there are empty tiles to the left, add them to the list
-      while (tileManager.grid[sxTile[1] / 48][(sxTile[0] - 48) / 48] == TileType.Empty
-          || (bomberman.passThroughWalls == true
-              && tileManager.grid[sxTile[1] / 48][(sxTile[0] - 48) / 48] == TileType.Obstacle)) {
-        int[] sxTile2 = { sxTile[0] - 48, sxTile[1] };
-        validLeftTiles.add(sxTile2);
-        sxTile = sxTile2;
-      }
-    } else {
-      validLeftTiles.clear();
-    }
+    validRightTiles = CardinalDirectionChecker(normBombermanX, normBombermanY, 48, 0);
+    validLeftTiles = CardinalDirectionChecker(normBombermanX, normBombermanY, -48, 0);
+    validUpTiles = CardinalDirectionChecker(normBombermanX, normBombermanY, 0, -48);
+    validDownTiles = CardinalDirectionChecker(normBombermanX, normBombermanY, 0, 48);
 
-    if (tileManager.grid[(normBombermanY - 48) / 48][normBombermanX / 48] == TileType.Empty ||
-        (bomberman.passThroughWalls == true
-            && tileManager.grid[(normBombermanY - 48) / 48][normBombermanX / 48] == TileType.Obstacle)) {// se la tile
-                                                                                                         // sopra é//
-      // libera
-      int[] upTile = { normBombermanX, normBombermanY - 48 };
-      validUpTiles.add(upTile);
-      // while there are empty tiles above, add them to the list
-      while (tileManager.grid[(upTile[1] - 48) / 48][upTile[0] / 48] == TileType.Empty
-          || (bomberman.passThroughWalls == true
-              && tileManager.grid[(upTile[1] - 48) / 48][upTile[0] / 48] == TileType.Obstacle)) {
-        int[] upTile2 = { upTile[0], upTile[1] - 48 };
-        validUpTiles.add(upTile2);
-        upTile = upTile2;
-      }
-    } else {
-      validUpTiles.clear();
-    }
+  }
 
-    if (tileManager.grid[(normBombermanY + 48) / 48][normBombermanX / 48] == TileType.Empty
-        || bomberman.passThroughWalls &&
-            tileManager.grid[(normBombermanY + 48) / 48][normBombermanX / 48] == TileType.Obstacle) {// se la tile sotto
-                                                                                                     // é//
-                                                                                                     // libera
-      int[] downTile = { normBombermanX, normBombermanY + 48 };
-      validDownTiles.add(downTile);
-      // while there are empty tiles below, add them to the list
-      while (tileManager.grid[(downTile[1] + 48) / 48][downTile[0] / 48] == TileType.Empty
-          || (bomberman.passThroughWalls == true
-              && tileManager.grid[(downTile[1] + 48) / 48][downTile[0] / 48] == TileType.Obstacle)) {
-        int[] downTile2 = { downTile[0], downTile[1] + 48 };
-        validDownTiles.add(downTile2);
-        downTile = downTile2;
-      }
-    } else {
-      validDownTiles.clear();
-    }
+  public void checkCardinalPositionReached() {
 
   }
 
@@ -202,9 +162,7 @@ public class MouseManager extends MouseAdapter {
         Loop.build().bomberman.keys.clear();
         Loop.build().bomberman.keys.add("D");
         bomberman.sprite.setAnimation("right");
-      }
-
-      if (bombermanPos[0] > tileClicked[0] + 2) {
+      } else if (bombermanPos[0] > tileClicked[0] + 2) {
         Loop.build().bomberman.keys.clear();
         Loop.build().bomberman.keys.add("A");
         bomberman.sprite.setAnimation("left");
