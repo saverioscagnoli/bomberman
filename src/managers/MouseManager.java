@@ -82,6 +82,7 @@ public class MouseManager extends MouseAdapter {
     ArrayList<int[]> foundValidTiles = new ArrayList<>();
 
     if (tileManager.grid[(normBombermanY + yOffset) / 48][(normBombermanX + xOffset) / 48] == TileType.Empty
+        || tileManager.grid[(normBombermanY + yOffset) / 48][(normBombermanX + xOffset) / 48] == TileType.PowerUp
         || (bomberman.passThroughWalls == true
             && tileManager.grid[(normBombermanY + yOffset) / 48][(normBombermanX + xOffset)
                 / 48] == TileType.Obstacle)) {// se la
@@ -92,6 +93,7 @@ public class MouseManager extends MouseAdapter {
       foundValidTiles.add(dxTile);
       // while there are empty tiles to the right, add them to the list
       while (tileManager.grid[(dxTile[1] + yOffset) / 48][(dxTile[0] + xOffset) / 48] == TileType.Empty
+          || tileManager.grid[(dxTile[1] + yOffset) / 48][(dxTile[0] + xOffset) / 48] == TileType.PowerUp
           || (bomberman.passThroughWalls == true
               && tileManager.grid[(dxTile[1] + yOffset) / 48][(dxTile[0] + xOffset) / 48] == TileType.Obstacle)) {
         int[] dxTile2 = { dxTile[0] + xOffset, dxTile[1] + yOffset };
@@ -120,10 +122,6 @@ public class MouseManager extends MouseAdapter {
     validLeftTiles = CardinalDirectionChecker(normBombermanX, normBombermanY, -48, 0);
     validUpTiles = CardinalDirectionChecker(normBombermanX, normBombermanY, 0, -48);
     validDownTiles = CardinalDirectionChecker(normBombermanX, normBombermanY, 0, 48);
-
-  }
-
-  public void checkCardinalPositionReached() {
 
   }
 

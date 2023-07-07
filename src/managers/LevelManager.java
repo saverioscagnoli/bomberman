@@ -39,6 +39,7 @@ public class LevelManager {
     String newLevelString = "levels/level-" + newLevel + ".lvl";
     if (newLevel.equals("3") || newLevel.equals("6")) {
       newLevelString = "levels/bosslevel.lvl";
+      EnemyManager.build().enemies.clear();
     }
     TileManager.build().grid = Utils.readLevel(newLevelString);
     TileManager.build().readGrid();
