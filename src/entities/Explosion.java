@@ -62,7 +62,9 @@ public class Explosion extends Entity {
 								fb.hit = true;
 							}
 						} else {
-							enemy.dealDamage(1);
+							if (!enemy.dead) {
+								enemy.dealDamage(1);
+							}
 						}
 					}
 					if (AABB_player) {
@@ -82,3 +84,4 @@ public class Explosion extends Entity {
 		this.sprite.draw(g2d, this.posX, this.posY, dim, dim);
 	}
 }
+

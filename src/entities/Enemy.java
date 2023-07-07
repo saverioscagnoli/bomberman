@@ -1,7 +1,13 @@
 package entities;
 
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import core.Loop;
+import entities.enemies.Cuppen;
+import entities.enemies.Pakupa;
+import managers.BombManager;
 import managers.PowerupManager;
 import managers.SaveManager;
 import managers.TileManager;
@@ -31,6 +37,9 @@ public abstract class Enemy extends Entity {
 
 	protected TileType prevTile = TileType.Empty;
 
+	protected int speedX;
+	protected int speedY;
+
 	public Enemy(int posX, int posY, int width, int height, int speed, Sprite sprite) {
 		super(posX, posY, width, height, speed, sprite);
 		this.health = 3;
@@ -42,6 +51,8 @@ public abstract class Enemy extends Entity {
 
 		this.gridX = posX / Consts.tileDims;
 		this.gridY = posY / Consts.tileDims;
+		this.speedX = 0;
+		this.speedY = 0;
 	}
 
 	public void die() {
@@ -67,7 +78,7 @@ public abstract class Enemy extends Entity {
 
 	/* Deals damage to the enemy */
 	public void dealDamage(int damage) {
-		if (immune || this.dead)
+		if (immune || this.sprite.currentAnimation.name == "explosion")
 			return;
 		health -= damage;
 		immune = true;
@@ -86,7 +97,195 @@ public abstract class Enemy extends Entity {
 				Loop.build().overlay.repaint();
 			}, 1000);
 		}
+	}
 
+	protected void updateGrid(Runnable... onTileChange) {
+		TileManager tileManager = TileManager.build();
+		int prevX = this.gridX;
+		int prevY = this.gridY;
+		int x = (int) (this.posX + this.width * 0.5);
+		int y = (int) (this.posY + this.height * 0.5);
+		int[] normPos = Utils.normalizePos(x, y);
+
+		this.gridX = normPos[0] / Consts.tileDims;
+		this.gridY = normPos[1] / Consts.tileDims;
+
+		if (prevX != this.gridX || prevY != this.gridY) {
+			if (tileManager.grid[prevY][prevX] == TileType.Enemy) {
+				tileManager.grid[prevY][prevX] = this.prevTile;
+			}
+
+			if (onTileChange.length > 0) {
+				onTileChange[0].run();
+			}
+
+			this.prevTile = tileManager.grid[this.gridY][this.gridX];
+		}
+
+		if (this.prevTile == TileType.Bomberman) {
+			this.prevTile = TileType.Empty;
+		}
+
+		tileManager.grid[this.gridY][this.gridX] = TileType.Enemy;
+	}
+
+	protected boolean collide(String... dir) {
+		TileType[][] grid = TileManager.build().grid;
+		HashMap<String, TileType> map = new HashMap<>();
+
+		map.put("up", grid[this.gridY - 1][this.gridX]);
+		map.put("down", grid[this.gridY + 1][this.gridX]);
+		map.put("left", grid[this.gridY][this.gridX - 1]);
+		map.put("right", grid[this.gridY][this.gridX + 1]);
+
+		ArrayList<TileType> solid = new ArrayList<>();
+		solid.add(TileType.Wall);
+		solid.add(TileType.Bomb);
+		solid.add(TileType.Enemy);
+
+		if (!(this instanceof Cuppen)) {
+			solid.add(TileType.Obstacle);
+		} else if (this instanceof Pakupa) {
+			TileType next = map.get(this.direction);
+
+
+			if (next == TileType.Bomb) {
+				int x = 0;
+				int y = 0;
+
+				switch (this.direction) {
+					case "up":
+						y = -1;
+						break;
+					case "down":
+						y = 1;
+						break;
+					case "left":
+						x = -1;
+						break;
+					case "right":
+						x = 1;
+						break;
+				}
+
+				for (int i = 0; i < BombManager.build().bombs.size(); i++) {
+					Bomb bomb = BombManager.build().bombs.get(i);
+					System.out.println(x + " " + y);
+					if (bomb.gridX == this.gridX + x && bomb.gridY == this.gridY + y) {
+						bomb.dieNotExplode();
+					}
+				}
+			}
+		}
+
+		return solid.contains(map.get(dir.length > 0 ? dir[0] : this.direction));
+	}
+
+	protected boolean checkBlocked() {
+		String[] dirs = { "up", "down", "left", "right" };
+		for (int i = 0; i < dirs.length; i++) {
+			if (!this.collide(dirs[i])) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	protected void move(boolean randomDirection) {
+		this.speedX = 0;
+		this.speedY = 0;
+		if (this.checkBlocked()) {
+			this.stop = true;
+		} else {
+			this.stop = false;
+		}
+
+		switch (this.direction) {
+			case "up": {
+				int edge = this.gridY * Consts.tileDims;
+				if (this.collide() && this.posY <= edge) {
+					if (randomDirection) {
+						String[] dirs = { "down", "left", "right" };
+						this.direction = Utils.pick(dirs);
+
+						while (this.collide(this.direction)) {
+							this.direction = Utils.pick(dirs);
+						}
+
+					} else {
+						this.direction = "down";
+					}
+					this.sprite.setAnimation(this.direction);
+				} else {
+					this.speedY = -this.speed;
+				}
+				break;
+			}
+			case "down": {
+				int edge = this.gridY * Consts.tileDims + Consts.tileDims;
+				if (this.collide() && this.posY + this.height >= edge) {
+					if (randomDirection) {
+						String[] dirs = { "up", "left", "right" };
+						this.direction = Utils.pick(dirs);
+
+						while (this.collide(this.direction)) {
+							this.direction = Utils.pick(dirs);
+						}
+					} else {
+						this.direction = "up";
+					}
+					this.sprite.setAnimation(this.direction);
+				} else {
+					this.speedY = this.speed;
+				}
+				break;
+			}
+			case "left": {
+				int edge = this.gridX * Consts.tileDims;
+				if (this.collide() && this.posX <= edge) {
+
+					if (randomDirection) {
+						String[] dirs = { "up", "down", "right" };
+						this.direction = Utils.pick(dirs);
+
+						while (this.collide(this.direction)) {
+							this.direction = Utils.pick(dirs);
+						}
+					} else {
+						this.direction = "right";
+					}
+
+					this.sprite.setAnimation(this.direction);
+				} else {
+					this.speedX = -this.speed;
+				}
+				break;
+			}
+			case "right": {
+				int edge = this.gridX * Consts.tileDims + Consts.tileDims;
+				if (this.collide() && this.posX + this.width >= edge) {
+
+					if (randomDirection) {
+						String[] dirs = { "up", "down", "left" };
+						this.direction = Utils.pick(dirs);
+
+						while (this.collide(this.direction)) {
+							this.direction = Utils.pick(dirs);
+						}
+					} else {
+						this.direction = "left";
+					}
+
+					this.sprite.setAnimation(this.direction);
+				} else {
+					this.speedX = this.speed;
+				}
+				break;
+			}
+		}
+
+		this.posX += this.speedX;
+		this.posY += this.speedY;
 	}
 
 	public void update(int elapsed) {

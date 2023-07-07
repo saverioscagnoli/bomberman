@@ -5,6 +5,7 @@ import java.util.List;
 
 import entities.Enemy;
 import entities.bosses.FaralsBoss;
+import entities.enemies.Cuppen;
 import entities.enemies.Denkyun;
 import entities.enemies.NutsStar;
 import entities.enemies.Pakupa;
@@ -24,7 +25,7 @@ import java.awt.Graphics2D;
 public class EnemyManager {
 	public static EnemyManager instance = null;
 	public ArrayList<Enemy> enemies;
-	public Class<?>[] classes = { Puropen.class, Denkyun.class, NutsStar.class, Pakupa.class };
+	public Class<?>[] classes = { Puropen.class, Denkyun.class, NutsStar.class, Pakupa.class, Cuppen.class };
 
 	private EnemyManager() {
 		this.enemies = new ArrayList<>();

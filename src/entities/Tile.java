@@ -6,6 +6,7 @@ import managers.PowerupManager;
 import managers.TileManager;
 import ui.Sprite;
 import ui.SpriteAnimation;
+import util.CollisionChecker;
 import util.Consts;
 import util.TileType;
 import util.Utils;

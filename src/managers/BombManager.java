@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import entities.Bomb;
 import entities.Explosion;
+import util.CollisionChecker;
+
 import java.awt.Graphics2D;
 
 /*
@@ -75,7 +77,10 @@ public class BombManager {
 				b.update(elapsed);
 			}
 		}
-		toRemove.forEach((b) -> this.bombs.remove(b));
+		toRemove.forEach((b) -> {
+			this.bombs.remove(b);
+			CollisionChecker.build().update_Centered_Collisions();
+		});
 	}
 
 	public void drawExplosions(Graphics2D g2d) {

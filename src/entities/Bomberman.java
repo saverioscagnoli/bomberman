@@ -14,6 +14,7 @@ import ui.SpriteAnimation;
 import managers.BombManager;
 import managers.EnemyManager;
 import managers.MouseManager;
+import managers.PowerupManager;
 import managers.SaveManager;
 import managers.TileManager;
 import util.*;
@@ -71,9 +72,9 @@ public class Bomberman extends Entity {
 		/* Set the props to their initial states */
 		this.keys = new ArrayList<>();
 		this.health = 1;
-		this.maxBombs = 1;
-		this.bombRadius = 1;
-		this.lives = 5;
+		this.maxBombs = 10;
+		this.bombRadius = 5;
+		this.lives = 100;
 		this.score = 0;
 		this.won = false;
 		this.original = this.sprite.spritesheet;
@@ -126,10 +127,14 @@ public class Bomberman extends Entity {
 		if (bombManager.bombs.size() >= this.maxBombs) {
 			return;
 		}
-		TileManager.build().grid[this.gridY][this.gridX] = TileType.Bomb;
-
+		System.out.println(this.prevTile);
 		if (this.prevTile != TileType.Empty)
 			return;
+
+		this.prevTile = TileType.Bomb;
+
+		Utils.playSound(Consts.soundPath + "place-bomb.wav");
+		TileManager.build().grid[this.gridY][this.gridX] = TileType.Bomb;
 
 		int x = this.gridX * Consts.tileDims;
 		int y = this.gridY * Consts.tileDims;
@@ -153,8 +158,8 @@ public class Bomberman extends Entity {
 		}
 		TileManager.build().grid = Utils.readLevel(newLevelString);
 		TileManager.build().readGrid();
-		this.posX = 60;
-		this.posY = 60;
+		this.posX = 80;
+		this.posY = 80;
 		if (newLevel.equals("3")) {
 			EnemyManager.build().enemies.add(new ClownMask(400, 300));
 		} else if (newLevel.equals("6")) {
@@ -164,6 +169,9 @@ public class Bomberman extends Entity {
 		}
 		Loop.build().setState(GameState.StageCleared);
 		this.won = false;
+		this.keys.clear();
+		BombManager.build().bombs.clear();
+		PowerupManager.build().powerups.clear();
 	}
 
 	public void update(int elapsed) {

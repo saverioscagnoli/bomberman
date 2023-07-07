@@ -232,6 +232,7 @@ public class Loop extends JPanel implements Runnable {
       }
       case InGame: {
         MouseManager.build();
+        System.out.println("dsfsd");
         if (this.bomberman.immune) {
           Utils.setTimeout(() -> this.bomberman.immune = false, 15000);
         }
@@ -246,6 +247,13 @@ public class Loop extends JPanel implements Runnable {
         /* Stop the thread and pause all the bombs */
         this.stop();
         this.bombManager.pauseBombs();
+        break;
+      }
+
+      case StageCleared: {
+        Utils.setTimeout(() -> {
+          setState(GameState.InGame);
+        }, 1500);
         break;
       }
       default: {
@@ -387,9 +395,6 @@ public class Loop extends JPanel implements Runnable {
         g2d.setColor(Color.BLACK);
         g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
         g2d.drawImage(this.victory, 0, 0, this.getWidth(), this.getHeight(), null);
-        Utils.setTimeout(() -> {
-          setState(GameState.InGame);
-        }, 1500);
         break;
       }
       case InGame:
