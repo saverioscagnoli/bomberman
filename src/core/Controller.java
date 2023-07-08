@@ -53,8 +53,8 @@ public class Controller extends MouseAdapter implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
-        switch (keyCode) {
-            case KeyEvent.VK_W: {
+        switch (keyCode) { // switch for the keypresses
+            case KeyEvent.VK_W: { // up key
                 if (MouseManager.build().enabled == false) {
                     wPressed = true;
                     latestVerticalKey = "W";
@@ -65,7 +65,7 @@ public class Controller extends MouseAdapter implements KeyListener {
                 }
             }
 
-            case KeyEvent.VK_A: {
+            case KeyEvent.VK_A: { // left key
                 if (MouseManager.build().enabled == false) {
                     aPressed = true;
                     latestHorizontalKey = "A";
@@ -76,7 +76,7 @@ public class Controller extends MouseAdapter implements KeyListener {
                 }
             }
 
-            case KeyEvent.VK_S: {
+            case KeyEvent.VK_S: { // down key
                 if (MouseManager.build().enabled == false) {
                     latestVerticalKey = "S";
                     sPressed = true;
@@ -87,7 +87,7 @@ public class Controller extends MouseAdapter implements KeyListener {
                 break;
             }
 
-            case KeyEvent.VK_D: {
+            case KeyEvent.VK_D: { // right key
                 if (MouseManager.build().enabled == false) {
                     latestHorizontalKey = "D";
                     dPressed = true;
@@ -97,27 +97,31 @@ public class Controller extends MouseAdapter implements KeyListener {
                 }
                 break;
             }
-            case KeyEvent.VK_F: { // TODO : Levarlo
-                Loop.build().bomberman.win();
-                break;
-            }
-            case KeyEvent.VK_M: {
+            case KeyEvent.VK_M: { // mouse enabling key
                 if (MouseManager.build().enabled == false) {
-                    Loop.build().bomberman.keys.clear();
+                    Loop.build().bomberman.keys.clear(); // stops the bomberman from moving
+
+                    // sets the current position of bomberman to the target, so it stays in place.
                     MouseManager.build().tileClicked = Utils.normalizeEntityPos(Loop.build().bomberman);
                     MouseManager.build().normtileClicked = Utils.normalizeEntityPos(Loop.build().bomberman);
                 }
                 if (MouseManager.build().enabled == true) {
+                    // clears the keys so no phantom movement occurs
                     Loop.build().bomberman.keys.clear();
                 }
+                // toggles mouse movements
                 MouseManager.build().enabled = !MouseManager.build().enabled;
+
+                // sets bomberman to the centered position of the tile so it doesn't get stuck
                 bomberman.posX = Utils.normalizeEntityPos(bomberman)[0] + Consts.tileDims / 2 - bomberman.width / 2;
                 bomberman.posY = Utils.normalizeEntityPos(bomberman)[1] + Consts.tileDims / 2 - bomberman.height / 2;
+
+                // animates the mouse button
                 Loop.build().isMouseChanging = !Loop.build().isMouseChanging;
                 break;
             }
 
-            case KeyEvent.VK_SPACE: {
+            case KeyEvent.VK_SPACE: { // bomb placing key
                 this.bomberman.placeBomb();
                 break;
             }
