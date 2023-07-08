@@ -1,16 +1,29 @@
 
-e
-java:S1192?"JDefine a constant instead of duplicating this literal "explosion" 3 times.(‚ãíÈşÿÿÿÿ
-E
-java:S1066Z"/Merge this if statement with the enclosing one.(ÊíÊÄ
+g
+java:S1192Q"JDefine a constant instead of duplicating this literal "explosion" 4 times.(‚Ú©õ8›Û†‰“1
+i
+java:S11920"GDefine a constant instead of duplicating this literal "right" 13 times.(³µç’şÿÿÿÿ8œÛ†‰“1
+F
+java:S1066Ë"/Merge this if statement with the enclosing one.(ÊíÊÄ
 m
-java:S1104"RMake health a static final constant or non-public and provide accessors if needed.(ÁüÖÅùÿÿÿÿ
+java:S1104"RMake health a static final constant or non-public and provide accessors if needed.(ÁüÖÅùÿÿÿÿ
 m
-java:S1104"RMake immune a static final constant or non-public and provide accessors if needed.(Âš²Âùÿÿÿÿ
-W
-java:S4973P"<Strings and Boxed types should be compared using "equals()".(ßØÒúÿÿÿÿ
+java:S1104 "RMake immune a static final constant or non-public and provide accessors if needed.(Âš²Âùÿÿÿÿ
+Y
+java:S4973Q"<Strings and Boxed types should be compared using "equals()".(‚Ú©õ8Û†‰“1
+X
+java:S4973Á"<Strings and Boxed types should be compared using "equals()".(ßØÒúÿÿÿÿ
 T
-java:S5993!"9Change the visibility of this constructor to "protected".(Ã‚ÂÔÿÿÿÿÿ
-N	java:S106:"9Replace this use of System.out or System.err by a logger.(Á§Ôï
+java:S5993+"9Change the visibility of this constructor to "protected".(Ã‚ÂÔÿÿÿÿÿ
+N	java:S106V"9Replace this use of System.out or System.err by a logger.(Á§Ôï
 C
-java:S1905B"(Remove this unnecessary cast to "Enemy".(µïİúÿÿÿÿ
+java:S1905^"(Remove this unnecessary cast to "Enemy".(µïİúÿÿÿÿ
+p
+java:S3776„"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(àØµ8­Ü†‰“1
+?	java:S131""Add a default case to this switch.(µºÚ«8±Ü†‰“1
+[	java:S106®"9Replace this use of System.out or System.err by a logger.(›Á¹ùÿÿÿÿ8²Ü†‰“1
+u
+java:S3776Ã"RRefactor this method to reduce its Cognitive Complexity from 75 to the 15 allowed.(¶½å—øÿÿÿÿ8µÜ†‰“1
+?	java:S131Ì""Add a default case to this switch.(µºÚ«8¶Ü†‰“1
+ê
+java:S6541Ã"ÆA "Brain Method" was detected. Refactor it to reduce at least one of the following metrics: LOC from 105 to 64, Complexity from 30 to 14, Nesting Level from 5 to 2, Number of Variables from 13 to 6.(¶½å—øÿÿÿÿ8«Ş†‰“1

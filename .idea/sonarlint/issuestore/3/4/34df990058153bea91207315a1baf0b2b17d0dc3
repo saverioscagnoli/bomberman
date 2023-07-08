@@ -1,14 +1,5 @@
 
-a
-java:S1192"FDefine a constant instead of duplicating this literal "right" 4 times.(Ğùõìúÿÿÿÿ
-S
-java:S4973"<Strings and Boxed types should be compared using "equals()".(œ¡Ó¿
-h
-java:S3776/"RRefactor this method to reduce its Cognitive Complexity from 35 to the 15 allowed.(Ê¾»Â
+R
+java:S49730"<Strings and Boxed types should be compared using "equals()".(œ¡Ó¿
 P
-java:S1161/":Add the "@Override" annotation above this method signature(Ê¾»Â
-7	java:S1317""Add a default case to this switch.(µºÚ«
-Q
-java:S1161Œ":Add the "@Override" annotation above this method signature(“‘¯Ë
-Ü
-java:S6541/"ÅA "Brain Method" was detected. Refactor it to reduce at least one of the following metrics: LOC from 81 to 64, Complexity from 18 to 14, Nesting Level from 3 to 2, Number of Variables from 11 to 6.(Ê¾»Â
+java:S1161 ":Add the "@Override" annotation above this method signature(Ê¾»Â

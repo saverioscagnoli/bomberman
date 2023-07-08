@@ -157,8 +157,10 @@ public class Bomberman extends Entity {
 		SaveManager.incrementWins();
 		Loop.build().overlay.repaint();
 
+		if (!(SaveManager.readProgress().get("level").equals("7"))) {
+			Loop.build().setState(GameState.StageCleared);
+		}
 		LevelManager.build().loadNextLevel();
-		Loop.build().setState(GameState.StageCleared);
 
 		this.won = false;
 		this.keys.clear();

@@ -9,5 +9,6 @@ public enum GameState {
   GameOver,
   Stats,
   StageCleared,
-  ContinueScreen
+  ContinueScreen,
+  GameFinished
 }

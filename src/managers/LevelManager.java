@@ -34,6 +34,13 @@ public class LevelManager {
   }
 
   public void loadLevel(int level) {
+    if (level == 7) {
+      Loop.build().stop();
+      Loop.build().setState(GameState.GameFinished);
+      SaveManager.resetLevel();
+      level = 1;
+      return;
+    }
     // convert level to string
     String newLevel = Integer.toString(level);
     String newLevelString = "levels/level-" + newLevel + ".lvl";
@@ -54,5 +61,8 @@ public class LevelManager {
     }
     BombManager.build().bombs.clear();
     PowerupManager.build().powerups.clear();
+  }
+
+  public void EndGame() {
   }
 }

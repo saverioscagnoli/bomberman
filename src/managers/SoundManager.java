@@ -44,6 +44,10 @@ public class SoundManager {
                 this.clip.loop(Clip.LOOP_CONTINUOUSLY);
                 break;
             }
+            case GameFinished: {
+                this.clip = Utils.playSound(Consts.soundPath + "bombermanWin.wav");
+                break;
+            }
             case Pause: {
                 this.clip = Utils.playSound(Consts.soundPath + "pause.wav");
                 break;

@@ -94,7 +94,7 @@ public class Loop extends JPanel implements Runnable {
     this.menuArrow = Utils.loadImage("assets/menu-arrow.png");
     this.statsBg = Utils.loadImage("assets/Stats.png");
     this.victory = Utils.loadImage("assets/victory.png");
-    this.winBomberman = Utils.loadImage("assets/winBomberman.png");
+    this.winBomberman = Utils.loadImage("assets/winScreen.png");
     this.continueScreen = Utils.loadImage("assets/ContinueScreen.png");
     this.arrowY = 555;
     this.elapsed = 0;
@@ -259,6 +259,7 @@ public class Loop extends JPanel implements Runnable {
 
     switch (this.gameState) {
       case Menu: {
+        this.overlay.setVisible(false);
         avatarButton.setVisible(false);
         textField.setVisible(false);
         customButton.setVisible(false);
@@ -266,11 +267,20 @@ public class Loop extends JPanel implements Runnable {
         break;
       }
       case ContinueScreen: {
+        this.overlay.setVisible(false);
         // set the Yes and No buttons to visible and clickable
         yesButton.setVisible(true);
         noButton.setVisible(true);
         this.yesButton.setEnabled(true);
         this.noButton.setEnabled(true);
+        break;
+      }
+      case GameFinished: {
+        SoundManager.build().ost(gameState);
+        Utils.setTimeout(() -> {
+          LevelManager.build().reloadLevel();
+          setState(GameState.Menu);
+        }, 5000);
         break;
       }
       case Stats: {
@@ -440,10 +450,13 @@ public class Loop extends JPanel implements Runnable {
         g2d.drawImage(credits, 223, 643, credits.getWidth() * 3, credits.getHeight() * 3, null);
         break;
       }
+      case GameFinished: {
+        g2d.drawImage(this.winBomberman, 0, 0, this.getWidth(), this.getHeight(), null);
+        break;
+      }
       case ContinueScreen: {
         // draw the bufferedimage ContinueScreen
         g2d.drawImage(this.continueScreen, 0, 0, this.getWidth(), this.getHeight(), null);
-
         break;
       }
       case StageCleared: {
