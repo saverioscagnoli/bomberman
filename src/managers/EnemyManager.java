@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entities.Enemy;
-import entities.bosses.FaralsBoss;
 import entities.enemies.Cuppen;
 import entities.enemies.Denkyun;
 import entities.enemies.NutsStar;

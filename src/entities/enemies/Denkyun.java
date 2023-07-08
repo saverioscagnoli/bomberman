@@ -34,9 +34,6 @@ public class Denkyun extends Enemy {
 		// direction
 		super.update(elapsed);
 
-		if (this.stop)
-			return;
-
 		this.move(false);
 		this.updateGrid();
 	}

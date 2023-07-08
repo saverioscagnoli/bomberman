@@ -89,9 +89,6 @@ public class Pakupa extends Enemy {
     // direction
     super.update(elapsed);
 
-    if (this.stop)
-      return;
-
     this.move(true);
     this.updateGrid(() -> this.checkBombs());
   }

@@ -259,7 +259,9 @@ public class Loop extends JPanel implements Runnable {
 
     switch (this.gameState) {
       case Menu: {
-        this.overlay.setVisible(false);
+        if (this.overlay != null) {
+          this.overlay.setVisible(false);
+        }
         avatarButton.setVisible(false);
         textField.setVisible(false);
         customButton.setVisible(false);
@@ -292,7 +294,6 @@ public class Loop extends JPanel implements Runnable {
       }
       case InGame: {
         MouseManager.build();
-        System.out.println("dsfsd");
         if (this.bomberman.immune) {
           Utils.setTimeout(() -> this.bomberman.immune = false, 15000);
         }

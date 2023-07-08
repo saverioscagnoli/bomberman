@@ -33,11 +33,7 @@ public class Puropen extends Enemy {
 	public void update(int elapsed) {
 
 		super.update(elapsed);
-
-		if (this.stop)
-			return;
-
-		this.move(false);
+		this.move(true);
 		this.updateGrid();
 	}
 

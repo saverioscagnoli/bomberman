@@ -212,6 +212,10 @@ public class Bomberman extends Entity {
 
 		if (!this.keys.isEmpty()) {
 
+			if (!this.sprite.currentAnimation.name.equals(this.direction)) {
+				this.sprite.setAnimation(this.direction);
+			}
+
 			TileManager tileManager = TileManager.build();
 
 			/* Update the player position on the grid */

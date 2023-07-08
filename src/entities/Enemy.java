@@ -146,7 +146,7 @@ public abstract class Enemy extends Entity {
 		if (!(this instanceof Cuppen)) {
 			solid.add(TileType.Obstacle);
 		}
-		
+
 		if (this instanceof Pakupa) {
 			TileType next = map.get(this.direction);
 
@@ -197,8 +197,19 @@ public abstract class Enemy extends Entity {
 		this.speedY = 0;
 		if (this.checkBlocked()) {
 			this.stop = true;
-		} else {
+		} else if (this.stop) {
+			this.direction = Utils.pick(new String[] { "up", "down", "left", "right" });
+			int i = 0;
+			while (this.collide(this.direction) && i < Consts.maxIterations) {
+				this.direction = Utils.pick(new String[] { "up", "down", "left", "right" });
+				i++;
+			}
+			this.sprite.setAnimation(this.direction);
 			this.stop = false;
+		}
+
+		if (this.stop) {
+			return;
 		}
 
 		switch (this.direction) {

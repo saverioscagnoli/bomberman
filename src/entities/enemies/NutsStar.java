@@ -60,8 +60,7 @@ public class NutsStar extends Enemy {
 
     super.update(elapsed);
 
-    if (this.stop)
-      return;
+    this.move(true);
 
     switch (this.direction) {
       case "up": {
@@ -89,8 +88,8 @@ public class NutsStar extends Enemy {
         break;
       }
     }
-    this.move(true);
-    this.updateGrid();
+
+    this.updateGrid(() -> this.justChanged = false);
   }
 
   public void render(Graphics2D g2d) {

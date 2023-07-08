@@ -32,10 +32,6 @@ public class Cuppen extends Enemy {
 
   public void update(int elapsed) {
     super.update(elapsed);
-
-    if (this.stop)
-      return;
-
     this.move(true);
     this.updateGrid();
   }

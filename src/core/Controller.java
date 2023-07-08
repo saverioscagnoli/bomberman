@@ -51,7 +51,6 @@ public class Controller extends MouseAdapter implements KeyListener {
                     latestVerticalKey = "W";
                     if (this.bomberman.keys.contains("W"))
                         break;
-                    this.bomberman.sprite.setAnimation("up");
                     this.bomberman.keys.add(0, "W");
                     break;
                 }
@@ -63,7 +62,6 @@ public class Controller extends MouseAdapter implements KeyListener {
                     latestHorizontalKey = "A";
                     if (this.bomberman.keys.contains("A"))
                         break;
-                    this.bomberman.sprite.setAnimation("left");
                     this.bomberman.keys.add(0, "A");
                     break;
                 }
@@ -75,7 +73,6 @@ public class Controller extends MouseAdapter implements KeyListener {
                     sPressed = true;
                     if (this.bomberman.keys.contains("S"))
                         break;
-                    this.bomberman.sprite.setAnimation("down");
                     this.bomberman.keys.add(0, "S");
                 }
                 break;
@@ -87,7 +84,6 @@ public class Controller extends MouseAdapter implements KeyListener {
                     dPressed = true;
                     if (this.bomberman.keys.contains("D"))
                         break;
-                    this.bomberman.sprite.setAnimation("right");
                     this.bomberman.keys.add(0, "D");
                 }
                 break;
@@ -129,7 +125,6 @@ public class Controller extends MouseAdapter implements KeyListener {
             this.bomberman.keys.remove("W");
             if (sPressed) {
                 latestVerticalKey = "S";
-                this.bomberman.sprite.setAnimation("down");
             } else {
                 latestVerticalKey = "";
             }
@@ -138,7 +133,6 @@ public class Controller extends MouseAdapter implements KeyListener {
             this.bomberman.keys.remove("A");
             if (dPressed) {
                 latestHorizontalKey = "D";
-                this.bomberman.sprite.setAnimation("right");
             } else {
                 latestHorizontalKey = "";
             }
@@ -147,7 +141,6 @@ public class Controller extends MouseAdapter implements KeyListener {
             this.bomberman.keys.remove("S");
             if (wPressed) {
                 latestVerticalKey = "W";
-                this.bomberman.sprite.setAnimation("up");
             } else {
                 latestVerticalKey = "";
             }
@@ -156,7 +149,6 @@ public class Controller extends MouseAdapter implements KeyListener {
             this.bomberman.keys.remove("D");
             if (aPressed) {
                 latestHorizontalKey = "A";
-                this.bomberman.sprite.setAnimation("left");
             } else {
                 latestHorizontalKey = "";
             }
