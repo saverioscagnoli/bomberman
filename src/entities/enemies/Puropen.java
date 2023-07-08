@@ -7,7 +7,19 @@ import ui.SpriteAnimation;
 import util.Consts;
 import util.Utils;
 
+/**
+ * The Puropen class represents an enemy character called Puropen in the game.
+ * It extends the Enemy class and defines the behavior and rendering of the
+ * Puropen enemy.
+ */
 public class Puropen extends Enemy {
+
+	/**
+	 * Constructs a Puropen object with the specified position.
+	 * 
+	 * @param posX The x-coordinate of the Puropen's position.
+	 * @param posY The y-coordinate of the Puropen's position.
+	 */
 	public Puropen(int posX, int posY) {
 		super(posX, posY, Consts.tileDims, Consts.tileDims, 1,
 				new Sprite("enemy-1", 4, 4, "left", new SpriteAnimation[] {
@@ -30,13 +42,22 @@ public class Puropen extends Enemy {
 		this.sprite.setAnimation(this.direction);
 	}
 
+	/**
+	 * Updates the Puropen's state, including movement and grid updates.
+	 * 
+	 * @param elapsed The elapsed time since the last update.
+	 */
 	public void update(int elapsed) {
-
 		super.update(elapsed);
 		this.move(true);
 		this.updateGrid();
 	}
 
+	/**
+	 * Renders the Puropen on the graphics context.
+	 * 
+	 * @param g2d The graphics context to render on.
+	 */
 	public void render(Graphics2D g2d) {
 		int offsetY = 0;
 		if (this.sprite.currentAnimation.name == "explosion") {

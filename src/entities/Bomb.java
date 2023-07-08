@@ -10,20 +10,36 @@ import util.Consts;
 import util.TileType;
 import util.Utils;
 
+/**
+ * The `Bomb` class represents a bomb entity in a game. It extends the `Entity`
+ * class.
+ * A bomb has a specific delay before it explodes and destroys surrounding
+ * entities.
+ * It can be paused and resumed, and it maintains information about its position
+ * in the game grid.
+ */
 public class Bomb extends Entity {
+
 	/* The time that takes for the bomb to explode */
 	private static final int DELAY = 3000;
 
-	/* The time in milliseconds when which the bomb was placed */
+	/* The time in milliseconds when the bomb was placed */
 	private long createdAt;
 	private int bombRadius = 1;
 
-	/* The time in milliseconds that will set if the game is paused */
+	/* The time in milliseconds that will be set if the game is paused */
 	private long pausedAt;
 
 	public int gridX;
 	public int gridY;
 
+	/**
+	 * Constructs a new Bomb object with the specified position and bomb radius.
+	 *
+	 * @param posX       The X-coordinate of the bomb's position.
+	 * @param posY       The Y-coordinate of the bomb's position.
+	 * @param bombRadius The radius of the bomb's explosion.
+	 */
 	public Bomb(int posX, int posY, int bombRadius) {
 		/* Pass everything to the entity superclass */
 		super(posX, posY, Consts.tileDims, Consts.tileDims, 0,
@@ -42,12 +58,18 @@ public class Bomb extends Entity {
 		this.bombRadius = bombRadius;
 	}
 
-	/* Set the paused time of the bomb to now */
+	/**
+	 * Sets the paused time of the bomb to the current time.
+	 * This method is used to pause the bomb's timer.
+	 */
 	public void pause() {
 		this.pausedAt = System.currentTimeMillis();
 	}
 
-	/* Compensate the createdAt prop by adding how the time the game was paused */
+	/**
+	 * Compensates the `createdAt` property by adding the time the game was paused.
+	 * This method is used to resume the bomb's timer after it was paused.
+	 */
 	public void resume() {
 		if (this.pausedAt != 0) {
 			this.createdAt += System.currentTimeMillis() - this.pausedAt;
@@ -55,7 +77,11 @@ public class Bomb extends Entity {
 		}
 	}
 
-	/* Detect if the game was paused and return the time accordingly */
+	/**
+	 * Calculates the elapsed time since the bomb was created or paused.
+	 *
+	 * @return The elapsed time in milliseconds.
+	 */
 	private long getElapsedTime() {
 		if (this.pausedAt != 0) {
 			return this.pausedAt - this.createdAt;
@@ -64,13 +90,19 @@ public class Bomb extends Entity {
 		}
 	}
 
-	/* Makes the bomb explode and resets the tile on the grid */
+	/**
+	 * Makes the bomb explode and resets the tile on the grid.
+	 * This method is called when the bomb's timer exceeds the specified delay.
+	 */
 	public void die() {
 		this.explode();
 		this.dead = true;
 		TileManager.build().grid[this.gridY][this.gridX] = TileType.Empty;
 	}
 
+	/**
+	 * Marks the bomb as dead without triggering an explosion.
+	 */
 	public void dieNotExplode() {
 		this.dead = true;
 		TileManager.build().grid[this.gridY][this.gridX] = TileType.Empty;
@@ -78,7 +110,7 @@ public class Bomb extends Entity {
 
 	@Override
 	public void update(int elapsed) {
-		/* If the time from the placing on the bomb is greater than the delay, die */
+		/* If the time from placing the bomb is greater than the delay, die */
 		if (!this.dead && this.getElapsedTime() >= DELAY) {
 			this.die();
 			return;
@@ -87,8 +119,13 @@ public class Bomb extends Entity {
 		this.sprite.update(elapsed);
 	}
 
+	/**
+	 * Triggers the explosion of the bomb, causing damage to surrounding entities.
+	 * This method creates explosion objects and destroys obstacles and bombs if
+	 * encountered.
+	 */
 	public void explode() {
-		/* If the bomb already exploded (touched by another bomb) */
+		/* If the bomb has already exploded (touched by another bomb) */
 		if (this.dead)
 			return;
 		Explosion[][] explosionMatrix = new Explosion[4][10];
@@ -138,7 +175,7 @@ public class Bomb extends Entity {
 					int y = ex.posY / Consts.tileDims;
 					TileType tile = TileManager.build().grid[y][x];
 					if (tile != TileType.Wall) {
-						/* If the tile was a an obstacle, find the instance and destroy it */
+						/* If the tile was an obstacle, find the instance and destroy it */
 						if (tile == TileType.Obstacle) {
 							TileManager.build().walls
 									.stream()
