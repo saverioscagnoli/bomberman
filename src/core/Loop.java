@@ -479,7 +479,6 @@ public class Loop extends JPanel implements Runnable {
       }
       case Stats: {
         g2d.drawImage(this.statsBg, 0, 0, this.getWidth(), this.getHeight(), null);
-        System.out.println(SaveManager.readProgress().get("wins"));
         g2d.setFont(Utils.loadFont(60f));
         g2d.setColor(Color.BLACK);
         g2d.drawString("" + SaveManager.readProgress().get("losses"), this.getWidth() - 210, 234);

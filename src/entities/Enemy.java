@@ -152,7 +152,6 @@ public abstract class Enemy extends Entity {
 		health -= damage;
 		immune = true;
 		Utils.setTimeout(() -> immune = false, 100);
-		System.out.println(this + " health: " + health);
 		if (health <= 0) {
 			this.stop = true;
 			Utils.setTimeout(() -> {
@@ -254,7 +253,6 @@ public abstract class Enemy extends Entity {
 
 				for (int i = 0; i < BombManager.build().bombs.size(); i++) {
 					Bomb bomb = BombManager.build().bombs.get(i);
-					System.out.println(x + " " + y);
 					if (bomb.gridX == this.gridX + x && bomb.gridY == this.gridY + y) {
 						bomb.dieNotExplode();
 					}
@@ -294,6 +292,9 @@ public abstract class Enemy extends Entity {
 		this.speedY = 0;
 		if (this.checkBlocked()) {
 			this.stop = true;
+			int[] pos = Utils.normalizeEntityPos(this);
+			this.posX = pos[0];
+			this.posY = pos[1];
 		} else if (this.stop) {
 			this.direction = Utils.pick(new String[] { "up", "down", "left", "right" });
 			int i = 0;
@@ -427,10 +428,12 @@ public abstract class Enemy extends Entity {
 	 * @param elapsed The elapsed time since the last update.
 	 */
 	public void update(int elapsed) {
+
 		Bomberman bomberman = Loop.build().bomberman;
 
 		if (bomberman.dead)
 			return;
+
 		if (this.sprite.currentAnimation.name.equals("explosion")
 				&& this.sprite.current == this.sprite.currentAnimation.maxFrames - 1) {
 			this.die();

@@ -100,11 +100,13 @@ public class Pakupa extends Enemy {
    */
   public void update(int elapsed) {
     super.update(elapsed);
+
+    if (this.health == 0)
+      return;
+
     this.move(true);
-    updateGrid(() -> {
-    });
+    updateGrid();
     if (this.posX % 48 == 0 && this.posY % 48 == 0) {
-      System.out.println("check");
       this.checkBombs();
     }
   }

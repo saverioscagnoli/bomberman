@@ -74,6 +74,10 @@ public class NutsStar extends Enemy {
    */
   public void update(int elapsed) {
     super.update(elapsed);
+    
+    if (this.health == 0)
+      return;
+
     this.move(true);
 
     switch (this.direction) {

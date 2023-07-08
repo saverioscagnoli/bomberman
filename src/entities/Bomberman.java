@@ -1,6 +1,5 @@
 package entities;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
@@ -152,7 +151,6 @@ public class Bomberman extends Entity {
 		if (bombManager.bombs.size() >= this.maxBombs) {
 			return;
 		}
-		System.out.println(this.prevTile);
 		if (this.prevTile != TileType.Empty)
 			return;
 
@@ -319,18 +317,5 @@ public class Bomberman extends Entity {
 			this.sprite.spritesheet = this.original;
 		}
 		this.sprite.draw(g2d, (int) this.posX - 10, (int) this.posY - 35);
-
-		// draw the health bar above the player with 5 squares for each health point
-
-		// draw the hitbox as a gray square
-
-		// g2d.setColor(Color.GRAY);
-		// g2d.fillRect(posX, posY, width, height);
-
-		g2d.setColor(Color.RED);
-		g2d.fillRect((int) posX - 15, (int) posY - 20, 5 * 10, 5);
-		g2d.setColor(Color.GREEN);
-		g2d.fillRect((int) posX - 15, (int) posY - 20, health * 10, 5);
-		g2d.setColor(Color.GRAY);
 	}
 }
