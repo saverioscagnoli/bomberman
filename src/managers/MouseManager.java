@@ -16,8 +16,8 @@ import util.Utils;
 public class MouseManager extends MouseAdapter {
   public int[] tileClicked; // center position of the tile we clicked
   public int[] normtileClicked; // normalized position of the tile we clicked
-  private boolean horizontalMovement = false; // variable for informing if the character is moving horizontally
-  private boolean verticalMovement = false; // variable for informing if the character is moving vertically
+  public boolean horizontalMovement = false; // variable for informing if the character is moving horizontally
+  public boolean verticalMovement = false; // variable for informing if the character is moving vertically
   public boolean enabled = false; // on/off toggle for mouse movement
   public boolean validTile = false; // a flag to check whether the tile we chose is actually reachable.
   public static MouseManager instance = null;
@@ -56,6 +56,7 @@ public class MouseManager extends MouseAdapter {
 
       @Override
       public void mousePressed(MouseEvent e) {
+        System.out.println(verticalMovement + " " + horizontalMovement);
         if (e.getButton() == MouseEvent.BUTTON1 && !(verticalMovement || horizontalMovement)) { // only move if there is
           // no queued movement
           if (Loop.build().gameState == util.GameState.InGame) {
