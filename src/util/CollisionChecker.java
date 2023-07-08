@@ -9,6 +9,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * The CollisionChecker class handles collision detection for the game's
+ * entities.
+ * It checks for collisions between the player character (Bomberman) and the
+ * game environment.
+ */
 public class CollisionChecker {
 
 	private static CollisionChecker instance = null;
@@ -37,6 +43,12 @@ public class CollisionChecker {
 		this.old_verticalAlign = true;
 	}
 
+	/**
+	 * Retrieves the singleton instance of CollisionChecker or creates a new
+	 * instance if it doesn't exist.
+	 *
+	 * @return The CollisionChecker instance.
+	 */
 	public static CollisionChecker build() {
 		if (instance == null) {
 			instance = new CollisionChecker();
@@ -44,6 +56,10 @@ public class CollisionChecker {
 		return instance;
 	}
 
+	/**
+	 * Updates the collision detection for the centered position of the player
+	 * character.
+	 */
 	public void update_Centered_Collisions() {
 		TileType[][] gameGrid = TileManager.build().grid;
 		savedPos = Utils.normalizeEntityPos(loop_Bomberman);
@@ -53,6 +69,9 @@ public class CollisionChecker {
 		leftSolid = SolidTiles.contains(gameGrid[(savedPos[1]) / 48][(savedPos[0]) / 48 - 1]);
 	}
 
+	/**
+	 * Performs collision checking for the player character.
+	 */
 	public void Collision_To_check() {
 
 		/* vengono create le coordinate aggiornate */
@@ -69,9 +88,7 @@ public class CollisionChecker {
 			/* decide which positions to save */
 			if (Objects.equals(loop_Bomberman.direction, "right")) { // if going left
 				occupiedTiles = new int[][] { savedPos, { savedPos[0] + 48, savedPos[1] } };
-			}
-
-			else { // if going right
+			} else { // if going right
 				occupiedTiles = new int[][] { savedPos, { savedPos[0] - 48, savedPos[1] } };
 			}
 			// System.out.println(Arrays.deepToString(occupiedTiles));
@@ -105,9 +122,7 @@ public class CollisionChecker {
 			int[][] occupiedTiles;
 			if (Objects.equals(loop_Bomberman.direction, "up")) { // if going up
 				occupiedTiles = new int[][] { savedPos, { savedPos[0], savedPos[1] - 48 } };
-			}
-
-			else {
+			} else {
 				occupiedTiles = new int[][] { savedPos, { savedPos[0], savedPos[1] + 48 } };
 			}
 

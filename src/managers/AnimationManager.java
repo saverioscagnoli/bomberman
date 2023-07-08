@@ -5,16 +5,37 @@ import java.util.HashMap;
 import util.Consts;
 import util.Utils;
 
-/* THIS CLASS PRE-LOADS EVERY SPRITE FOR EVERYTHING, TO PREVENT PERFORMANCE ISSUES */
+/**
+ * 
+ * The AnimationManager class is responsible for pre-loading and managing sprite
+ * animations to prevent performance issues.
+ * 
+ * It pre-loads all the sprite images for various entities and provides a method
+ * to access the sprites.
+ * 
+ * This class follows the singleton design pattern to ensure only one instance
+ * is created.
+ */
 public class AnimationManager {
   private static AnimationManager instance = null;
   public HashMap<String, BufferedImage> spriteMap = new HashMap<>();
 
+  /**
+   * 
+   * Private constructor to enforce the singleton pattern.
+   * Initializes the sprite map by pre-loading all the sprite images.
+   */
   private AnimationManager() {
     spriteMap = new HashMap<>();
     this.buildspriteMap();
   }
 
+  /**
+   * 
+   * Retrieves the singleton instance of AnimationManager.
+   * 
+   * @return The AnimationManager instance.
+   */
   public static synchronized AnimationManager build() {
     if (instance == null) {
       instance = new AnimationManager();
@@ -22,10 +43,21 @@ public class AnimationManager {
     return instance;
   }
 
+  /**
+   * 
+   * Retrieves the sprite image associated with the given sprite name.
+   * 
+   * @param spriteName The name of the sprite.
+   * @return The sprite image, or null if the sprite is not found.
+   */
   public BufferedImage getSprite(String spriteName) {
     return this.spriteMap.get(spriteName);
   }
 
+  /**
+   * 
+   * Pre-loads all the sprite images and adds them to the sprite map.
+   */
   private void buildspriteMap() {
     spriteMap.put("bomberman", Utils.loadImage("assets/bomberman.png"));
     spriteMap.put("bomb", Utils.loadImage(Consts.bombPath + "bomb.png"));
@@ -63,6 +95,5 @@ public class AnimationManager {
     spriteMap.put("pakupa", Utils.loadImage(Consts.enemiesPath + "pakupa.png"));
     spriteMap.put("Faralsboss", Utils.loadImage(Consts.enemiesPath + "Faralsboss.png"));
     spriteMap.put("cuppen", Utils.loadImage(Consts.enemiesPath + "cuppen.png"));
-
   }
 }

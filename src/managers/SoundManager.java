@@ -7,15 +7,33 @@ import util.Utils;
 
 /* This class manages all the sounds */
 
+/**
+ * 
+ * The SoundManager class is responsible for managing the game's sound effects
+ * and background music.
+ * 
+ * It provides methods to play different sounds based on the game state.
+ */
 public class SoundManager {
     private static SoundManager instance = null;
     private Clip clip;
 
+    /**
+     * 
+     * Constructs a new SoundManager instance and starts playing the title music.
+     * This constructor is private to enforce the singleton pattern.
+     */
     private SoundManager() {
         this.clip = Utils.playSound(Consts.soundPath + "title.wav");
         this.clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
+    /**
+     * 
+     * Returns the instance of SoundManager, creating it if it doesn't exist.
+     * 
+     * @return The SoundManager instance.
+     */
     public static SoundManager build() {
         if (instance == null) {
             instance = new SoundManager();
@@ -23,7 +41,12 @@ public class SoundManager {
         return instance;
     }
 
-    /* Play a sound based on the gamestate */
+    /**
+     * 
+     * Plays a sound based on the provided game state.
+     * 
+     * @param gameState The current game state.
+     */
     public void ost(GameState gameState) {
         this.clip.stop();
         switch (gameState) {

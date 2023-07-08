@@ -12,6 +12,11 @@ import util.Utils;
 
 /* This classe manages the tiles: updating, drawing, animating etc. It also takes care of the creation of the levels */
 
+/**
+ * The TileManager class is responsible for managing the tiles in the game
+ * field.
+ * It handles the creation, updating, and rendering of tiles.
+ */
 public class TileManager {
     /* Instance for the singleton */
     public static TileManager instance = null;
@@ -22,11 +27,16 @@ public class TileManager {
     /* An arraylist that contains SOLID walls */
     public ArrayList<Tile> walls;
 
-    /* An arraylist that contains only the backround tiles */
+    /* An arraylist that contains only the background tiles */
     public ArrayList<Tile> basicTiles;
 
     public Tile hatch;
 
+    /**
+     * Constructs a new TileManager instance and initializes the grid, walls,
+     * basicTiles, and hatch.
+     * This constructor is private to enforce the singleton pattern.
+     */
     private TileManager() {
         /* Set all the initial properties */
         int rows = (int) Consts.screenWidth / Consts.tileDims;
@@ -49,6 +59,10 @@ public class TileManager {
         return instance;
     }
 
+    /**
+     * Reads the grid and populates the walls, basicTiles, and hatch based on the
+     * tile types.
+     */
     public void readGrid() {
         this.basicTiles.clear();
         this.walls.clear();
@@ -142,7 +156,11 @@ public class TileManager {
         this.hatch = new Tile(tileWithHatch.posX, tileWithHatch.posY);
     }
 
-    /* Update all the tiles at once */
+    /**
+     * Updates all the tiles at once.
+     *
+     * @param elapsed The elapsed time since the last update.
+     */
     public void updateTiles(int elapsed) {
         ArrayList<Tile> toRemove = new ArrayList<>();
         this.hatch.update(elapsed);
@@ -160,7 +178,11 @@ public class TileManager {
         });
     }
 
-    /* Draw all the tiles at once */
+    /**
+     * Draws all the wall tiles.
+     *
+     * @param g2d The graphics context.
+     */
     public void drawWalls(Graphics2D g2d) {
         this.hatch.render(g2d);
         List<Tile> wallsCopy = new ArrayList<>(this.walls);
@@ -171,6 +193,11 @@ public class TileManager {
         }
     }
 
+    /**
+     * Draws all the basic tiles.
+     *
+     * @param g2d The graphics context.
+     */
     public void drawBasic(Graphics2D g2d) {
         for (Tile basicTile : this.basicTiles) {
             if (!basicTile.dead) {

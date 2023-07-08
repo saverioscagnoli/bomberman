@@ -14,12 +14,15 @@ import entities.powerups.SpeedPowerup;
 import entities.powerups.VestPowerup;
 import util.Utils;
 
-/*
- * This class manages all the powerups. 
- * it has an array list which contains all the powerups, 
- * and updates, draws all thepowerups at the same time. 
+/**
+ * 
+ * The PowerupManager class manages all the powerups in the game. It keeps track
+ * of the powerups,
+ * 
+ * updates them, and draws them on the screen.
+ * 
+ * It uses the singleton pattern to ensure only one instance is created.
  */
-
 public class PowerupManager {
 	public static PowerupManager instance = null;
 	public ArrayList<PowerUp> powerups;
@@ -29,11 +32,12 @@ public class PowerupManager {
 	BufferedImage cloud = Utils.loadImage("assets/powerups/cloud.png");
 	BufferedImage rain = Utils.loadImage("assets/powerups/Raindrops.png");
 	int yrain;
-	/*
-	 * Array to store all the classes. When instanciating a new powerup, it will be
-	 * randomly chosen in this array. If you want to add a powerup, just make a new
-	 * one in the powerups folder and add it here like the previous ones.
-	 * See the die function of the Tile.java file.
+	/**
+	 * 
+	 * Array to store all the classes. When instantiating a new powerup, it will be
+	 * randomly chosen from this array. To add a new powerup, create a new class in
+	 * the powerups folder
+	 * and add it to this array.
 	 */
 	public Class<?>[] classes = {
 			BombPowerup.class,
@@ -43,13 +47,24 @@ public class PowerupManager {
 			SpeedPowerup.class,
 			RainPowerup.class,
 			VestPowerup.class,
-			SkullPowerup.class };
+			SkullPowerup.class
+	};
 
+	/**
+	 * 
+	 * Private constructor to enforce singleton pattern.
+	 */
 	private PowerupManager() {
 		this.powerups = new ArrayList<>();
 		this.toRemove = new ArrayList<>();
 	}
 
+	/**
+	 * 
+	 * Retrieves the singleton instance of PowerupManager.
+	 * 
+	 * @return The PowerupManager instance.
+	 */
 	public static synchronized PowerupManager build() {
 		if (instance == null) {
 			instance = new PowerupManager();
@@ -57,12 +72,19 @@ public class PowerupManager {
 		return instance;
 	}
 
+	/**
+	 * 
+	 * Updates the powerups by checking if they are dead and removing them if
+	 * necessary.
+	 * 
+	 * @param elapsed The time elapsed since the last update.
+	 */
 	public void updatePowerup(int elapsed) {
 		for (PowerUp p : this.powerups) {
 			if (p.dead) {
 				this.toRemove.add(p);
 				if (p instanceof RainPowerup) {
-					isRaining = true; // if the powerup is a rain powerup, set the isRaining variable to true
+					isRaining = true;
 					rainFrame = 0;
 				}
 			} else {
@@ -73,6 +95,12 @@ public class PowerupManager {
 		this.toRemove.forEach(p -> this.powerups.remove(p));
 	}
 
+	/**
+	 * 
+	 * Draws the powerups on the screen, including rain effects if applicable.
+	 * 
+	 * @param g2d The graphics context.
+	 */
 	public void drawPowerups(Graphics2D g2d) {
 		ArrayList<PowerUp> copy = new ArrayList<>(this.powerups);
 		for (PowerUp p : copy) {
@@ -81,10 +109,8 @@ public class PowerupManager {
 
 		if (isRaining) {
 			yrain += 3;
-			// if it is raining, draw the cloud and raindrops for 1 second
 			g2d.drawImage(rain, 0, yrain, null);
 			g2d.drawImage(cloud, 0, -80, null);
-			// after 1 second, remove cloud and rain
 			Utils.setTimeout(() -> {
 				PowerupManager.build().isRaining = false;
 			}, 1000);

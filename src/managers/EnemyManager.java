@@ -15,21 +15,31 @@ import util.Utils;
 
 import java.awt.Graphics2D;
 
-/*
- * This class manages all the enemies. 
- * it has an array list which contains all the enemies, 
- * and updates, draws all the enemies at the same time. 
+/**
+ * 
+ * The EnemyManager class manages all the enemies in the game.
+ * 
+ * It uses the singleton pattern to ensure only one instance is created.
  */
-
 public class EnemyManager {
 	public static EnemyManager instance = null;
 	public ArrayList<Enemy> enemies;
 	public Class<?>[] classes = { Puropen.class, Denkyun.class, NutsStar.class, Pakupa.class, Cuppen.class };
 
+	/**
+	 * 
+	 * Private constructor to enforce singleton pattern.
+	 */
 	private EnemyManager() {
 		this.enemies = new ArrayList<>();
 	}
 
+	/**
+	 * 
+	 * Retrieves the singleton instance of EnemyManager.
+	 * 
+	 * @return The EnemyManager instance.
+	 */
 	public static synchronized EnemyManager build() {
 		if (instance == null) {
 			instance = new EnemyManager();
@@ -37,16 +47,19 @@ public class EnemyManager {
 		return instance;
 	}
 
-	/* The function that instanciates all the enemies at random positions. */
+	/**
+	 * 
+	 * Instantiates a specified number of enemies at random positions.
+	 * 
+	 * @param n The number of enemies to instantiate.
+	 */
 	public void instanciateEnemies(int n) {
 		this.enemies.clear();
 		for (int i = 0; i < n; i++) {
-
 			int gridX = Utils.rng(4, Consts.gridWidth - 1);
 			int gridY = Utils.rng(4, Consts.gridHeight - 1);
 			int x = gridX * Consts.tileDims;
 			int y = gridY * Consts.tileDims;
-
 			while (TileManager.build().grid[gridY][gridX] != TileType.Empty) {
 				gridX = Utils.rng(4, Consts.gridWidth - 1);
 				gridY = Utils.rng(4, Consts.gridHeight - 1);
@@ -63,9 +76,14 @@ public class EnemyManager {
 			}
 			enemies.add(e);
 		}
-		// enemies.add(new FaralsBoss(200, 200));
 	}
 
+	/**
+	 * 
+	 * Updates all the enemies.
+	 * 
+	 * @param elapsed The elapsed time since the last update.
+	 */
 	public void updateEnemies(int elapsed) {
 		ArrayList<Enemy> toRemove = new ArrayList<>();
 		int l = enemies.size();
@@ -81,6 +99,12 @@ public class EnemyManager {
 		toRemove.forEach((e) -> this.enemies.remove(e));
 	}
 
+	/**
+	 * 
+	 * Draws all the enemies.
+	 * 
+	 * @param g2d The graphics context.
+	 */
 	public void drawEnemies(Graphics2D g2d) {
 		List<Enemy> enemiesCopy = new ArrayList<>(this.enemies);
 		for (Enemy e : enemiesCopy) {

@@ -7,25 +7,34 @@ import javax.swing.JPanel;
 import managers.TileManager;
 import util.TileType;
 
-/* 
- * This class draws on a secondary JFrame. 
- * It draws the grid and its components as colored squares, 
- * which will be useful to see what's actually happening under the hood. 
+/**
+ * This class represents a secondary JFrame for drawing the grid and its
+ * components as colored squares.
+ * It provides a visual representation of the game's underlying mechanics.
  */
-
 public class DrawPane extends JPanel implements Runnable {
   private Thread thread;
   private float dt;
 
+  /**
+   * Constructs a DrawPane object. Initializes the thread and starts it.
+   */
   public DrawPane() {
     this.thread = new Thread(this);
     this.start();
   }
 
+  /**
+   * Starts the thread.
+   */
   public void start() {
     this.thread.start();
   }
 
+  /**
+   * The main run loop of the DrawPane. Controls the fixed update rate and
+   * triggers the repaint of the panel.
+   */
   @Override
   public void run() {
     double last = System.nanoTime();
@@ -51,6 +60,13 @@ public class DrawPane extends JPanel implements Runnable {
     }
   }
 
+  /**
+   * Overrides the paintComponent method to draw the grid and its components as
+   * colored squares.
+   *
+   * @param g The Graphics object used for drawing.
+   */
+  @Override
   public void paintComponent(Graphics g) {
     TileType[][] grid = TileManager.build().grid;
     Graphics2D g2d = (Graphics2D) g;
@@ -90,6 +106,5 @@ public class DrawPane extends JPanel implements Runnable {
         g2d.fillRect(j * 30, i * 30, 30, 30);
       }
     }
-
   }
 }

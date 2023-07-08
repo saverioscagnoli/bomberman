@@ -4,6 +4,12 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import managers.AnimationManager;
 
+/**
+ * The Sprite class represents a sprite with animations. It manages the
+ * spritesheet, dimensions,
+ * current frame, scale, animations, and provides methods for updating and
+ * drawing the sprite.
+ */
 public class Sprite {
   /* A buffered image for the spritesheet */
   public BufferedImage spritesheet;
@@ -17,7 +23,10 @@ public class Sprite {
   /* The scale of the sprite */
   public float scale;
 
-  /* The current animation of the sprite (every animation can have different ) */
+  /*
+   * The current animation of the sprite (every animation can have different
+   * frames)
+   */
   public SpriteAnimation currentAnimation;
 
   /* The array of animations */
@@ -25,6 +34,17 @@ public class Sprite {
 
   public int cycles;
 
+  /**
+   * Constructs a Sprite object with the specified parameters.
+   *
+   * @param spriteName      The name of the spritesheet.
+   * @param abs             The absolute value used to calculate the width of each
+   *                        frame.
+   * @param rows            The number of rows in the spritesheet.
+   * @param currentAnimName The name of the initial animation.
+   * @param anims           The array of sprite animations.
+   * @param scale           The scale of the sprite.
+   */
   public Sprite(String spriteName, double abs, int rows, String currentAnimName, SpriteAnimation[] anims, float scale) {
     /* Set all the properties to their initial values */
     this.spritesheet = AnimationManager.build().getSprite(spriteName);
@@ -39,10 +59,14 @@ public class Sprite {
     this.cycles = 0;
   }
 
-  /* Set the current animation, given its name */
+  /**
+   * Sets the current animation based on its name.
+   *
+   * @param name The name of the animation to set.
+   */
   public void setAnimation(String name) {
     for (SpriteAnimation a : this.animations) {
-      if (a.name == name) {
+      if (a.name.equals(name)) {
         this.currentAnimation = a;
         this.current = 0;
         break;
@@ -50,9 +74,13 @@ public class Sprite {
     }
   }
 
-  /* Update the sprite */
+  /**
+   * Updates the sprite animation.
+   *
+   * @param elapsed The elapsed time since the last update.
+   */
   public void update(int elapsed) {
-    /* Slow down the animtion by staggering it */
+    /* Slow down the animation by staggering it */
     if (elapsed % this.currentAnimation.stagger == 0) {
       /*
        * Set the current frame to the next, or if the frame has reached the max frames
@@ -65,9 +93,16 @@ public class Sprite {
     }
   }
 
-  /*
-   * Draw the sprite, if the parameter dims: [width, height] is passed, it will be
-   * drawn with that dimensions, ignoring the scale of the sprite.
+  /**
+   * Draws the sprite on the specified graphics context.
+   *
+   * @param g2d  The graphics context.
+   * @param x    The x-coordinate of the sprite's position.
+   * @param y    The y-coordinate of the sprite's position.
+   * @param dims Optional dimensions for the sprite. If provided, the sprite will
+   *             be drawn
+   *             with the specified width and height, ignoring the scale of the
+   *             sprite.
    */
   public void draw(Graphics2D g2d, double x, double y, int... dims) {
     int width = (int) (this.width * this.scale);

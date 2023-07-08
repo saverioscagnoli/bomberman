@@ -19,20 +19,42 @@ import javax.sound.sampled.Clip;
 import entities.*;
 import util.debug.DebugWindow;
 
+/**
+ * The Utils class provides various utility methods for the game.
+ */
 public abstract class Utils {
 
-	/* Random integer generator */
+	/**
+	 * Generates a random integer within the specified range.
+	 *
+	 * @param min The minimum value (inclusive).
+	 * @param max The maximum value (exclusive).
+	 * @return The random integer.
+	 */
 	public static int rng(int min, int max) {
 		Random rnd = new Random();
 		return rnd.nextInt(min, max);
 	}
 
-	/* Picks a random element from any array */
+	/**
+	 * Picks a random element from an array.
+	 *
+	 * @param arr The array to pick from.
+	 * @param <T> The type of elements in the array.
+	 * @return The randomly picked element.
+	 */
 	public static <T> T pick(T[] arr) {
 		return arr[rng(0, arr.length)];
 	}
 
-	/* Normalise any coordinates to the nearest number of 48 (tileDims) */
+	/**
+	 * Normalizes the given coordinates to the nearest multiple of the tile
+	 * dimension.
+	 *
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 * @return The normalized coordinates as an array [x, y].
+	 */
 	public static int[] normalizePos(int x, int y) {
 		int gridX = ((int) (x - (x % Consts.tileDims)));
 		int gridY = ((int) (y - (y % Consts.tileDims)));
@@ -40,16 +62,24 @@ public abstract class Utils {
 		return gridArray;
 	}
 
-	/* Normalises the position of any entity */
+	/**
+	 * Normalizes the position of the given entity.
+	 *
+	 * @param entity The entity to normalize.
+	 * @return The normalized position of the entity as an array [x, y].
+	 */
 	public static int[] normalizeEntityPos(Entity entity) {
 		int pX = (int) (entity.posX + entity.width * 0.5);
 		int pY = (int) (entity.posY + entity.height * 0.5);
 		return normalizePos(pX, pY);
 	}
 
-	/*
-	 * A setTimeout function. Similar to javascript, it executes a given function
-	 * with a delay of a specific time in milliseconds.
+	/**
+	 * Executes the specified runnable after a delay, similar to the setTimeout
+	 * function in JavaScript.
+	 *
+	 * @param runnable The runnable to execute.
+	 * @param delay    The delay in milliseconds.
 	 */
 	public static void setTimeout(Runnable runnable, int delay) {
 		new Thread(() -> {
@@ -62,7 +92,12 @@ public abstract class Utils {
 		}).start();
 	}
 
-	/* A function that plays a sound given its path */
+	/**
+	 * Plays a sound from the specified path.
+	 *
+	 * @param src The path to the sound file.
+	 * @return The Clip object representing the played sound.
+	 */
 	public static Clip playSound(String src) {
 		Clip clip = null;
 		try {
@@ -77,7 +112,12 @@ public abstract class Utils {
 		return clip;
 	}
 
-	/* Loads an image from a given path */
+	/**
+	 * Loads an image from the specified path.
+	 *
+	 * @param src The path to the image file.
+	 * @return The loaded BufferedImage object.
+	 */
 	public static BufferedImage loadImage(String src) {
 		File path = new File(src);
 		BufferedImage img = null;
@@ -90,7 +130,12 @@ public abstract class Utils {
 		return img;
 	}
 
-	/* Loads a custom font */
+	/**
+	 * Loads a custom font with the specified size.
+	 *
+	 * @param size The size of the font.
+	 * @return The loaded Font object.
+	 */
 	public static Font loadFont(float size) {
 		Font font = null;
 		try {
@@ -101,7 +146,9 @@ public abstract class Utils {
 		return font;
 	}
 
-	/* Creates new JFrame for debugging purposes. See DebugWindow.java */
+	/**
+	 * Creates a new JFrame for debugging purposes. See DebugWindow.java.
+	 */
 	public static void createDebugWindow() {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -118,6 +165,12 @@ public abstract class Utils {
 		return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
 	}
 
+	/**
+	 * Reads a level from the specified path and returns a grid representation.
+	 *
+	 * @param path The path to the level file.
+	 * @return The grid representing the level.
+	 */
 	public static TileType[][] readLevel(String path) {
 		TileType[][] grid = new TileType[Consts.gridHeight][Consts.gridWidth];
 		try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
@@ -143,7 +196,6 @@ public abstract class Utils {
 							break;
 						}
 					}
-
 				}
 				i++;
 			}
