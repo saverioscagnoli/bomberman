@@ -96,7 +96,6 @@ public class Tile extends Entity {
     int x = this.posX / Consts.tileDims;
     int y = this.posY / Consts.tileDims;
     TileManager tileManager = TileManager.build();
-    TileType[][] grid = tileManager.grid;
     TileManager.build().basicTiles
         .stream()
         .filter(t -> t.posX == this.posX && t.posY == this.posY + Consts.tileDims)
