@@ -97,13 +97,11 @@ public class Tile extends Entity {
     int y = this.posY / Consts.tileDims;
     TileManager tileManager = TileManager.build();
     TileType[][] grid = tileManager.grid;
-    if (y + 1 < grid.length && grid[y + 1][x] == TileType.Empty) {
-      TileManager.build().basicTiles
-          .stream()
-          .filter(t -> t.posX == this.posX && t.posY == this.posY + Consts.tileDims)
-          .findFirst()
-          .ifPresent(t -> t.sprite.spritesheet = Utils.loadImage("assets/tiles/basic-1.png"));
-    }
+    TileManager.build().basicTiles
+        .stream()
+        .filter(t -> t.posX == this.posX && t.posY == this.posY + Consts.tileDims)
+        .findFirst()
+        .ifPresent(t -> t.sprite.spritesheet = Utils.loadImage("assets/tiles/basic-1.png"));
 
     if (tileManager.hatch.posX == this.posX && tileManager.hatch.posY == this.posY) {
       tileManager.grid[y][x] = TileType.Hatch;
