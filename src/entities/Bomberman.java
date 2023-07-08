@@ -139,6 +139,7 @@ public class Bomberman extends Entity {
 				CollisionChecker.SolidTiles.add(TileType.Obstacle);
 				this.passThroughWalls = false;
 			}
+
 		}
 	}
 
@@ -221,6 +222,16 @@ public class Bomberman extends Entity {
 					this.sprite.width = (int) (this.sprite.spritesheet.getWidth() / 6.3);
 					this.immune = true;
 					Utils.setTimeout(() -> this.immune = false, 10000);
+
+					MouseManager mouseManager = MouseManager.build();
+					if (mouseManager.enabled) {
+						mouseManager.enabled = false;
+						Utils.setTimeout(() -> {
+							mouseManager.horizontalMovement = false;
+							mouseManager.verticalMovement = false;
+							mouseManager.enabled = true;
+						}, 100);
+					}
 				}
 			}
 			return;
