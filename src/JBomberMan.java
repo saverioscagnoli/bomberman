@@ -11,8 +11,8 @@ import managers.SaveManager;
 import util.Consts;
 import util.Utils;
 
-class Main {
-    private static final boolean DEBUG = true;
+class JBomberMan {
+    private static final boolean DEBUG = false;
 
     public static void main(String[] args) throws IOException {
         JFrame win = new JFrame("Super Bomberman");
