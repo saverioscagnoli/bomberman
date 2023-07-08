@@ -17,46 +17,62 @@ import managers.SaveManager;
 import managers.TileManager;
 import util.*;
 
+/**
+ * The `Bomberman` class represents the player-controlled character in the game.
+ * It extends the `Entity` class and includes properties and methods specific to
+ * the player character.
+ */
 public class Bomberman extends Entity {
-	/* The bomb radius, so how much tile it takes to end the explosion */
+
+	/* The bomb radius, determining the range of the player's bombs */
 	public int bombRadius;
 
-	/* How many bombs the player can place at the same time */
+	/* The maximum number of bombs the player can place at the same time */
 	public int maxBombs;
 
-	/* The hp of the player */
+	/* The health points of the player */
 	public int health;
 
-	/* A flag to determine if the player is immune, and will not take damage */
+	/* A flag to determine if the player is immune and will not take damage */
 	public boolean immune;
 
+	/* A flag to allow the player to pass through walls */
 	public boolean passThroughWalls;
 
-	/* The lives of the player */
+	/* The number of lives the player has */
 	public int lives;
 
 	/* A flag to stop the animation if the player is not moving */
 	public boolean stop;
 
-	/* The keyboard keys pressed, determines movement, see Controller.java */
+	/* The keyboard keys pressed by the player to control movement */
 	public ArrayList<String> keys;
 
-	/* The indexes on the grid */
+	/* The player's position on the game grid */
 	private int gridX = 1;
 	private int gridY = 1;
 
-	/* The tile on which the player was */
+	/* The type of tile on which the player was previously located */
 	private TileType prevTile = TileType.Empty;
 
 	/* The score of the player */
 	public int score;
+
+	/* The direction in which the player is facing */
 	public String direction;
 
+	/* A flag indicating whether the player has won the game */
 	public boolean won;
 
 	private BufferedImage blinkImage;
 	private BufferedImage original;
 
+	/**
+	 * Constructs a new `Bomberman` object with the specified position.
+	 *
+	 * @param posX The X-coordinate of the player's position.
+	 * @param posY The Y-coordinate of the player's position.
+	 */
 	public Bomberman(int posX, int posY) {
 		/* Pass everything to the superclass Entity */
 		super(posX, posY, 20, 20, 5, new Sprite("bomberman", 6.3, 5, "down",
@@ -69,7 +85,7 @@ public class Bomberman extends Entity {
 				},
 				2.5f));
 
-		/* Set the props to their initial states */
+		/* Set the properties to their initial states */
 		this.keys = new ArrayList<>();
 		this.health = 1;
 		this.maxBombs = 1;
@@ -80,7 +96,6 @@ public class Bomberman extends Entity {
 		this.original = this.sprite.spritesheet;
 		this.blinkImage = Utils.copyImage(this.sprite.spritesheet);
 		this.passThroughWalls = false;
-		// this.immune = true;
 
 		WritableRaster raster = this.blinkImage.getRaster();
 
@@ -97,6 +112,11 @@ public class Bomberman extends Entity {
 		}
 	}
 
+	/**
+	 * Triggers the death of the player.
+	 * This method is called when the player loses all health points and loses a
+	 * life.
+	 */
 	public void die() {
 		this.keys.clear();
 		MouseManager.build().tileClicked[0] = 48;
@@ -110,7 +130,7 @@ public class Bomberman extends Entity {
 		if (this.lives == 0) {
 			SaveManager.incrementLosses();
 			Loop.build().setState(GameState.ContinueScreen);
-			// gameover
+			// game over
 		} else {
 			if (this.speed > 1) {
 				this.speed--;
@@ -122,8 +142,9 @@ public class Bomberman extends Entity {
 		}
 	}
 
-	/*
-	 * Place the bomb at a normalised given position, and set the grid tile to bomb
+	/**
+	 * Places a bomb at the player's current position if possible.
+	 * This method is called when the player triggers the bomb placement action.
 	 */
 	public void placeBomb() {
 		BombManager bombManager = BombManager.build();
@@ -144,7 +165,11 @@ public class Bomberman extends Entity {
 		bombManager.addBomb(new Bomb(x, y, this.bombRadius));
 	}
 
-	public void win() { // TODO : Riportare a private
+	/**
+	 * Triggers the player's victory.
+	 * This method is called when the player successfully completes a level.
+	 */
+	public void win() {
 		this.won = true;
 		// this.sprite = new Sprite("bomberman-hatch", 9, 1, "idle", new
 		// SpriteAnimation[] {
@@ -163,8 +188,8 @@ public class Bomberman extends Entity {
 		this.keys.clear();
 	}
 
+	@Override
 	public void update(int elapsed) {
-
 		if (this.won) {
 			if (this.sprite.current < this.sprite.currentAnimation.maxFrames - 1) {
 				this.sprite.update(elapsed);
@@ -201,9 +226,9 @@ public class Bomberman extends Entity {
 			return;
 		}
 
-		// TODO: sarebbe un po' piu organizzato creare un metodo fatto apposta nel
-		// collision checker per il movimento del player.
-		// probabilmente si potrebbe anche comprimere un po'.
+		// TODO: It would be more organized to create a dedicated method in the
+		// collision checker for player movement.
+		// It could potentially be compressed further.
 		this.sprite.update(elapsed);
 		this.speed = 5;
 
@@ -222,7 +247,7 @@ public class Bomberman extends Entity {
 			this.gridX = normPos[0] / Consts.tileDims;
 			this.gridY = normPos[1] / Consts.tileDims;
 
-			/* Reset the tile on which the player was to what was originally */
+			/* Reset the tile on which the player was to its original state */
 
 			if (prevX != this.gridX || prevY != this.gridY) {
 				if (tileManager.grid[prevY][prevX] == TileType.Bomberman) {
@@ -237,25 +262,21 @@ public class Bomberman extends Entity {
 
 			switch (this.keys.get(0)) {
 				case "A":
-
 					posX -= speed;
 					direction = "left";
 					break;
 
 				case "D":
-
 					posX += speed;
 					direction = "right";
 					break;
 
 				case "W":
-
 					posY -= speed;
 					direction = "up";
 					break;
 
 				case "S":
-
 					posY += speed;
 					direction = "down";
 					break;
@@ -273,6 +294,7 @@ public class Bomberman extends Entity {
 		TileManager.build().grid[this.gridY][this.gridX] = TileType.Bomberman;
 	}
 
+	@Override
 	public void render(Graphics2D g2d) {
 		if (this.won) {
 			if (this.sprite.current == this.sprite.currentAnimation.maxFrames - 1) {
