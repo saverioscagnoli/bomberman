@@ -1,10 +1,7 @@
 package entities.enemies;
 
 import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.HashMap;
 import entities.Enemy;
-import managers.BombManager;
 import managers.TileManager;
 import ui.Sprite;
 import ui.SpriteAnimation;
@@ -12,7 +9,19 @@ import util.Consts;
 import util.TileType;
 import util.Utils;
 
+/**
+ * The Pakupa class represents an enemy character called Pakupa in the game.
+ * It extends the Enemy class and defines the behavior and rendering of the
+ * Pakupa enemy.
+ */
 public class Pakupa extends Enemy {
+
+  /**
+   * Constructs a Pakupa object with the specified position.
+   * 
+   * @param posX The x-coordinate of the Pakupa's position.
+   * @param posY The y-coordinate of the Pakupa's position.
+   */
   public Pakupa(int posX, int posY) {
     super(posX, posY, Consts.tileDims, Consts.tileDims, 1,
         new Sprite("pakupa", 10, 4, "left", new SpriteAnimation[] {
@@ -84,15 +93,22 @@ public class Pakupa extends Enemy {
     }
   }
 
+  /**
+   * Updates the Pakupa's state, including movement and grid updates.
+   * 
+   * @param elapsed The elapsed time since the last update.
+   */
   public void update(int elapsed) {
-    // the enemy moves in a direction until it hits a wall, then it changes
-    // direction
     super.update(elapsed);
-
     this.move(true);
     this.updateGrid(() -> this.checkBombs());
   }
 
+  /**
+   * Renders the Pakupa on the graphics context.
+   * 
+   * @param g2d The graphics context to render on.
+   */
   public void render(Graphics2D g2d) {
     int offsetX = 0;
     int offsetY = 0;
