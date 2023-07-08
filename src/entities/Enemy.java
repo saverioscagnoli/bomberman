@@ -17,29 +17,84 @@ import util.Consts;
 import util.TileType;
 import util.Utils;
 
+/**
+ * 
+ * The Enemy class represents an abstract enemy entity in the game.
+ * 
+ * It extends the Entity class and provides common functionality and attributes
+ * 
+ * for different types of enemies.
+ */
 public abstract class Enemy extends Entity {
 
-	/* The direction of the enemy */
+	/**
+	 * 
+	 * The direction of the enemy.
+	 */
 	protected String direction;
-
+	/**
+	 * 
+	 * The x-coordinate of the enemy in the grid.
+	 */
 	protected int gridX;
+	/**
+	 * 
+	 * The y-coordinate of the enemy in the grid.
+	 */
 	protected int gridY;
-
-	/* The hp of the enemy */
+	/**
+	 * 
+	 * The health points of the enemy.
+	 */
 	public int health;
-
-	/* A flag to determine if the enemy is immune, and will not take damage */
+	/**
+	 * 
+	 * A flag to determine if the enemy is immune and will not take damage.
+	 */
 	public boolean immune = false;
-
+	/**
+	 * 
+	 * A flag to determine if the enemy is stopped.
+	 */
 	protected boolean stop = false;
-
+	/**
+	 * 
+	 * The score obtained for defeating the enemy.
+	 */
 	protected int score;
-
+	/**
+	 * 
+	 * The previous tile type occupied by the enemy.
+	 */
 	protected TileType prevTile = TileType.Empty;
-
+	/**
+	 * 
+	 * The horizontal speed of the enemy.
+	 */
 	protected int speedX;
+	/**
+	 * 
+	 * The vertical speed of the enemy.
+	 */
 	protected int speedY;
 
+	/**
+	 * 
+	 * Constructs an enemy object with the specified position, dimensions, speed,
+	 * and sprite.
+	 * 
+	 * @param posX   The x-coordinate of the enemy's position.
+	 * 
+	 * @param posY   The y-coordinate of the enemy's position.
+	 * 
+	 * @param width  The width of the enemy.
+	 * 
+	 * @param height The height of the enemy.
+	 * 
+	 * @param speed  The speed of the enemy.
+	 * 
+	 * @param sprite The sprite representing the enemy.
+	 */
 	public Enemy(int posX, int posY, int width, int height, int speed, Sprite sprite) {
 		super(posX, posY, width, height, speed, sprite);
 		this.health = 3;
@@ -55,30 +110,44 @@ public abstract class Enemy extends Entity {
 		this.speedY = 0;
 	}
 
+	/**
+	 * 
+	 * Handles the death of the enemy.
+	 * Sets the enemy as dead, updates the grid tile, and adds a random powerup if
+	 * applicable.
+	 */
 	public void die() {
 		this.dead = true;
 		TileManager.build().grid[this.gridY][this.gridX] = TileType.Empty;
 		if (Utils.rng(1, 10) <= 3) {
-			/* Get a randon powerup class */
+			// Get a random powerup class
 			Class<?> c = Utils.pick(PowerupManager.build().classes);
 			PowerUp p = null;
 			int[] normPosition = Utils.normalizePos(this.posX, this.posY);
 			try {
-				/* Instanciate the random class */
+				// Instantiate the random class
 				p = (PowerUp) c.getDeclaredConstructor(int.class, int.class).newInstance(normPosition[0], normPosition[1]);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			/* Add the powerups */
+			// Add the powerup
 			PowerupManager.build().powerups.add(p);
 			TileManager.build().grid[normPosition[1] / 48][normPosition[0] / 48] = TileType.PowerUp;
-
 		}
 	}
 
-	/* Deals damage to the enemy */
+	/**
+	 * 
+	 * Deals damage to the enemy.
+	 * If the enemy is immune or already in the explosion animation, no damage is
+	 * taken.
+	 * If the enemy's health reaches zero, it is stopped and the explosion animation
+	 * is triggered.
+	 * 
+	 * @param damage The amount of damage to be dealt.
+	 */
 	public void dealDamage(int damage) {
-		if (immune || this.sprite.currentAnimation.name == "explosion")
+		if (immune || this.sprite.currentAnimation.name.equals("explosion"))
 			return;
 		health -= damage;
 		immune = true;
@@ -99,6 +168,14 @@ public abstract class Enemy extends Entity {
 		}
 	}
 
+	/**
+	 * 
+	 * Updates the enemy's grid position and handles tile changes.
+	 * 
+	 * Optionally executes additional actions on tile change.
+	 * 
+	 * @param onTileChange Optional actions to be executed on tile change.
+	 */
 	protected void updateGrid(Runnable... onTileChange) {
 		TileManager tileManager = TileManager.build();
 		int prevX = this.gridX;
@@ -114,7 +191,6 @@ public abstract class Enemy extends Entity {
 			if (tileManager.grid[prevY][prevX] == TileType.Enemy) {
 				tileManager.grid[prevY][prevX] = this.prevTile;
 			}
-
 			if (onTileChange.length > 0) {
 				onTileChange[0].run();
 			}
@@ -129,6 +205,14 @@ public abstract class Enemy extends Entity {
 		tileManager.grid[this.gridY][this.gridX] = TileType.Enemy;
 	}
 
+	/**
+	 * 
+	 * Checks if the enemy collides with the specified directions.
+	 * 
+	 * @param dir The directions to check for collision.
+	 * 
+	 * @return true if collision occurs, false otherwise.
+	 */
 	protected boolean collide(String... dir) {
 		TileType[][] grid = TileManager.build().grid;
 		HashMap<String, TileType> map = new HashMap<>();
@@ -149,7 +233,6 @@ public abstract class Enemy extends Entity {
 
 		if (this instanceof Pakupa) {
 			TileType next = map.get(this.direction);
-
 			if (next == TileType.Bomb) {
 				int x = 0;
 				int y = 0;
@@ -182,6 +265,12 @@ public abstract class Enemy extends Entity {
 		return solid.contains(map.get(dir.length > 0 ? dir[0] : this.direction));
 	}
 
+	/**
+	 * 
+	 * Checks if the enemy is blocked in all four directions.
+	 * 
+	 * @return true if the enemy is blocked in all directions, false otherwise.
+	 */
 	protected boolean checkBlocked() {
 		String[] dirs = { "up", "down", "left", "right" };
 		for (int i = 0; i < dirs.length; i++) {
@@ -192,6 +281,14 @@ public abstract class Enemy extends Entity {
 		return true;
 	}
 
+	/**
+	 * 
+	 * Moves the enemy based on its current direction and handles collision and
+	 * direction changes.
+	 * 
+	 * @param randomDirection Whether to choose a random direction if the enemy is
+	 *                        stopped.
+	 */
 	protected void move(boolean randomDirection) {
 		this.speedX = 0;
 		this.speedY = 0;
@@ -219,7 +316,6 @@ public abstract class Enemy extends Entity {
 					if (randomDirection) {
 						String[] dirs = { "down", "left", "right" };
 						this.direction = Utils.pick(dirs);
-
 						int i = 0;
 
 						while (this.collide(this.direction) && i < Consts.maxIterations) {
@@ -324,20 +420,25 @@ public abstract class Enemy extends Entity {
 		this.posY += this.speedY;
 	}
 
+	/**
+	 * 
+	 * Updates the enemy's state and handles collision with the player.
+	 * 
+	 * @param elapsed The elapsed time since the last update.
+	 */
 	public void update(int elapsed) {
 		Bomberman bomberman = Loop.build().bomberman;
 
 		if (bomberman.dead)
 			return;
-		if (this.sprite.currentAnimation.name == "explosion"
+		if (this.sprite.currentAnimation.name.equals("explosion")
 				&& this.sprite.current == this.sprite.currentAnimation.maxFrames - 1) {
 			this.die();
 			return;
 		}
 		this.sprite.update(elapsed);
 
-		// checking AABB collision with the player
-
+		// Checking AABB collision with the player
 		if (!bomberman.immune) {
 			if (this.posX + this.width > bomberman.posX
 					&& this.posX < bomberman.posX + bomberman.width
@@ -348,5 +449,11 @@ public abstract class Enemy extends Entity {
 		}
 	}
 
+	/**
+	 * 
+	 * Renders the enemy on the specified graphics context.
+	 * 
+	 * @param g2d The graphics context to render on.
+	 */
 	public abstract void render(Graphics2D g2d);
 }

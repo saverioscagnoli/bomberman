@@ -61,11 +61,11 @@ public class MenuHandler extends MouseAdapter implements KeyListener {
     switch (keyCode) {
       case KeyEvent.VK_UP:
       case KeyEvent.VK_DOWN:
-        Utils.playSound("assets/sounds/menu-arrow-move.wav");
-        this.setArrow();
-        this.loop.repaint();
+        Utils.playSound("assets/sounds/menu-arrow-move.wav"); // play arrow sound
+        this.setArrow(); // change its position
+        this.loop.repaint(); // repaint
         break;
-      case KeyEvent.VK_ENTER: {
+      case KeyEvent.VK_ENTER: { // chooses the option
         if (this.loop.gameState == GameState.Menu) {
           if (this.loop.arrowY == 555) {
             this.loop.setState(GameState.InGame);
@@ -77,12 +77,19 @@ public class MenuHandler extends MouseAdapter implements KeyListener {
       }
 
       case KeyEvent.VK_ESCAPE: {
+        // Pause -> ingame
         if (this.loop.gameState == GameState.Pause) {
           this.loop.setState(GameState.InGame);
+
+          // Ingame -> pause
         } else if (this.loop.gameState == GameState.InGame) {
           this.loop.setState(GameState.Pause);
+
+          // Menu -> exit
         } else if (this.loop.gameState == GameState.Menu) {
           System.exit(0);
+
+          // Stats -> menu
         } else if (this.loop.gameState == GameState.Stats) {
           this.loop.setState(GameState.Menu);
         }

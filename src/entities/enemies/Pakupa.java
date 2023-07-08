@@ -47,7 +47,7 @@ public class Pakupa extends Enemy {
     TileManager tileManager = TileManager.build();
     TileType[][] grid = tileManager.grid;
 
-    for (int i = this.gridX; i < grid.length; i++) {
+    for (int i = this.gridX + 1; i < grid.length; i++) {
       if (grid[this.gridY][i] == TileType.Bomb) {
         this.direction = "right";
         if (this.sprite.currentAnimation.name != this.direction) {
@@ -58,7 +58,7 @@ public class Pakupa extends Enemy {
         break;
       }
     }
-    for (int i = this.gridX; i >= 0; i--) {
+    for (int i = this.gridX - 1; i >= 0; i--) {
       if (grid[this.gridY][i] == TileType.Bomb) {
         this.direction = "left";
         if (this.sprite.currentAnimation.name != this.direction) {
@@ -69,7 +69,7 @@ public class Pakupa extends Enemy {
         break;
       }
     }
-    for (int i = this.gridY; i < grid.length; i++) {
+    for (int i = this.gridY + 1; i < grid.length; i++) {
       if (grid[i][this.gridX] == TileType.Bomb) {
         this.direction = "down";
         if (this.sprite.currentAnimation.name != this.direction) {
@@ -80,7 +80,7 @@ public class Pakupa extends Enemy {
         break;
       }
     }
-    for (int i = this.gridY; i >= 0; i--) {
+    for (int i = this.gridY - 1; i >= 0; i--) {
       if (grid[i][this.gridX] == TileType.Bomb) {
         this.direction = "up";
         if (this.sprite.currentAnimation.name != this.direction) {
@@ -101,7 +101,12 @@ public class Pakupa extends Enemy {
   public void update(int elapsed) {
     super.update(elapsed);
     this.move(true);
-    this.updateGrid(() -> this.checkBombs());
+    updateGrid(() -> {
+    });
+    if (this.posX % 48 == 0 && this.posY % 48 == 0) {
+      System.out.println("check");
+      this.checkBombs();
+    }
   }
 
   /**

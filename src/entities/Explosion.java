@@ -9,18 +9,41 @@ import ui.SpriteAnimation;
 import util.Consts;
 import core.Loop;
 
+/**
+ * 
+ * Represents an explosion entity in the game.
+ */
 public class Explosion extends Entity {
 
+	/**
+	 * 
+	 * Constructs a new Explosion object with the specified parameters.
+	 * 
+	 * @param posX      The x-coordinate of the explosion's position.
+	 * @param posY      The y-coordinate of the explosion's position.
+	 * @param direction The direction of the explosion.
+	 * @param frameY    The starting frame index of the explosion animation.
+	 */
 	public Explosion(int posX, int posY, String direction, int frameY) {
 		super(posX, posY, Consts.tileDims, Consts.tileDims, 0,
 				new Sprite("explosion", 9, 7, direction,
 						new SpriteAnimation[] { new SpriteAnimation(direction, 9, frameY, 5) }, 1));
 	}
 
+	/**
+	 * 
+	 * Performs the actions required when the explosion dies.
+	 */
 	public void die() {
 		this.dead = true;
 	}
 
+	/**
+	 * 
+	 * Updates the state of the explosion.
+	 * 
+	 * @param elapsed The elapsed time since the last update.
+	 */
 	@Override
 	public void update(int elapsed) {
 		this.sprite.update(elapsed);
@@ -28,12 +51,9 @@ public class Explosion extends Entity {
 		/* If the animation is finished, die */
 		if (this.sprite.current == this.sprite.currentAnimation.maxFrames - 1) {
 			this.die();
-		}
-
-		else if (this.sprite.current == 1) {
+		} else if (this.sprite.current == 1) {
 			if (EnemyManager.build().enemies.size() > 0) {
 				for (Enemy enemy : EnemyManager.build().enemies) {
-
 					int thisLeft = this.posX;
 					int thisRight = this.posX + this.width;
 					int thisTop = this.posY;
@@ -78,10 +98,15 @@ public class Explosion extends Entity {
 		}
 	}
 
+	/**
+	 * 
+	 * Renders the explosion on the specified graphics context.
+	 * 
+	 * @param g2d The graphics context to render on.
+	 */
 	@Override
 	public void render(Graphics2D g2d) {
 		int dim = Consts.tileDims + 3;
 		this.sprite.draw(g2d, this.posX, this.posY, dim, dim);
 	}
 }
-
