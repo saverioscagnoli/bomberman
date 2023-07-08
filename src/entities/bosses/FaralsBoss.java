@@ -68,6 +68,8 @@ public class FaralsBoss extends Enemy {
     Bomberman bomberman = Loop.build().bomberman;
     if (bomberman.dead)
       return;
+
+    // Calculate the center of bomberman
     double targetX = bomberman.posX + bomberman.sprite.width * 0.5 - width * 0.5;
     double targetY = bomberman.posY + bomberman.sprite.height * 0.5 - height * 0.5;
 
@@ -77,19 +79,23 @@ public class FaralsBoss extends Enemy {
 
       if (dx != 0 || dy != 0) {
 
+        // Calculate the absolute distance in x and y direction
         double absDx = Math.abs(dx);
         double absDy = Math.abs(dy);
         double maxAbs = Math.max(absDx, absDy);
 
+        // Check if the enemy is close enough to the player to kill him through radius
         if (Math.sqrt(dx * dx + dy * dy) < 60) {
           if (!bomberman.dead && !bomberman.immune) {
             bomberman.die();
           }
         }
 
+        // Calculate how much the enemy should move in x and y direction
         double offsetX = (dx / maxAbs) * this.speed * 1.3;
         double offsetY = (dy / maxAbs) * this.speed * 1.3;
 
+        // Calculate the new position of the enemy
         double newPosX = posX + offsetX;
         double newPosY = posY + offsetY;
 
