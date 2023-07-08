@@ -62,7 +62,4 @@ public class LevelManager {
     BombManager.build().bombs.clear();
     PowerupManager.build().powerups.clear();
   }
-
-  public void EndGame() {
-  }
 }

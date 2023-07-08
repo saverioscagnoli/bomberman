@@ -14,12 +14,23 @@ import util.Consts;
 import util.TileType;
 import util.Utils;
 
+/**
+ * The FaralsBoss class represents a boss enemy called Farals in the game.
+ * It extends the Enemy class and defines the behavior and rendering of the boss
+ * enemy.
+ */
 public class FaralsBoss extends Enemy {
 
   public boolean stop;
   public boolean hit;
   private boolean hitFlag;
 
+  /**
+   * Constructs a FaralsBoss object with the specified position.
+   * 
+   * @param posX The x-coordinate of the boss's position.
+   * @param posY The y-coordinate of the boss's position.
+   */
   public FaralsBoss(int posX, int posY) {
     super(posX, posY, 0, 0, 1,
         new Sprite("Faralsboss", 5, 4, "idle-1", new SpriteAnimation[] {
@@ -38,6 +49,9 @@ public class FaralsBoss extends Enemy {
     this.hitFlag = false;
   }
 
+  /**
+   * Sets the boss as dead and reveals the hatch tile.
+   */
   public void die() {
     Tile hatch = TileManager.build().hatch;
     hatch.isVisible = true;
@@ -47,6 +61,9 @@ public class FaralsBoss extends Enemy {
     this.dead = true;
   }
 
+  /**
+   * Moves the boss towards the player character's position.
+   */
   private void move() {
     Bomberman bomberman = Loop.build().bomberman;
     if (bomberman.dead)
@@ -97,6 +114,9 @@ public class FaralsBoss extends Enemy {
     }
   }
 
+  /**
+   * Spawns bombs based on the boss's health at random positions on the grid.
+   */
   private void spawnBombs() {
     // add a number ranging from 1 to 3 bombs in the array
     int bombs = Utils.rng(3, 13 - health);
@@ -114,6 +134,11 @@ public class FaralsBoss extends Enemy {
     }
   }
 
+  /**
+   * Updates the boss's state, including movement, bomb spawning, and animations.
+   * 
+   * @param elapsed The elapsed time since the last update.
+   */
   @Override
   public void update(int elapsed) {
     sprite.update(elapsed);
@@ -143,6 +168,11 @@ public class FaralsBoss extends Enemy {
     }
   }
 
+  /**
+   * Renders the boss on the graphics context.
+   * 
+   * @param g2d The graphics context to render on.
+   */
   @Override
   public void render(Graphics2D g2d) {
     this.sprite.draw(g2d, this.posX, this.posY, this.width, this.height);

@@ -57,8 +57,6 @@ public class Bomberman extends Entity {
 	private BufferedImage blinkImage;
 	private BufferedImage original;
 
-	private String level;
-
 	public Bomberman(int posX, int posY) {
 		/* Pass everything to the superclass Entity */
 		super(posX, posY, 20, 20, 5, new Sprite("bomberman", 6.3, 5, "down",
@@ -97,7 +95,6 @@ public class Bomberman extends Entity {
 				raster.setPixel(i, j, pixels);
 			}
 		}
-		this.level = "1";
 	}
 
 	public void die() {

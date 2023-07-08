@@ -3,8 +3,6 @@ package managers;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
-
-import entities.Enemy;
 import entities.Tile;
 import ui.Sprite;
 import ui.SpriteAnimation;

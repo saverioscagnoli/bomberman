@@ -83,8 +83,9 @@ public class Loop extends JPanel implements Runnable {
   public JTextField textField;
 
   /*
-   * constructor. This will be called only the first time the loop is
-   * built
+   * Constructor. This will be called only the first time the loop is built.
+   * 
+   * @param c the JPanel container
    */
   private Loop(JPanel c) {
     /* Set all the variables to their initial state */
@@ -218,11 +219,22 @@ public class Loop extends JPanel implements Runnable {
     this.isMouseChanging = false;
   }
 
+  /**
+   * Returns the singleton instance of the Loop class, creating it if necessary.
+   *
+   * @return the Loop instance
+   */
   public static Loop build() {
     return instance;
   }
 
-  /* The function to call the second constructor. used for singleton. */
+  /**
+   * Builds the Loop instance with the provided JPanel container, creating it if
+   * necessary.
+   *
+   * @param c the JPanel container
+   * @return the Loop instance
+   */
   public static Loop build(JPanel c) {
     if (instance == null) {
       instance = new Loop(c);
@@ -230,7 +242,9 @@ public class Loop extends JPanel implements Runnable {
     return instance;
   }
 
-  /* The function that creates the overlay with points and lives */
+  /**
+   * Creates the overlay JPanel that contains points and lives.
+   */
   private void createOverlay() {
     JPanel overlay = new JPanel();
     overlay.setPreferredSize(new Dimension(Consts.screenWidth, 120));
@@ -240,20 +254,28 @@ public class Loop extends JPanel implements Runnable {
     this.overlay = overlay;
   }
 
-  /* The function that creates the main menu */
+  /**
+   * Creates the main menu.
+   */
   private void createMainMenu() {
     this.removeAll();
     this.revalidate();
     this.repaint();
   }
 
-  /* The function that takes in a new state and replaces the old one */
+  /**
+   * Sets the game state to the provided state and updates the state accordingly.
+   *
+   * @param state the new game state
+   */
   public void setState(GameState state) {
     this.gameState = state;
     this.updateState();
   }
 
-  /* The function that takes care of what happens when updating the state */
+  /**
+   * Updates the game state and performs actions based on the current state.
+   */
   public void updateState() {
     this.removeAll();
 
@@ -329,15 +351,23 @@ public class Loop extends JPanel implements Runnable {
     this.musicManager.ost(this.gameState);
   }
 
+  /**
+   * Adds the Controller to the Loop.
+   */
   public void addController() {
     this.addKeyListener(this.controller);
   }
 
+  /**
+   * Removes the Controller from the Loop.
+   */
   public void removeController() {
     this.removeKeyListener(this.controller);
   }
 
-  /* The function that takes care of creating the thread and starting it */
+  /**
+   * Starts the game loop.
+   */
   public void start() {
     this.addController();
     this.running = true;
@@ -346,7 +376,9 @@ public class Loop extends JPanel implements Runnable {
     CollisionChecker.build().update_Centered_Collisions();
   }
 
-  /* The function that takes care of stopping the thread */
+  /**
+   * Stops the game loop.
+   */
   public void stop() {
     this.removeController();
     this.running = false;
@@ -357,7 +389,9 @@ public class Loop extends JPanel implements Runnable {
     }
   }
 
-  /* The game loop. */
+  /**
+   * Runs the game loop.
+   */
   @Override
   public void run() {
     long currentTime = System.nanoTime();
@@ -394,7 +428,9 @@ public class Loop extends JPanel implements Runnable {
     }
   }
 
-  /* The function that updates the game logic and sprites */
+  /**
+   * Updates the game logic and sprites.
+   */
   private void update() {
     this.elapsed++;
     bomberman.update(elapsed);
@@ -425,7 +461,9 @@ public class Loop extends JPanel implements Runnable {
     }
   }
 
-  /* The function that renders everything needed on screen */
+  /**
+   * Renders everything needed on the screen.
+   */
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);

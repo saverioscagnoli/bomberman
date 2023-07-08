@@ -9,7 +9,6 @@ import java.util.Arrays;
 
 import core.Loop;
 import entities.Bomberman;
-import util.CollisionChecker;
 import util.Consts;
 import util.TileType;
 import util.Utils;

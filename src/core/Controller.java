@@ -13,7 +13,6 @@ import util.*;
  * It is used to determine which keys are pressed and which are not.
  * It also determines the direction of the player.
  */
-
 public class Controller extends MouseAdapter implements KeyListener {
     private static Controller instance = null;
 
@@ -29,10 +28,21 @@ public class Controller extends MouseAdapter implements KeyListener {
 
     private Bomberman bomberman;
 
+    /**
+     * Constructs a new Controller instance.
+     * 
+     * @param loop the Loop object managing the game loop
+     */
     private Controller(Loop loop) {
         this.bomberman = loop.bomberman;
     }
 
+    /**
+     * Returns the singleton instance of the Controller, creating it if necessary.
+     * 
+     * @param loop the Loop object managing the game loop
+     * @return the Controller instance
+     */
     public static synchronized Controller build(Loop loop) {
         if (instance == null) {
             instance = new Controller(loop);
@@ -40,7 +50,6 @@ public class Controller extends MouseAdapter implements KeyListener {
         return instance;
     }
 
-    // Method to update the variables based on the current key presses
     @Override
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
@@ -115,7 +124,6 @@ public class Controller extends MouseAdapter implements KeyListener {
         }
     }
 
-    // Method to update the variables based on the current key releases
     @Override
     public void keyReleased(KeyEvent e) {
         int keyCode = e.getKeyCode();

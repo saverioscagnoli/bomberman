@@ -4,10 +4,7 @@ import core.Loop;
 import entities.Bomberman;
 import entities.PowerUp;
 import managers.TileManager;
-import managers.MouseManager;
 import managers.PowerupManager;
-
-import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;

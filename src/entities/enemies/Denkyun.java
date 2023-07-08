@@ -7,7 +7,19 @@ import ui.SpriteAnimation;
 import util.Consts;
 import util.Utils;
 
+/**
+ * The Denkyun class represents an enemy character called Denkyun in the game.
+ * It extends the Enemy class and defines the behavior and rendering of the
+ * Denkyun enemy.
+ */
 public class Denkyun extends Enemy {
+
+	/**
+	 * Constructs a Denkyun object with the specified position.
+	 * 
+	 * @param posX The x-coordinate of the Denkyun's position.
+	 * @param posY The y-coordinate of the Denkyun's position.
+	 */
 	public Denkyun(int posX, int posY) {
 		super(posX, posY, Consts.tileDims, Consts.tileDims, 1,
 				new Sprite("denkyun", 10, 1, "idle", new SpriteAnimation[] {
@@ -29,8 +41,13 @@ public class Denkyun extends Enemy {
 		this.direction = dir;
 	}
 
+	/**
+	 * Updates the Denkyun's state, including movement and grid updates.
+	 * 
+	 * @param elapsed The elapsed time since the last update.
+	 */
 	public void update(int elapsed) {
-		// the enemy moves in a direction until it hits a wall, then it changes
+		// The enemy moves in a direction until it hits a wall, then it changes
 		// direction
 		super.update(elapsed);
 
@@ -38,6 +55,11 @@ public class Denkyun extends Enemy {
 		this.updateGrid();
 	}
 
+	/**
+	 * Renders the Denkyun on the graphics context.
+	 * 
+	 * @param g2d The graphics context to render on.
+	 */
 	public void render(Graphics2D g2d) {
 		int offsetX = 0;
 		int offsetY = 0;

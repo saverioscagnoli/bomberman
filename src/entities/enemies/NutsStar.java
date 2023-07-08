@@ -7,9 +7,20 @@ import ui.SpriteAnimation;
 import util.Consts;
 import util.Utils;
 
+/**
+ * The NutsStar class represents an enemy character called NutsStar in the game.
+ * It extends the Enemy class and defines the behavior and rendering of the
+ * NutsStar enemy.
+ */
 public class NutsStar extends Enemy {
   private boolean justChanged;
 
+  /**
+   * Constructs a NutsStar object with the specified position.
+   * 
+   * @param posX The x-coordinate of the NutsStar's position.
+   * @param posY The y-coordinate of the NutsStar's position.
+   */
   public NutsStar(int posX, int posY) {
     super(posX, posY, Consts.tileDims, Consts.tileDims, 1,
         new Sprite("nuts-star", 9, 4, "left", new SpriteAnimation[] {
@@ -56,10 +67,13 @@ public class NutsStar extends Enemy {
     }
   }
 
+  /**
+   * Updates the NutsStar's state, including movement and grid updates.
+   * 
+   * @param elapsed The elapsed time since the last update.
+   */
   public void update(int elapsed) {
-
     super.update(elapsed);
-
     this.move(true);
 
     switch (this.direction) {
@@ -92,6 +106,11 @@ public class NutsStar extends Enemy {
     this.updateGrid(() -> this.justChanged = false);
   }
 
+  /**
+   * Renders the NutsStar on the graphics context.
+   * 
+   * @param g2d The graphics context to render on.
+   */
   public void render(Graphics2D g2d) {
     int offsetX = 0;
     int offsetY = 0;

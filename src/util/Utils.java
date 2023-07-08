@@ -11,15 +11,12 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import entities.*;
-import managers.BombManager;
-import managers.TileManager;
 import util.debug.DebugWindow;
 
 public abstract class Utils {
@@ -48,40 +45,6 @@ public abstract class Utils {
 		int pX = (int) (entity.posX + entity.width * 0.5);
 		int pY = (int) (entity.posY + entity.height * 0.5);
 		return normalizePos(pX, pY);
-	}
-
-	public static boolean enemyCollision(Enemy enemy, String direction) {
-		// if the enemy's normalized position is just about to hit a solid entity,
-		// change direction
-		int[] normalizedPos = normalizeEntityPos(enemy);
-		switch (direction) {
-			case "left":
-				normalizedPos[0] -= enemy.width;
-				break;
-			case "up":
-				normalizedPos[1] -= enemy.width;
-				break;
-			case "right":
-				normalizedPos[0] += enemy.width;
-				break;
-			case "down":
-				normalizedPos[1] += enemy.width;
-				break;
-		}
-
-		ArrayList<Bomb> bombs = BombManager.build().bombs;
-		ArrayList<Tile> walls = TileManager.build().walls;
-		ArrayList<Entity> obstaclesAndBombs = new ArrayList<>();
-		obstaclesAndBombs.addAll(bombs);
-		obstaclesAndBombs.addAll(walls);
-
-		for (Entity e : obstaclesAndBombs) {
-			if (e.posX == normalizedPos[0] && e.posY == normalizedPos[1]) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	/*
@@ -189,15 +152,5 @@ public abstract class Utils {
 		}
 
 		return grid;
-	}
-
-	public static String[] getLevelNames() {
-		File folder = new File("levels");
-		File[] listOfFiles = folder.listFiles();
-		String[] names = new String[listOfFiles.length];
-		for (int i = 0; i < listOfFiles.length; i++) {
-			names[i] = listOfFiles[i].getName();
-		}
-		return names;
 	}
 }

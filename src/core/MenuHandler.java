@@ -7,14 +7,31 @@ import java.awt.event.MouseAdapter;
 import util.GameState;
 import util.Utils;
 
+/**
+ * The MenuHandler class is responsible for handling menu interactions and key
+ * events in the game.
+ * It implements the KeyListener interface to handle keyboard input and
+ * MouseAdapter for mouse events.
+ */
 public class MenuHandler extends MouseAdapter implements KeyListener {
   private static MenuHandler instance = null;
   private Loop loop;
 
+  /**
+   * Constructs a MenuHandler object with the specified Loop instance.
+   * 
+   * @param loop The Loop instance for handling menu interactions.
+   */
   private MenuHandler(Loop loop) {
     this.loop = loop;
   }
 
+  /**
+   * Creates a MenuHandler instance if it doesn't exist and returns it.
+   * 
+   * @param loop The Loop instance for handling menu interactions.
+   * @return The MenuHandler instance.
+   */
   public static synchronized MenuHandler build(Loop loop) {
     if (instance == null) {
       instance = new MenuHandler(loop);
@@ -22,6 +39,9 @@ public class MenuHandler extends MouseAdapter implements KeyListener {
     return instance;
   }
 
+  /**
+   * Sets the position of the menu arrow.
+   */
   private void setArrow() {
     if (this.loop.arrowY == 555) {
       this.loop.arrowY = 600;
@@ -30,6 +50,11 @@ public class MenuHandler extends MouseAdapter implements KeyListener {
     }
   }
 
+  /**
+   * Handles key press events.
+   * 
+   * @param e The KeyEvent object representing the key press event.
+   */
   @Override
   public void keyPressed(KeyEvent e) {
     int keyCode = e.getKeyCode();
@@ -70,10 +95,20 @@ public class MenuHandler extends MouseAdapter implements KeyListener {
     }
   }
 
+  /**
+   * Handles key typed events.
+   * 
+   * @param e The KeyEvent object representing the key typed event.
+   */
   @Override
   public void keyTyped(KeyEvent e) {
   }
 
+  /**
+   * Handles key release events.
+   * 
+   * @param e The KeyEvent object representing the key release event.
+   */
   @Override
   public void keyReleased(KeyEvent e) {
   }

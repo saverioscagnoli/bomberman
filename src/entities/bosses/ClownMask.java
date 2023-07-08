@@ -14,12 +14,23 @@ import util.Consts;
 import util.TileType;
 import util.Utils;
 
+/**
+ * The ClownMask class represents the clown boss in super bomberman.
+ * It extends the Enemy class and defines the behavior and rendering of the
+ * clown.
+ */
 public class ClownMask extends Enemy {
   public boolean stop;
   public boolean hit;
   private boolean hitFlag;
   private ArrayList<ClownBullet> bullets;
 
+  /**
+   * Constructs a ClownMask object with the specified position.
+   * 
+   * @param posX The x-coordinate of the clown's position.
+   * @param posY The y-coordinate of the clown's position.
+   */
   public ClownMask(int posX, int posY) {
     super(posX, posY, 0, 0, 1,
         new Sprite("clown-mask", 4, 4, "idle-1", new SpriteAnimation[] {
@@ -39,6 +50,9 @@ public class ClownMask extends Enemy {
     this.bullets = new ArrayList<>();
   }
 
+  /**
+   * Sets the clown as dead and reveals the hatch tile.
+   */
   public void die() {
     Tile hatch = TileManager.build().hatch;
     hatch.isVisible = true;
@@ -48,6 +62,9 @@ public class ClownMask extends Enemy {
     this.dead = true;
   }
 
+  /**
+   * Moves the clown towards the player character's position.
+   */
   private void move() {
     Bomberman bomberman = Loop.build().bomberman;
     if (bomberman.dead)
@@ -98,6 +115,9 @@ public class ClownMask extends Enemy {
     }
   }
 
+  /**
+   * Spawns bullets from the clown in different directions.
+   */
   private void spawnBullets() {
     int offsetX;
     int offsetY;
@@ -121,7 +141,6 @@ public class ClownMask extends Enemy {
           offsetY = 0;
           break;
         case 3:
-
           offsetX = OFFSET_1;
           offsetY = OFFSET_1;
           break;
@@ -150,6 +169,11 @@ public class ClownMask extends Enemy {
     }
   }
 
+  /**
+   * Updates the bullets' positions and removes dead bullets.
+   * 
+   * @param elapsed The elapsed time since the last update.
+   */
   private void updateBullets(int elapsed) {
     ArrayList<ClownBullet> toRemove = new ArrayList<>();
 
@@ -164,6 +188,11 @@ public class ClownMask extends Enemy {
     toRemove.forEach(b -> this.bullets.remove(b));
   }
 
+  /**
+   * Draws the bullets on the graphics context.
+   * 
+   * @param g2d The graphics context to render on.
+   */
   private void drawBullets(Graphics2D g2d) {
     for (ClownBullet b : this.bullets) {
       if (!b.dead) {
@@ -172,6 +201,12 @@ public class ClownMask extends Enemy {
     }
   }
 
+  /**
+   * Updates the clown's state, including movement, bullet spawning, and
+   * animations.
+   * 
+   * @param elapsed The elapsed time since the last update.
+   */
   @Override
   public void update(int elapsed) {
     sprite.update(elapsed);
@@ -201,6 +236,11 @@ public class ClownMask extends Enemy {
     }
   }
 
+  /**
+   * Renders the clown and its bullets on the graphics context.
+   * 
+   * @param g2d The graphics context to render on.
+   */
   @Override
   public void render(Graphics2D g2d) {
     this.drawBullets(g2d);

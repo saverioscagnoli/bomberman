@@ -6,7 +6,6 @@ public enum GameState {
   Menu,
   InGame,
   Pause,
-  GameOver,
   Stats,
   StageCleared,
   ContinueScreen,
